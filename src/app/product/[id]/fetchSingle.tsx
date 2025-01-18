@@ -38,13 +38,12 @@ export default function ProductPage() {
         if (error) throw error;
 
         if (!data) {
-          setError("No product found for the given ID.");
+          throw new Error("Product not found.");
         } else {
           setProduct(data);
         }
       } catch (err) {
-        setError("Failed to load product data. Please try again later.");
-        console.error(err);
+      throw new Error("Error fetching product details.");
       }
     };
 
