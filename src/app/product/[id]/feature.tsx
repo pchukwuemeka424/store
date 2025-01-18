@@ -1,6 +1,6 @@
-import React, { Product, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
+import "slick-carousel/slick/slick-theme.css"; 
 import Slider from "react-slick";
 import { createClient } from '@/utils/supabase/client';
 import Image from 'next/image';
@@ -8,7 +8,7 @@ import Link from 'next/link';
 import { Card, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 
 export default function FeatureProducts<T>({ currentProductId, currentProductTitle }: { currentProductId: T; currentProductTitle: T }) {
-  const [featureProducts, setFeatureProducts] = useState<Product[]>([]);
+  const [featureProducts, setFeatureProducts] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
