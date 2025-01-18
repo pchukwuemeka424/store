@@ -31,7 +31,7 @@ export default function FeatureProducts<T>({ currentProductId, currentProductTit
 
       if (error) {
         console.error('Error fetching featureProducts:', error);
-        setError("Failed to load featured products. Please try again later.");
+      
       } else {
         setFeatureProducts(featureProducts);
       }
