@@ -12,10 +12,12 @@ import { redirect } from 'next/navigation';
 import { FaTv, FaTshirt, FaHome, FaDumbbell, FaPaw, FaGem, FaBaby, FaGamepad, FaHeart } from 'react-icons/fa';
 import Link from 'next/link';
 
+export default function ProductCategories() {
+
   return (
     <div className="hidden sm:block col-span-3 bg-white p-4 rounded shadow">
       {/* Search Form */}
-      <form  className="mb-4 space-y-4">
+      <form onSubmit={handleSubmit} className="mb-4 space-y-4">
         {/* Search Input */}
         <div>
           <label htmlFor="search" className="block text-sm font-medium text-gray-700 mb-1">
