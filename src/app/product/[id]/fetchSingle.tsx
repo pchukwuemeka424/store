@@ -6,26 +6,9 @@ import { FaStore, FaPhone, FaMapMarkerAlt, FaWhatsapp } from "react-icons/fa";
 import CategoryList from "@/components/category";
 import supabaseDb from "@/utils/supabase-db";
 import Link from "next/link";
-import FeatureProducts from "./feature";
+ import FeatureProducts from "./feature";
 import Image from "next/image";
 
-interface UserProfile {
-  shopname: string;
-  city: string;
-  stat: string;
-  phone: string;
-  username: string;
-}
-
-interface Product {
-  id: string;
-  title: string;
-  description: string;
-  user_id: string;
-  price: number;
-  image: string;
-  user_profile: UserProfile;
-}
 
 const ProductPage: FC = () => {
   const params = useParams();
@@ -41,27 +24,21 @@ const ProductPage: FC = () => {
       try {
         const { data, error } = await supabaseDb
           .from("products")
-          .select(`
-            id,
-            title,
-            description,
-            user_id,
-            price,
-            image,
-            user_profile: user_profile(*)
+          .select(`*,
+            user_profile(*)
           `)
           .eq("user_id", id)
           .maybeSingle();
 
-        if (error) throw error;
-
-        if (!data) {
-          throw new Error("Product not found.");
-        } else {
-          setProduct(data as Product); // Make sure to cast data as Product
+        if (error) {
+          setError(error.message);
+          return;
         }
-      } catch (err) {
-        setError("Error fetching product details.");
+
+        setProduct(data);
+      } catch (error) {
+        console.error("Error fetching product:", error);
+        setError("An error occurred while fetching the product.");
       }
     };
 

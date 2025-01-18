@@ -7,21 +7,6 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { Card, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 
-type UserProfile = {
-  shopname: string;
-  stat: string;
-  city: string;
-};
-
-type Product = {
-  id: string;
-  title: string;
-  user_id: string;
-  price: number;
-  image: string;
-  user_profile: UserProfile;
-};
-
 export default function FeatureProducts<T>({ currentProductId, currentProductTitle }: { currentProductId: T; currentProductTitle: T }) {
   const [featureProducts, setFeatureProducts] = useState<Product[]>([]);
   const [error, setError] = useState<string | null>(null);
@@ -31,24 +16,15 @@ export default function FeatureProducts<T>({ currentProductId, currentProductTit
       const supabase = createClient();
       const { data, error } = await supabase
         .from('products')
-        .select(`
-          id,
-          title,
-          user_id,
-          price,
-          image,
-          user_profile (
-            shopname,
-            stat,
-            city
-          )
+        .select(`*,
+          user_profile ("*"
         `)
         .neq('id', currentProductId) // Exclude current product
         .ilike('title', `%${currentProductTitle}%`) // Filter by title
         .limit(10);
 
       if (error) {
-        console.error('Error fetching featureProducts:', error);
+        setError(error.message);
        
       } else if (data) {
         setFeatureProducts(data as unknown as Product[]);
