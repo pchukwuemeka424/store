@@ -27,7 +27,7 @@ export default function FeatureProducts<T>({ currentProductId, currentProductTit
         setError(error.message);
        
       } else if (data) {
-        setFeatureProducts(data as unknown as Product[]);
+        setFeatureProducts(data);
       }
     };
 
