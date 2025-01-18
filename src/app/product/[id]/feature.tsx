@@ -7,15 +7,29 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { Card, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 
-export default function FeatureProducts<T>({ currentProductId, currentProductTitle }: { currentProductId: T; currentProductTitle: T }) 
- {
-  const [featureProducts, setFeatureProducts] = useState([]);
-  const [error, setError] = useState(null);
+type UserProfile = {
+  shopname: string;
+  stat: string;
+  city: string;
+};
+
+type Product = {
+  id: string;
+  title: string;
+  user_id: string;
+  price: number;
+  image: string;
+  user_profile: UserProfile;
+};
+
+export default function FeatureProducts<T>({ currentProductId, currentProductTitle }: { currentProductId: T; currentProductTitle: T }) {
+  const [featureProducts, setFeatureProducts] = useState<Product[]>([]);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchFeatureProducts = async () => {
       const supabase = createClient();
-      const { data: featureProducts, error } = await supabase
+      const { data, error } = await supabase
         .from('products')
         .select(`
           id,
@@ -23,7 +37,11 @@ export default function FeatureProducts<T>({ currentProductId, currentProductTit
           user_id,
           price,
           image,
-          user_profile ("*")
+          user_profile (
+            shopname,
+            stat,
+            city
+          )
         `)
         .neq('id', currentProductId) // Exclude current product
         .ilike('title', `%${currentProductTitle}%`) // Filter by title
@@ -31,9 +49,9 @@ export default function FeatureProducts<T>({ currentProductId, currentProductTit
 
       if (error) {
         console.error('Error fetching featureProducts:', error);
-      
-      } else {
-        setFeatureProducts(featureProducts);
+       
+      } else if (data) {
+        setFeatureProducts(data as unknown as Product[]);
       }
     };
 
@@ -97,7 +115,7 @@ export default function FeatureProducts<T>({ currentProductId, currentProductTit
                 </CardDescription>
                 <div className="flex justify-between items-center mb-3">
                   <div className="capitalize text-xs text-gray-600">
-                    {product.user_profile.stat || 'City'}, {product.user_profile.city || 'City'}
+                    {product.user_profile.stat || 'State'}, {product.user_profile.city || 'City'}
                   </div>
                   <div className="text-sm font-semibold text-green-500">
                     ₦{product.price}
