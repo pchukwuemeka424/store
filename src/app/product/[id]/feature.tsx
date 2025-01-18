@@ -8,7 +8,7 @@ import Link from 'next/link';
 import { Card, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 
 export default function FeatureProducts<T>({ currentProductId, currentProductTitle }: { currentProductId: T; currentProductTitle: T }) {
-  const [featureProducts, setFeatureProducts] = useState<string | null>(null);
+  const [featureProducts, setFeatureProducts] = useState<any[]>([]);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
@@ -16,8 +16,9 @@ export default function FeatureProducts<T>({ currentProductId, currentProductTit
       const supabase = createClient();
       const { data, error } = await supabase
         .from('products')
-        .select(`*,
-          user_profile ("*"
+        .select(`
+          *,
+          user_profile(*)
         `)
         .neq('id', currentProductId) // Exclude current product
         .ilike('title', `%${currentProductTitle}%`) // Filter by title
@@ -25,8 +26,7 @@ export default function FeatureProducts<T>({ currentProductId, currentProductTit
 
       if (error) {
         setError(error.message);
-       
-      } else if (data) {
+      } else {
         setFeatureProducts(data);
       }
     };
@@ -91,7 +91,7 @@ export default function FeatureProducts<T>({ currentProductId, currentProductTit
                 </CardDescription>
                 <div className="flex justify-between items-center mb-3">
                   <div className="capitalize text-xs text-gray-600">
-                    {product.user_profile.stat || 'State'}, {product.user_profile.city || 'City'}
+                    {product.user_profile.state || 'State'}, {product.user_profile.city || 'City'}
                   </div>
                   <div className="text-sm font-semibold text-green-500">
                     ₦{product.price}
