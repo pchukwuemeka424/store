@@ -6,15 +6,14 @@ import { FaStore, FaPhone, FaMapMarkerAlt, FaWhatsapp } from "react-icons/fa";
 import CategoryList from "@/components/category";
 import supabaseDb from "@/utils/supabase-db";
 import Link from "next/link";
- import FeatureProducts from "./feature";
+import FeatureProducts from "./feature";
 import Image from "next/image";
-
 
 const ProductPage: FC = () => {
   const params = useParams();
   const { id } = params || {};
 
-  const [product, setProduct] = useState<Product | null>(null);
+  const [product, setProduct] = useState<any | null>(null);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
