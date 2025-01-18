@@ -1,7 +1,7 @@
 "use client";
 
 import { useParams } from "next/navigation";
-import { useState, useEffect } from "react";
+import { useState, useEffect, FC } from "react";
 import { FaStore, FaPhone, FaMapMarkerAlt, FaWhatsapp } from "react-icons/fa";
 import CategoryList from "@/components/category";
 import supabaseDb from "@/utils/supabase-db";
@@ -9,12 +9,30 @@ import Link from "next/link";
 import FeatureProducts from "./feature";
 import Image from "next/image";
 
-export default function ProductPage() {
+interface UserProfile {
+  shopname: string;
+  city: string;
+  stat: string;
+  phone: string;
+  username: string;
+}
+
+interface Product {
+  id: string;
+  title: string;
+  description: string;
+  user_id: string;
+  price: number;
+  image: string;
+  user_profile: UserProfile;
+}
+
+const ProductPage: FC = () => {
   const params = useParams();
   const { id } = params || {};
 
-  const [product, setProduct] = useState(null);
-  const [error, setError] = useState(null);
+  const [product, setProduct] = useState<Product | null>(null);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     if (!id) return;
@@ -30,7 +48,7 @@ export default function ProductPage() {
             user_id,
             price,
             image,
-            user_profile ("*")
+            user_profile: user_profile(*)
           `)
           .eq("user_id", id)
           .maybeSingle();
@@ -43,7 +61,7 @@ export default function ProductPage() {
           setProduct(data);
         }
       } catch (err) {
-      throw new Error("Error fetching product details.");
+        setError("Error fetching product details.");
       }
     };
 
@@ -136,4 +154,6 @@ export default function ProductPage() {
       </main>
     </div>
   );
-}
+};
+
+export default ProductPage;
