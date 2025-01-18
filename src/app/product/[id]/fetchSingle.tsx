@@ -58,7 +58,7 @@ const ProductPage: FC = () => {
         if (!data) {
           throw new Error("Product not found.");
         } else {
-          setProduct(data);
+          setProduct(data as Product); // Make sure to cast data as Product
         }
       } catch (err) {
         setError("Error fetching product details.");
