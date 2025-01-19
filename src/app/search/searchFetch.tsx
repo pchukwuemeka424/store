@@ -23,6 +23,7 @@ export default function SearchProduct() {
           image,
           user_profile (id, city, stat, shopname)
         `)
+        .order('created_at', { ascending: false })
         .range((page - 1) * 10, page * 10 - 1); // Adjust range to fetch in chunks of 10
 
       if (search) {
