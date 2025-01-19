@@ -3,7 +3,7 @@ import React from "react";
 import { AiOutlineSearch } from "react-icons/ai";
 import { search } from "@/actions/auth/search";
 import Link from "next/link";
-import { FaSignInAlt, FaUserPlus } from "react-icons/fa";
+import { FaBox, FaShoppingCart, FaSignInAlt, FaTags, FaUserPlus } from "react-icons/fa";
 
 export default function Navbar() {
   return (
@@ -41,20 +41,28 @@ export default function Navbar() {
             </button>
           </form>
 
-          <div>
-            <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-4 justify-center my-3">
-            <Link href="/product" className="text-white hover:text-gray-300 transition">
-                <button className="flex items-center px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition">
-                <FaSignInAlt className="mr-2" /> Products
-                </button>
-              </Link>
-              <Link href="/vendor" className="text-white hover:text-gray-300 transition">
-                <button className="flex items-center px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition">
-                <FaSignInAlt className="mr-2" /> Vendors
-                </button>
-              </Link>
+
+
+          <div className="flex justify-center items-center gap-4 mt-6">
+            {/* Online Vendors Box */}
+            <div className="h-28 w-28 sm:h-28 sm:w-28 bg-blue-500 flex flex-col items-center justify-center rounded-md shadow-md text-white">
+             <Link href="/vendor">
+             <FaBox size={40} />
+             <span className="mt-2">Vendors</span>
+             </Link>
+            </div>
+
+            {/* Products Box */}
+            <div className="h-28 w-28 sm:h-28 sm:w-28 bg-green-500 flex flex-col items-center justify-center rounded-md shadow-md text-white">
+             <Link href="/product">
+             <FaShoppingCart size={40} />
+             <span className="mt-2">Products</span>
+             </Link>
             </div>
           </div>
+
+
+
         </div>
       </div>
     </section>
