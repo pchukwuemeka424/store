@@ -120,7 +120,7 @@ const ProductPage: FC = () => {
             </div>
           </div>
         ) : (
-          <p className="text-center text-lg">No product found.</p>
+          // <p className="text-center text-lg">No product found.</p>
         )}
         <div className="w-full lg:w-full bg-gray-50 p-4 relative">
           {product && (
