@@ -5,6 +5,7 @@ import { FaSignInAlt, FaUserPlus } from 'react-icons/fa'; // Import desired icon
 import { createClient } from '@/utils/supabase/client';
 import LogoutButton from './logoutButton';
 import Image from 'next/image';
+import { ShoppingCart } from 'lucide-react';
 
 export default function Navbar() {
   const [user, setUser] = React.useState(null);
@@ -65,7 +66,7 @@ export default function Navbar() {
               {/* Register Button */}
               <Link href="/register" className="text-white hover:text-gray-300 transition w-full sm:w-auto">
                 <button className="w-full sm:w-auto flex items-center px-4 py-2 bg-orange-500 text-white rounded-md hover:bg-orange-600 transition justify-center">
-                  <FaUserPlus className="mr-2" /> Create Your Store
+                  <ShoppingCart className="mr-2" /> Create Store
                 </button>
               </Link>
 
