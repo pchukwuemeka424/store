@@ -1,22 +1,25 @@
 import React from 'react';
-import Topnav from '@/components/topnav'
-import Head from 'next/head'
-import { Metadata } from 'next'
-
+import Topnav from '@/components/topnav';
+import Head from 'next/head';
+import { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: `${process.env.APP_NAME}`,
-  description: `${process.env.APP_DESCRIPTION}`,
-}
+  title: process.env.APP_NAME || 'Default App Name',
+  description: process.env.APP_DESCRIPTION || 'Default App Description',
+};
 
-export default function layout({ children }: { children: React.ReactNode }) {
+export default function Layout({ children }: { children: React.ReactNode }) {
   return (
-  <>
-  <Head>
-    <title>My Store</title>
-  </Head>
-       
-       <div className='mx-auto max-w-7xl'>
-          <Topnav />
+    <>
+      <Head>
+        <title>{metadata.title}</title>
+        <meta name="description" content={metadata.description} />
+      </Head>
 
-          <div> {children} </div>
+      <div className="mx-auto max-w-7xl">
+        <Topnav />
+        <div>{children}</div>
+      </div>
+    </>
+  );
+}
