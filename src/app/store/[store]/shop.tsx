@@ -6,6 +6,7 @@ import { Card, CardHeader, CardTitle } from '@/components/ui/card';
 import { useParams } from 'next/navigation';
 import CategoryList from '@/components/category';
 import ContactButtons from '@/components/contactButton';
+import Spinner from '@/components/spinner';
 export default function ProductFetch({ }) {
   // const [loading, setLoading] = useState(true);
   const [shopDetails, setShopDetails] = useState(null);
@@ -38,7 +39,7 @@ export default function ProductFetch({ }) {
   // }
 
   if (!shopDetails?.products || shopDetails.products.length === 0) {
-    return <p>No products available at this time.</p>;
+    return <Spinner />;
   }
 
   return (

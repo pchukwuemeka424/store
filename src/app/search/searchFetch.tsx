@@ -69,11 +69,11 @@ export default function SearchProduct() {
   }, [handleScroll]);
 
   if (loading && page === 1) {
-    return <p>Loading products...</p>;
+    return <Spinner />;
   }
 
   if (products.length === 0 && !loading) {
-    return <p>No products available.</p>;
+    return <Spinner />;
   }
 
   return (
