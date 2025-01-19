@@ -46,18 +46,22 @@ export default function Navbar() {
           <div className="flex justify-center items-center gap-4 mt-6">
             {/* Online Vendors Box */}
             <div className="h-28 w-28 sm:h-28 sm:w-28 bg-blue-500 flex flex-col items-center justify-center rounded-md shadow-md text-white">
-             <Link href="/vendor">
-             <FaBox size={40} />
-             <span className="mt-2">Vendors</span>
-             </Link>
+              <Link href="/vendor">
+                <div className="flex flex-col items-center justify-center">
+                  <FaBox size={40} />
+                  <span className="mt-2">Vendors</span>
+                </div>
+              </Link>
             </div>
 
             {/* Products Box */}
             <div className="h-28 w-28 sm:h-28 sm:w-28 bg-green-500 flex flex-col items-center justify-center rounded-md shadow-md text-white">
-             <Link href="/product">
-             <FaShoppingCart size={40} />
-             <span className="mt-2">Products</span>
-             </Link>
+              <Link href="/product">
+                <div className="flex flex-col items-center justify-center">
+                  <FaShoppingCart size={40} />
+                  <span className="mt-2">Products</span>
+                </div>
+              </Link>
             </div>
           </div>
 
