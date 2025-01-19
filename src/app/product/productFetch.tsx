@@ -7,7 +7,6 @@ import ProductNotFound from '@/components/ProductNotFound';
 
 export default function ProductFetch() {
   const [products, setProducts] = useState([]);
- 
   const [page, setPage] = useState(1);
   const isFetching = useRef(false);
 
@@ -25,11 +24,10 @@ export default function ProductFetch() {
 
       if (error) throw error;
 
-      setProducts((prevProducts: any) => [...prevProducts, ...data]);
+      setProducts((prevProducts) => [...prevProducts, ...data]);
     } catch (error) {
       console.error('Error fetching products:', error.message);
     } finally {
-      setLoading(false);
       isFetching.current = false;
     }
   }, []);
@@ -40,7 +38,7 @@ export default function ProductFetch() {
 
   const handleScroll = useCallback(() => {
     if (window.innerHeight + document.documentElement.scrollTop >= document.documentElement.offsetHeight) {
-      setPage((prevPage: number) => prevPage + 1);
+      setPage((prevPage) => prevPage + 1);
     }
   }, []);
 
@@ -49,11 +47,7 @@ export default function ProductFetch() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, [handleScroll]);
 
-  if (loading && page === 1) {
-    return <p>Loading products...</p>;
-  }
-
-  if (products.length === 0 && !loading) {
+  if (products.length === 0) {
     return <ProductNotFound />;
   }
 
@@ -88,7 +82,6 @@ export default function ProductFetch() {
           </Card>
         </Link>
       ))}
-      {loading && <p>Loading more products...</p>}
     </div>
   );
 }
