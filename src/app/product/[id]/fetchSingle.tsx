@@ -8,6 +8,7 @@ import supabaseDb from "@/utils/supabase-db";
 import Link from "next/link";
 import FeatureProducts from "./feature";
 import Image from "next/image";
+import Spinner from "@/components/spinner";
 
 const ProductPage: FC = () => {
   const params = useParams();
@@ -120,7 +121,7 @@ const ProductPage: FC = () => {
             </div>
           </div>
         ) : (
-          // <p className="text-center text-lg">No product found.</p>
+         <Spinner />
         )}
         <div className="w-full lg:w-full bg-gray-50 p-4 relative">
           {product && (
