@@ -5,7 +5,7 @@ import FetchCat from './fetchCat';
 
 import React from 'react'
 
-export default function page() {
+export default function Page() {
   return (
     <div>
             <div className="grid grid-cols-12 gap-4 p-4">

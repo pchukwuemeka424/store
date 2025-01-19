@@ -18,19 +18,14 @@ export default function ProductFetch() {
     try {
       const { data, error } = await supabaseDb
         .from('products')
-        .select(`
-          id,
-          title,
-          user_id,
-          price,
-          image,
+        .select(`*,
           user_profile  ("*")
         `)
         .range((page - 1) * 10, page * 10 - 1); // Adjust range to fetch in chunks of 10
 
       if (error) throw error;
 
-      setProducts((prevProducts) => [...prevProducts, ...data]);
+      setProducts((prevProducts: any) => [...prevProducts, ...data]);
     } catch (error) {
       console.error('Error fetching products:', error.message);
     } finally {
@@ -45,7 +40,7 @@ export default function ProductFetch() {
 
   const handleScroll = useCallback(() => {
     if (window.innerHeight + document.documentElement.scrollTop >= document.documentElement.offsetHeight) {
-      setPage((prevPage) => prevPage + 1);
+      setPage((prevPage: number) => prevPage + 1);
     }
   }, []);
 
@@ -64,7 +59,7 @@ export default function ProductFetch() {
 
   return (
     <div className="col-span-12 sm:col-span-9 grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-4">
-      {products.map((product, index) => (
+      {products.map((product: { user_id: any; image: any; title: any; user_profile: { shopname: any; stat: any; city: any; }; price: any; }, index: number) => (
         <Link href={`/product/${product.user_id}`} key={index} passHref>
           <Card className="hover:shadow-lg transition">
             <CardHeader className='p-0'>
