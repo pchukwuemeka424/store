@@ -60,7 +60,7 @@ export default function Navbar() {
 
               <Link href="/login" className="text-white hover:text-gray-300 transition w-full sm:w-auto">
                 <button className="w-full sm:w-auto flex items-center px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition justify-center">
-                  <FaSignInAlt className="mr-2" /> Login
+                  Login
                 </button>
               </Link>
               {/* Register Button */}
