@@ -60,15 +60,15 @@ const ProductPage: FC = () => {
         {product ? (
           <div className="flex flex-col lg:flex-row gap-8 items-center text-center lg:text-left">
             {/* Product Image */}
-            <div className="lg:w-1/2">
-              <Image
-                src={product.image || "/default-placeholder.png"}
-                width={500}
-                height={500}
-                alt={product.title || "Product Image"}
-                className="w-full h-auto md:h-96 sm:h-48 object-cover rounded-lg shadow-md"
-              />
-            </div>
+            <div className="lg:w-1/2 w-full">
+  <Image
+    src={product.image || "/default-placeholder.png"}
+    width={500}
+    height={500}
+    alt={product.title || "Product Image"}
+    className="w-full h-auto object-cover rounded-lg shadow-md"
+  />
+</div>
 
             {/* Product Details */}
             <div className="lg:w-1/2">
