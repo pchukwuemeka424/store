@@ -9,6 +9,7 @@ import Link from "next/link";
 import FeatureProducts from "./feature";
 import Image from "next/image";
 import Spinner from "@/components/spinner";
+import Loading from "./loading";
 
 const ProductPage: FC = () => {
   const params = useParams();
@@ -121,7 +122,8 @@ const ProductPage: FC = () => {
             </div>
           </div>
         ) : (
-         <Spinner />
+          <Loading className="bg-gray-800 bg-opacity-50 p-8 rounded-lg flex items-center justify-center animate-pulse" />
+
         )}
         <div className="w-full lg:w-full bg-gray-50 p-4 relative">
           {product && (

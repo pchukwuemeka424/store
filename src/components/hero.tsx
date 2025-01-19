@@ -4,9 +4,12 @@ import { AiOutlineSearch } from "react-icons/ai";
 import { search } from "@/actions/auth/search";
 import Link from "next/link";
 import { FaBox, FaShoppingCart, FaSignInAlt, FaTags, FaUserPlus } from "react-icons/fa";
+import Banner from "./banner";
 
 export default function Navbar() {
   return (
+   <>
+
     <section className="h-screen relative flex flex-col justify-center items-center bg-cover bg-center 
     bg-[url('https://scholarmedia.africa/wp-content/uploads/2023/03/A-woman-trader-e1680190679909.jpg')]">
       {/* Background Overlay */}
@@ -70,5 +73,6 @@ export default function Navbar() {
         </div>
       </div>
     </section>
+   </>
   );
 }
