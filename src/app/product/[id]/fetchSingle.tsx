@@ -66,7 +66,7 @@ const ProductPage: FC = () => {
                 width={500}
                 height={500}
                 alt={product.title || "Product Image"}
-                className="w-full h-auto md:h-96 sm:h-48 object-contain rounded-lg shadow-md"
+                className="w-full h-auto md:h-96 sm:h-48 object-cover rounded-lg shadow-md"
               />
             </div>
 

@@ -43,15 +43,14 @@ export default function Navbar() {
 
           <div>
             <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-4 justify-center my-3">
-              <Link href="/login" className="text-white hover:text-gray-300 transition w-full sm:w-auto">
-                <button className="w-full sm:w-auto flex items-center px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition justify-center">
-                  <FaSignInAlt className="mr-2" /> Login
+            <Link href="/product" className="text-white hover:text-gray-300 transition">
+                <button className="flex items-center px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition">
+                <FaSignInAlt className="mr-2" /> Products
                 </button>
               </Link>
-              {/* Register Button */}
-              <Link href="/register" className="text-white hover:text-gray-300 transition w-full sm:w-auto">
-                <button className="w-full sm:w-auto flex items-center px-4 py-2 bg-orange-500 text-white rounded-md hover:bg-orange-600 transition justify-center">
-                  <FaUserPlus className="mr-2" /> Register
+              <Link href="/vendor" className="text-white hover:text-gray-300 transition">
+                <button className="flex items-center px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition">
+                <FaSignInAlt className="mr-2" /> Vendors
                 </button>
               </Link>
             </div>

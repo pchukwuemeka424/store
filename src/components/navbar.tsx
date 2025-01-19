@@ -1,7 +1,7 @@
 "use client";
 import React from 'react';
 import Link from 'next/link';
-import { FaSignInAlt } from 'react-icons/fa'; // Import desired icons
+import { FaSignInAlt, FaUserPlus } from 'react-icons/fa'; // Import desired icons
 import { createClient } from '@/utils/supabase/client';
 import LogoutButton from './logoutButton';
 import Image from 'next/image';
@@ -55,18 +55,19 @@ export default function Navbar() {
             <div className="flex space-x-2 ml-6">
               {/* Login Button */}
               
-              <Link href="/product" className="text-white hover:text-gray-300 transition">
-                <button className="flex items-center px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition">
-                <FaSignInAlt className="mr-2" /> Products
+             
+
+              <Link href="/login" className="text-white hover:text-gray-300 transition w-full sm:w-auto">
+                <button className="w-full sm:w-auto flex items-center px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition justify-center">
+                  <FaSignInAlt className="mr-2" /> Login
                 </button>
               </Link>
-              <Link href="/vendor" className="text-white hover:text-gray-300 transition">
-                <button className="flex items-center px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition">
-                <FaSignInAlt className="mr-2" /> Vendors
+              {/* Register Button */}
+              <Link href="/register" className="text-white hover:text-gray-300 transition w-full sm:w-auto">
+                <button className="w-full sm:w-auto flex items-center px-4 py-2 bg-orange-500 text-white rounded-md hover:bg-orange-600 transition justify-center">
+                  <FaUserPlus className="mr-2" /> Register
                 </button>
               </Link>
-
-
 
 
            

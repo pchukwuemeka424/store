@@ -3,7 +3,7 @@ import React, { useEffect, useState, useCallback, useRef } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Card, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import ProductNotFound from '@/components/ProductNotFound';
+// import ProductNotFound from '@/components/ProductNotFound';
 
 export default function ProductFetch() {
   const [products, setProducts] = useState([]);
@@ -20,7 +20,6 @@ export default function ProductFetch() {
         .select(`*,
           user_profile  ("*")
         `)
-        .order('created_at', { ascending: false })
         .range((page - 1) * 10, page * 10 - 1); // Adjust range to fetch in chunks of 10
 
       if (error) throw error;
@@ -48,9 +47,9 @@ export default function ProductFetch() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, [handleScroll]);
 
-  if (products.length === 0) {
-    return <ProductNotFound />;
-  }
+  // if (products.length === 0) {
+  //   return <ProductNotFound />;
+  // }
 
   return (
     <div className="col-span-12 sm:col-span-9 grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-4">
