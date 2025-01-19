@@ -4,6 +4,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { Card, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { useSearchParams } from 'next/navigation';
+import Spinner from '@/components/spinner';
 
 export default function SearchProduct() {
   const [products, setProducts] = useState([]);
