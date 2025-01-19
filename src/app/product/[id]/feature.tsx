@@ -59,7 +59,7 @@ export default function FeatureProducts<T>({ currentProductId, currentProductTit
       {
         breakpoint: 480,
         settings: {
-          slidesToShow: 1,
+          slidesToShow: 2,
         },
       },
     ],

@@ -58,7 +58,7 @@ const ProductPage: FC = () => {
       {/* Product Detail Section */}
       <main className="lg:w-3/4 p-6 flex flex-col items-center">
         {product ? (
-          <div className="flex flex-col lg:flex-row gap-8 items-center text-center lg:text-left">
+          <div className="flex flex-col lg:flex-row gap-8 items-center  lg:text-left">
             {/* Product Image */}
             <div className="lg:w-1/2 w-full">
   <Image
