@@ -65,7 +65,7 @@ export default function Navbar() {
               {/* Register Button */}
               <Link href="/register" className="text-white hover:text-gray-300 transition w-full sm:w-auto">
                 <button className="w-full sm:w-auto flex items-center px-4 py-2 bg-orange-500 text-white rounded-md hover:bg-orange-600 transition justify-center">
-                  <FaUserPlus className="mr-2" /> Register
+                  <FaUserPlus className="mr-2" /> Create Your Store
                 </button>
               </Link>
 
