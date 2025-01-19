@@ -11,7 +11,7 @@ export default function ProductFetch() {
   const [page, setPage] = useState(1);
   const isFetching = useRef(false);
 
-  const fetchProducts = useCallback(async (page) => {
+  const fetchProducts = useCallback(async (page: number) => {
     if (isFetching.current) return;
     isFetching.current = true;
 
