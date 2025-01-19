@@ -11,3 +11,4 @@ export async function search(formData: FormData) {
 
   return searchQuery;
 }
+

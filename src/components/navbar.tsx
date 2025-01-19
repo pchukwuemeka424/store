@@ -24,8 +24,14 @@ export default function Navbar() {
         <div className="flex items-center py-4">
           {/* Logo */}
           <div className="text-2xl font-bold text-white">
-            <Image src="https://sxkmrpzbtqpraucnmnjm.supabase.co/storage/v1/object/public/logos/public/1736537418297-logog.png" alt="Logo" className="w-25" width={180} height={100} />
-          </div>
+  <Image 
+    src="https://sxkmrpzbtqpraucnmnjm.supabase.co/storage/v1/object/public/logos/public/1736537418297-logog.png" 
+    alt="Logo" 
+    className="w-20 sm:w-25 md:w-36" 
+    width={180} 
+    height={100} 
+  />
+</div>
 
           {/* Spacer to push items to the right */}
           <div className="flex-grow"></div>
