@@ -1,7 +1,7 @@
 "use client";
 import React from 'react';
 import Link from 'next/link';
-import { FaSignInAlt, FaUserPlus } from 'react-icons/fa'; // Import desired icons
+import { FaSignInAlt } from 'react-icons/fa'; // Login Icon
 import { createClient } from '@/utils/supabase/client';
 import LogoutButton from './logoutButton';
 import Image from 'next/image';
@@ -25,14 +25,14 @@ export default function Navbar() {
         <div className="flex items-center py-4">
           {/* Logo */}
           <div className="text-2xl font-bold text-white">
-  <Image 
-    src="https://sxkmrpzbtqpraucnmnjm.supabase.co/storage/v1/object/public/logos/public/1736537418297-logog.png" 
-    alt="Logo" 
-    className="w-20 sm:w-25 md:w-36" 
-    width={180} 
-    height={100} 
-  />
-</div>
+            <Image
+              src="https://sxkmrpzbtqpraucnmnjm.supabase.co/storage/v1/object/public/logos/public/1736537418297-logog.png"
+              alt="Logo"
+              className="w-20 sm:w-25 md:w-36"
+              width={180}
+              height={100}
+            />
+          </div>
 
           {/* Spacer to push items to the right */}
           <div className="flex-grow"></div>
@@ -41,7 +41,7 @@ export default function Navbar() {
           {user ? (
             <div className="flex space-x-6">
               <Link href="/users/dashboard" className="text-white hover:text-gray-300 transition">
-                Dashboard 
+                Dashboard
               </Link>
               <Link href="/product" className="text-white hover:text-gray-300 transition">
                 Stores
@@ -55,12 +55,9 @@ export default function Navbar() {
           ) : (
             <div className="flex space-x-2 ml-6">
               {/* Login Button */}
-              
-             
-
               <Link href="/login" className="text-white hover:text-gray-300 transition w-full sm:w-auto">
                 <button className="w-full sm:w-auto flex items-center px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition justify-center">
-                  Login
+                  <FaSignInAlt className="text-xl" />
                 </button>
               </Link>
               {/* Register Button */}
@@ -69,9 +66,6 @@ export default function Navbar() {
                   <ShoppingCart className="mr-2" /> Create Store
                 </button>
               </Link>
-
-
-           
             </div>
           )}
         </div>

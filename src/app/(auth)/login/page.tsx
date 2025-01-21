@@ -48,7 +48,7 @@ export default function Register() {
                     </div>
 
                     {/* Password Field */}
-                    <div className="mb-6 relative">
+                    <div className="mb-1 relative">
                         <input
                             type="password"
                             name="password"
@@ -62,6 +62,10 @@ export default function Register() {
                                 {prev.errors.password}
                             </p>
                         )}
+                       
+                    </div>
+                    <div className="text-right">
+                    <Link className="text-blue-800 text-primary no-underline" href="/forgot">Forgot Password</Link>
                     </div>
 
                     {/* Submit Button */}
@@ -78,6 +82,8 @@ export default function Register() {
                         <p className="text-gray-600">
                             Don&apos;t have an account?
                             <Link className="text-blue-800 text-primary underline-offset-4 hover:underline" href="/register">Register</Link>
+                        {/* add forget password */}
+                           
                         </p>
                     </div>
 
