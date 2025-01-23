@@ -2,6 +2,8 @@ import { redirect } from "next/navigation";
 import { createClient } from "@/utils/supabase/server";
 import Dashboard from "@/components/dashboard";
 import TopBar from "@/components/topbar";
+import { User } from "lucide-react";
+import UserDashboard from "@/components/userdashboard";
 
 export default async function DashboardPage() {
   
@@ -29,7 +31,7 @@ export default async function DashboardPage() {
 
   return (
     <div>
-          <TopBar />
+         <UserDashboard />
       <Dashboard />
     </div>
   );
