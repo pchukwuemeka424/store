@@ -25,7 +25,7 @@ export default async function addProduct(
 
   const user_id = userDetails.data?.user?.id || null;
   console.log("User ID:", user_id);
-  const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5 MB
+  const MAX_FILE_SIZE = 50 * 1024 * 1024; // 5 MB
 
   const formInput: FormInput = {
     name: formData.get("name")?.toString() || "",
