@@ -1,4 +1,3 @@
-// @ts-nocheck
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   experimental: {
@@ -14,13 +13,13 @@ const nextConfig = {
   },
   reactStrictMode: true,
   images: {
-    domains: ['sxkmrpzbtqpraucnmnjm.supabase.co', 'placehold.co'], // Add your Supabase storage domain and placehold.co
+    domains: ['sxkmrpzbtqpraucnmnjm.supabase.co', 'placehold.co'], // Fixed trailing slash
     remotePatterns: [
       {
         protocol: 'https',
         hostname: 'sxkmrpzbtqpraucnmnjm.supabase.co',
         port: '',
-        pathname: '/**', // Adjust as needed to match the path structure
+        pathname: '/storage/v1/object/public/**', // Adjusted for Supabase path
       },
       {
         protocol: 'https',

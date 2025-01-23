@@ -64,7 +64,7 @@ const ProductPage: FC = () => {
             {/* Product Image */}
             <div className="lg:w-1/2 w-full">
   <Image
-    src={product.image || "/default-placeholder.png"}
+     src={`${process.env.NEXT_PUBLIC_IMAGE_URL}${product.image}`} 
     width={500}
     height={500}
     alt={product.title || "Product Image"}

@@ -15,6 +15,8 @@ interface FormInput {
 }
 
 export default async function addProduct(
+
+  
   state: any, // Replace `any` with the specific type for `state` if known
   formData: FormData
 ) {
@@ -22,6 +24,7 @@ export default async function addProduct(
   const userDetails = await supabase.auth.getUser();
 
   const user_id = userDetails.data?.user?.id || null;
+  console.log("User ID:", user_id);
   const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5 MB
 
   const formInput: FormInput = {
@@ -67,17 +70,7 @@ export default async function addProduct(
 
   console.log("Image uploaded successfully:", data);
 
-  const publicUrlResponse = supabase.storage
-    .from("products_image")
-    .getPublicUrl(filePath);
-
-  const imageUrl = publicUrlResponse.data?.publicUrl;
-  if (!imageUrl) {
-    console.error("Error fetching public URL.");
-    return { errors: { message: "Error fetching image URL." } };
-  }
-
-  formInput.image = imageUrl;
+  formInput.image = filePath;
 
   const { data: productData, error: insertError } = await supabase
     .from("products")
@@ -87,7 +80,7 @@ export default async function addProduct(
       price: formInput.price,
       category: formInput.category,
       stock: formInput.stock,
-      image: imageUrl,
+      image: filePath,
       id: user_id,
     });
 

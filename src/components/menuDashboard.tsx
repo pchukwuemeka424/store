@@ -1,24 +1,25 @@
-import React from 'react';
-
-import { FaHome, FaPlus, FaCog, FaLock, FaUserCircle, FaSignOutAlt } from 'react-icons/fa';
 import { Button } from "@/components/ui/button"
 
 import {
   Sheet,
+  SheetClose,
   SheetContent,
+  SheetDescription,
+  SheetFooter,
   SheetHeader,
   SheetTitle, 
   SheetTrigger,
 } from "@/components/ui/sheet"
 import Link from "next/link"
 import { LuList } from "react-icons/lu";
+import CategoryList from "@/components/category";
+import { FaTv, FaTshirt, FaHome, FaDumbbell, FaPaw, FaGem, FaBaby, FaGamepad, FaHeart } from "react-icons/fa";
 
-
-export default function UserDashboard() {
+export function MenuDashboard() {
   return (
     <Sheet>
       <SheetTrigger asChild>
-        <Button className="m-2 text-2xl" variant="outline"><LuList size={10} /></Button> 
+        <Button className="m-2 text-3xl" variant="outline"><LuList size={30} /></Button>
       </SheetTrigger>
       <SheetContent side="left">
         <SheetHeader>
