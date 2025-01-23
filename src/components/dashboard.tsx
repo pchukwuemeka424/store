@@ -1,12 +1,37 @@
+import { createClient } from "@/utils/supabase/server";
 import React from "react";
-import { FaProductHunt, FaUserShield, FaBell, FaMoneyBillWave, FaClipboardList } from "react-icons/fa";
-import Topbar from "./topbar";
-import { User } from "lucide-react";
-import UserDashboard from "./userdashboard";
+import {
+  FaProductHunt,
+  FaUserShield,
+  FaBell,
+  FaMoneyBillWave,
+  FaClipboardList,
+  FaFileAlt,
+} from "react-icons/fa";
 
-const Dashboard = () => {
-  const totalUploads = 245; // Example data
-  const accountStatus = "Active"; // Example data
+
+
+const Dashboard = async () => {
+
+  const supabase = await createClient();
+
+  // get authenticated user
+  const { data: { user } } = await supabase.auth.getUser();
+
+  // user profile products
+  const { data: profile, error } = await supabase
+    .from("user_profile")
+    .select("*")
+    .eq("id", user.id)
+    .single();
+
+  // fetch total product uploads
+  const { count: totalUploads, error: totalUploadsError } = await supabase
+    .from("products")
+    .select("*", { count: "exact" })
+    .eq("id", user.id);
+
+  const accountStatus = profile?.account_status;
   const notifications = [
     "New product added.",
     "Password changed successfully.",
@@ -14,12 +39,11 @@ const Dashboard = () => {
   ];
   const revenue = "$12,450"; // Example data
   const pendingOrders = 34; // Example data
+  const kycStatus = profile?.kyc_status;
 
   return (
     <div className="min-h-screen bg-gray-100 p-6">
-        <UserDashboard />
-        
-     <Topbar />
+      {/* Header */}
       <header className="bg-white shadow-md p-4 rounded-md flex justify-between items-center">
         <h1 className="text-xl font-bold text-gray-800">Dashboard</h1>
         <button className="px-4 py-2 bg-blue-500 text-white rounded-md">
@@ -34,7 +58,7 @@ const Dashboard = () => {
           <FaProductHunt size={40} className="text-white" />
           <div>
             <h2 className="text-lg font-semibold">Total Uploads</h2>
-            <p className="text-3xl font-bold mt-2">{totalUploads}</p>
+            <p className="text-3xl font-bold mt-2">{totalUploads || 0}</p>
           </div>
         </div>
 
@@ -86,6 +110,31 @@ const Dashboard = () => {
           <div>
             <h2 className="text-lg font-semibold">Pending Orders</h2>
             <p className="text-3xl font-bold mt-2">{pendingOrders}</p>
+          </div>
+        </div>
+
+        {/* KYC Status */}
+        <div
+          className={`p-6 rounded-md shadow-md flex flex-col space-y-4 ${
+            kycStatus === "Pending"
+              ? "bg-gradient-to-r from-yellow-500 to-yellow-600 text-white"
+              : kycStatus === "Approved"
+              ? "bg-gradient-to-r from-green-500 to-green-600 text-white"
+              : "bg-gradient-to-r from-red-500 to-red-600 text-white"
+          }`}
+        >
+          <div className="flex items-center space-x-4">
+            <FaFileAlt size={40} className="text-white" />
+            <h2 className="text-lg font-semibold">KYC Status</h2>
+          </div>
+          <p className="text-3xl font-bold">{kycStatus}</p>
+          <div className="flex space-x-4">
+            <button className="px-4 py-2 bg-white text-gray-800 rounded-md shadow-md">
+              Upload Documents
+            </button>
+            <button className="px-4 py-2 bg-gray-100 text-gray-800 rounded-md shadow-md">
+              View Details
+            </button>
           </div>
         </div>
       </div>

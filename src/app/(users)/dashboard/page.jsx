@@ -1,6 +1,7 @@
 import { redirect } from "next/navigation";
 import { createClient } from "@/utils/supabase/server";
 import Dashboard from "@/components/dashboard";
+import TopBar from "@/components/topbar";
 
 export default async function DashboardPage() {
   
@@ -28,7 +29,7 @@ export default async function DashboardPage() {
 
   return (
     <div>
- 
+          <TopBar />
       <Dashboard />
     </div>
   );
