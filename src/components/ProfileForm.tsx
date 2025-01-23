@@ -8,7 +8,7 @@ export default function ProfileForm({ handler, defaultValues }) {
   const [state, action, isPending] = useActionState(handler, undefined);
 
   return (
-    <div>
+    <div className ="w-full sm:w-2/4">
       <form className="space-y-4 w-full" action={action}>
         {/* Store Name */}
         <div className="flex items-center">

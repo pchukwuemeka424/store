@@ -9,5 +9,11 @@ export default async function Layout({ children }: { children: React.ReactNode }
   if (!user) {
     redirect("/");
   }
-  return <div>{children}</div>;
+
+ // select * from user_profile
+
+
+  return <div>
+
+    {children}</div>;
 }
