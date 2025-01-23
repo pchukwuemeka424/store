@@ -9,7 +9,7 @@ export default function ProfileForm({ handler, defaultValues }) {
 
   return (
     <div>
-      <form className="space-y-4 w-2/4" action={action}>
+      <form className="space-y-4 w-full" action={action}>
         {/* Store Name */}
         <div className="flex items-center">
           <FaStore className="mr-2 text-gray-500" />

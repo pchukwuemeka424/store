@@ -6,12 +6,13 @@ import addProduct from '@/actions/auth/productsAdd';
 
 export default function Product() {
   return (
-    <div className="grid grid-cols-1 md:grid-cols-5 h-screen">
-      <Userdashboard />
-      
+    <div className="flex flex-col md:flex-row h-screen">
+   
+
       {/* Main Content Area */}
-      <div className="col-span-4 p-6 bg-gray-100 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-1 gap-6">
+      <div className="flex-1 p-6 bg-gray-50 space-y-6 overflow-y-auto">
         {/* Topbar */}
+        <Userdashboard />
         <Topbar />
         
         {/* Add Product Form */}

@@ -1,3 +1,4 @@
+"use client";
 import { createClient } from "@/utils/supabase/client";
 
 export default async function logout() {
@@ -5,10 +6,7 @@ export default async function logout() {
   const { error } = await supabase.auth.signOut();
 
   if (error) {
-    console.error('Error logging out:', error.message);
     return { success: false, message: error.message }; // Return error state
-  } else {
-    console.log('Logged out successfully');
-    return { success: true }; // Return success state
   }
+  return { success: true }; // Return success state
 }

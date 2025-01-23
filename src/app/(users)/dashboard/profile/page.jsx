@@ -33,14 +33,15 @@ export default async function Profile() {
   const profileJson = JSON.parse(JSON.stringify(profile));
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-5 h-screen">
-      {/* Sidebar */}
-      <Userdashboard />
+    <div className="flex flex-col md:flex-row h-screen">
+   
 
       {/* Main Content Area */}
-      <div className="col-span-4 p-6 bg-gray-100 grid grid-cols-1 gap-6">
+      <div className="flex-1 p-6 bg-gray-50 space-y-6 overflow-y-auto">
         {/* Topbar */}
+        <Userdashboard />
         <Topbar />
+    
     
         {/* Profile Form */}
         <ProfileForm handler={profileUpdate} defaultValues={profileJson} />

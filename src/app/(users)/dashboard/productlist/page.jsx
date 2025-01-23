@@ -4,11 +4,10 @@ import React, { useState, useEffect } from "react";
 import Userdashboard from "@/components/userdashboard";
 import Topbar from "@/components/topbar";
 import Link from "next/link";
-import { createClient } from "@/utils/supabase/client";
+
 import Table from "@/components/tableList";
 
 export default function ProductList() {
-
 
   return (
     <div className="flex flex-col md:flex-row h-screen">
