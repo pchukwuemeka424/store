@@ -1,5 +1,6 @@
 "use client";
 import { createClient } from "@/utils/supabase/client";
+import { redirect } from "next/navigation";
 
 export default async function logout() {
   const supabase = createClient();
@@ -8,5 +9,5 @@ export default async function logout() {
   if (error) {
     return { success: false, message: error.message }; // Return error state
   }
-  return { success: true }; // Return success state
+ redirect('/login');
 }
