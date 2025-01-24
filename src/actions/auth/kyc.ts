@@ -18,7 +18,7 @@ export default async function handleKYCSubmission(state: any, formData: FormData
   const userDetails = await supabase.auth.getUser();
   const user_id = userDetails.data?.user?.id || null;
 
-  const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10 MB
+  const MAX_FILE_SIZE = 50 * 1024 * 1024; // 10 MB
   const allowedVerificationTypes = ["bank_statement", "international_passport", "nin"];
 
   // Parse form data
