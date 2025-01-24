@@ -1,5 +1,4 @@
-import supabaseDb from '@/utils/supabase-db';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback, useRef } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Card, CardHeader, CardTitle } from '@/components/ui/card';
@@ -7,36 +6,73 @@ import { useParams } from 'next/navigation';
 import CategoryList from '@/components/category';
 import ContactButtons from '@/components/contactButton';
 import Spinner from '@/components/spinner';
-export default function ProductFetch({ }) {
-  // const [loading, setLoading] = useState(true);
+import supabaseDb from '@/utils/supabase-db';
+
+export default function ProductFetch() {
   const [shopDetails, setShopDetails] = useState(null);
+  const [products, setProducts] = useState([]);
+  const [page, setPage] = useState(1);
+  const [isLoading, setIsLoading] = useState(false);
+  const [noMoreProducts, setNoMoreProducts] = useState(false); // Track if no more products
+  const isFetching = useRef(false);
   const { store } = useParams();
 
-  useEffect(() => {
-    const fetchProducts = async () => {
-      try {
-        const { data, error } = await supabaseDb
-          .from('user_profile')
-          .select(`*,
-            products(*)
-          `)
-          .eq('username', store)
-          .single();
+  const fetchProducts = useCallback(async (page: number) => {
+    if (isFetching.current) return;
+    isFetching.current = true;
+    setIsLoading(true);
 
-        if (error) throw error;
+    try {
+      const { data, error } = await supabaseDb
+        .from('user_profile')
+        .select(`*, products(*)`)
+        .eq('username', store)
+        .single();
 
-        setShopDetails(data);
-      } catch (error) {
-        console.log('Error fetching products:', error.message);
-      } 
-    };
+      if (error) throw error;
 
-    fetchProducts();
+      setShopDetails(data);
+
+      if (data?.products) {
+        const newProducts = data.products.slice((page - 1) * 10, page * 10); // Fetch 10 products per page
+        if (newProducts.length === 0) {
+          setNoMoreProducts(true); // No more products to fetch
+        } else {
+          setProducts((prevProducts) => [...prevProducts, ...newProducts]);
+        }
+      }
+    } catch (error) {
+      console.error('Error fetching products:', error.message);
+    } finally {
+      isFetching.current = false;
+      setIsLoading(false);
+    }
   }, [store]);
 
-  // if (loading) {
-  //   return <Spinner />;
-  // }
+  const handleScroll = useCallback(() => {
+    const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+    const scrollHeight = document.documentElement.scrollHeight;
+    const clientHeight = document.documentElement.clientHeight;
+
+    if (scrollTop + clientHeight >= scrollHeight - 100 && !isFetching.current && !noMoreProducts) {
+      setPage((prevPage) => prevPage + 1);
+    }
+  }, [noMoreProducts]);
+
+  useEffect(() => {
+    fetchProducts(page);
+  }, [page, fetchProducts]);
+
+  useEffect(() => {
+    const debouncedHandleScroll = () => {
+      window.requestAnimationFrame(handleScroll);
+    };
+
+    window.addEventListener('scroll', debouncedHandleScroll);
+    return () => {
+      window.removeEventListener('scroll', debouncedHandleScroll);
+    };
+  }, [handleScroll]);
 
   if (!shopDetails?.products || shopDetails.products.length === 0) {
     return <Spinner />;
@@ -62,23 +98,20 @@ export default function ProductFetch({ }) {
             width={100}
             height={100}
           />
-
           <ContactButtons shopDetails={shopDetails} />
         </div>
       </div>
 
-
       <div className="grid grid-cols-12 gap-4 p-4 mx-auto max-w-7xl">
         <CategoryList />
-
+        
         <div className="col-span-12 sm:col-span-9 grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-4">
-
-          {shopDetails.products.map((product, index) => (
+          {products.map((product, index) => (
             <Link href={`/product/${product.user_id}`} key={product.user_id || index} passHref>
               <Card className="hover:shadow-lg transition">
                 <CardHeader className="p-0">
                   <Image
-                      src={`${process.env.NEXT_PUBLIC_IMAGE_URL}${product.image}`} 
+                    src={`${process.env.NEXT_PUBLIC_IMAGE_URL}${product.image}`} 
                     alt={product.title || `Product ${index + 1}`}
                     className="w-full h-40 object-cover rounded mb-4"
                     width={500}
@@ -101,6 +134,12 @@ export default function ProductFetch({ }) {
             </Link>
           ))}
         </div>
+
+        {isLoading && <div className="col-span-full text-center text-gray-500">Loading more products...</div>}
+
+        {noMoreProducts && !isLoading && (
+          <div className="col-span-full text-center text-gray-500">No more images to display.</div>
+        )}
       </div>
     </div>
   );
