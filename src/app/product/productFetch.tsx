@@ -10,6 +10,7 @@ export default function ProductFetch() {
   const [products, setProducts] = useState([]);
   const [page, setPage] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
+  const [noMoreProducts, setNoMoreProducts] = useState(false); // New state
   const isFetching = useRef(false);
 
   const fetchProducts = useCallback(async (page: number) => {
@@ -29,7 +30,11 @@ export default function ProductFetch() {
       if (error) throw error;
 
       if (data) {
-        setProducts((prevProducts) => [...prevProducts, ...data]);
+        if (data.length === 0) {
+          setNoMoreProducts(true); // Set to true when no products are returned
+        } else {
+          setProducts((prevProducts) => [...prevProducts, ...data]);
+        }
       }
     } catch (error) {
       console.error('Error fetching products:', error.message);
@@ -44,10 +49,10 @@ export default function ProductFetch() {
     const scrollHeight = document.documentElement.scrollHeight;
     const clientHeight = document.documentElement.clientHeight;
 
-    if (scrollTop + clientHeight >= scrollHeight - 100 && !isFetching.current) {
+    if (scrollTop + clientHeight >= scrollHeight - 100 && !isFetching.current && !noMoreProducts) {
       setPage((prevPage) => prevPage + 1);
     }
-  }, []);
+  }, [noMoreProducts]);
 
   useEffect(() => {
     fetchProducts(page);
@@ -71,7 +76,7 @@ export default function ProductFetch() {
           <Card className="hover:shadow-lg transition">
             <CardHeader className="p-0">
               <Image
-                 src={`${process.env.NEXT_PUBLIC_IMAGE_URL}${product.image}`} 
+                src={`${process.env.NEXT_PUBLIC_IMAGE_URL}${product.image}`} 
                 alt={product.title || `Product ${index + 1}`}
                 className="w-full h-40 object-cover rounded mb-4"
                 width={500}
@@ -95,7 +100,12 @@ export default function ProductFetch() {
           </Card>
         </Link>
       ))}
+      
       {isLoading && <div className="col-span-full text-center text-gray-500">Loading more products...</div>}
+      
+      {noMoreProducts && !isLoading && (
+        <div className="col-span-full text-center text-gray-500">No more images to display.</div>
+      )}
     </div>
   );
 }
