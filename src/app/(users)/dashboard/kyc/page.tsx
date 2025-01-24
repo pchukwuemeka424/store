@@ -1,11 +1,10 @@
 import { redirect } from "next/navigation";
 import { createClient } from "@/utils/supabase/server";
-import Dashboard from "@/components/dashboard";
-import TopBar from "@/components/topbar";
-import { User } from "lucide-react";
 import UserDashboard from "@/components/userdashboard";
+import KycStatus from "@/components/kyc";
+import handleKYCSubmission from "@/actions/auth/kyc";
 
-export default async function DashboardPage() {
+export default async function KycPage() {
   
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
@@ -25,15 +24,12 @@ export default async function DashboardPage() {
     return null;
   }
 
-  if(profile.stat=== null || profile.city === null || profile.phone === null){
-    redirect("/dashboard/profile");
-  }
+  
 
   return (
     <div>
          <UserDashboard />
-         <TopBar />
-      <Dashboard />
+      <KycStatus handler={handleKYCSubmission} />
     </div>
   );
 }

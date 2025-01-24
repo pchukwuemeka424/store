@@ -8,6 +8,8 @@ import {
   FaClipboardList,
   FaFileAlt,
 } from "react-icons/fa";
+import { Button } from "./ui/button";
+import Link from "next/link";
 
 
 
@@ -18,12 +20,24 @@ const Dashboard = async () => {
   // get authenticated user
   const { data: { user } } = await supabase.auth.getUser();
 
-  // user profile products
-  const { data: profile, error } = await supabase
-    .from("user_profile")
+  // user kyc
+  const { data: kyc, error: kycError } = await supabase
+    .from("kyc")
     .select("*")
-    .eq("id", user.id)
+    .eq("user_id", user.id)
     .single();
+  
+    if (kycError) {
+      console.log("Error fetching kyc:");
+  
+    }
+
+      // user profile products
+  const { data: profile, error } = await supabase
+  .from("user_profile")
+  .select("*")
+  .eq("id", user.id)
+  .single();
 
   // fetch total product uploads
   const { count: totalUploads, error: totalUploadsError } = await supabase
@@ -39,7 +53,7 @@ const Dashboard = async () => {
   ];
   const revenue = "$12,450"; // Example data
   const pendingOrders = 34; // Example data
-  const kycStatus = profile?.kyc_status;
+  const kycStatus = kyc?.kyc_status; // Example data
 
   return (
     <div className="min-h-screen bg-gray-100 p-6">
@@ -129,9 +143,14 @@ const Dashboard = async () => {
           </div>
           <p className="text-3xl font-bold">{kycStatus}</p>
           <div className="flex space-x-4">
-            <button className="px-4 py-2 bg-white text-gray-800 rounded-md shadow-md">
+
+          <Link href="/dashboard/kyc">
+            <Button className="px-4 py-2 rounded-md shadow-md">
+              {/* add icon */}
+              <FaFileAlt size={20} className="inline mr-2" />
               Upload Documents
-            </button>
+            </Button>
+          </Link>
             <button className="px-4 py-2 bg-gray-100 text-gray-800 rounded-md shadow-md">
               View Details
             </button>
