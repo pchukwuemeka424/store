@@ -16,7 +16,7 @@ export default async function handleKYCSubmission(state: any, formData: FormData
   const userDetails = await supabase.auth.getUser();
   const user_id = userDetails.data?.user?.id || null;
   
-  const MAX_FILE_SIZE = 50 * 1024 * 1024; // 50 MB
+  const MAX_FILE_SIZE = 3 * 1024 * 1024; // 3 MB
   const allowedVerificationTypes = ["bank_statement", "international_passport", "nin"];
   
   // Parse form data
@@ -57,8 +57,8 @@ export default async function handleKYCSubmission(state: any, formData: FormData
     // Efficiently process and compress the document
     const buffer = await documentFile.arrayBuffer();
     const compressedDocument = await sharp(Buffer.from(buffer))
-      .resize({ width: 1000, height: 1000, fit: "inside" }) // Resize to fit within 1000x1000 if larger
-      .jpeg({ quality: 80 }) // Adjust quality as needed
+      .resize({ width: 100, height: 100, fit: "inside" }) // Resize to fit within 1000x1000 if larger
+      .jpeg({ quality: 40 }) // Adjust quality as needed
       .toBuffer();
   
     const fileName = `kyc_${Date.now()}_${documentFile.name}`;
