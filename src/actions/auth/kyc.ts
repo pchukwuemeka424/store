@@ -1,7 +1,5 @@
 "use server";
-
 import { createClient } from "@/utils/supabase/server";
-import { redirect } from "next/navigation";
 import sharp from "sharp";
 
 interface KYCFormInput {
@@ -43,50 +41,60 @@ export default async function handleKYCSubmission(state: any, formData: FormData
   if (!documentFile) {
     errors.document = "Document is required.";
   } else if (documentFile.size > MAX_FILE_SIZE) {
-    errors.document = `Document must be less than ${MAX_FILE_SIZE / (1024 * 1024)} MB.`;
+    errors.document = "Image is too large. Please upload a smaller image.";
+  } else {
+    const allowedImageTypes = ['image/jpeg', 'image/png', 'image/gif'];
+    if (!allowedImageTypes.includes(documentFile.type)) {
+      errors.document = "Invalid document format. Only JPG, PNG, and GIF are allowed.";
+    }
   }
-  
+
   if (Object.keys(errors).length > 0) {
     return { errors };
   }
+
+  try {
+    // Efficiently process and compress the document
+    const buffer = await documentFile.arrayBuffer();
+    const compressedDocument = await sharp(Buffer.from(buffer))
+      .resize({ width: 1000, height: 1000, fit: "inside" }) // Resize to fit within 1000x1000 if larger
+      .jpeg({ quality: 80 }) // Adjust quality as needed
+      .toBuffer();
   
-  // Efficiently process and compress the document
-  const buffer = await documentFile.arrayBuffer();
-  const compressedDocument = await sharp(Buffer.from(buffer))
-    .resize({ width: 100, height: 100, fit: "inside" }) // Resize to fit within 1000x1000 if larger
-    .jpeg({ quality: 20 }) // Adjust quality as needed
-    .toBuffer();
+    const fileName = `kyc_${Date.now()}_${documentFile.name}`;
+    const filePath = `kyc_documents/${fileName}`;
   
-  const fileName = `kyc_${Date.now()}_${documentFile.name}`;
-  const filePath = `kyc_documents/${fileName}`;
+    const { data: uploadData, error: uploadError } = await supabase.storage
+      .from("kyc_documents")
+      .upload(filePath, compressedDocument, { contentType: "image/jpeg" });
   
-  const { data: uploadData, error: uploadError } = await supabase.storage
-    .from("kyc_documents")
-    .upload(filePath, compressedDocument, { contentType: "image/jpeg" });
+    if (uploadError) {
+      console.error("Error uploading document:", uploadError);
+      return { errors: { document: `Error uploading document: ${uploadError.message}` } };
+    }
   
-  if (uploadError) {
-    console.error("Error uploading document:", uploadError);
-    return { errors: { document: "Error uploading document." } };
+    formInput.document = filePath;
+  
+    const { data: kycData, error: insertError } = await supabase
+      .from("kyc")
+      .insert({
+        first_name: formInput.firstName,
+        last_name: formInput.lastName,
+        id_number: formInput.idNumber,
+        verification_type: formInput.verificationType,
+        document: filePath,
+        user_id: user_id,
+      });
+  
+    if (insertError) {
+      console.error("Error inserting KYC data:", insertError);
+      return { errors: { message: `Error submitting KYC data: ${insertError.message}` } };
+    }
+
+    // Return a success flag instead of redirecting
+    return { success: true, data: kycData };
+  } catch (error) {
+    console.error("Error processing document:", error);
+    return { errors: { document: `Error processing document: ${error.message}` } };
   }
-  
-  formInput.document = filePath;
-  
-  const { data: kycData, error: insertError } = await supabase
-    .from("kyc")
-    .insert({
-      first_name: formInput.firstName,
-      last_name: formInput.lastName,
-      id_number: formInput.idNumber,
-      verification_type: formInput.verificationType,
-      document: filePath,
-      user_id: user_id,
-    });
-  
-  if (insertError) {
-    console.error("Error inserting KYC data:", insertError);
-    return { errors: { message: "Error submitting KYC data." } };
-  }
-  
-  redirect("/dashboard/kyc-success");
-  return { success: true, data: kycData };
 }

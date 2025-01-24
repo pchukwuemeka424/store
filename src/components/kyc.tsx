@@ -1,9 +1,19 @@
 "use client";
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useActionState } from "react";
+import { useRouter } from "next/navigation";
 
 export default function KYCForm({ handler, kycData }) {
   const [state, action, isPending] = useActionState(handler, undefined);
+  const [uploadSuccess, setUploadSuccess] = useState(false);
+  const router = useRouter();
+
+  useEffect(() => {
+    if (state?.success) {
+      setUploadSuccess(true);
+      router.push("/dashboard/kyc-success");  // Redirect after success
+    }
+  }, [state, router]);
 
   return (
     <div className="bg-white p-6 rounded-lg shadow-md col-span-full">
@@ -62,8 +72,6 @@ export default function KYCForm({ handler, kycData }) {
           )}
         </div>
 
-       
-
         {/* Type of Verification */}
         <div className="mb-4">
           <label htmlFor="verificationType" className="block text-sm font-semibold text-gray-700">
@@ -94,7 +102,7 @@ export default function KYCForm({ handler, kycData }) {
             type="file"
             id="document"
             name="document"
-            accept="image/*,application/pdf"
+            accept="image/*"
             className="w-full px-4 py-2 border rounded-lg mt-2"
           />
           {state?.errors?.document && (
