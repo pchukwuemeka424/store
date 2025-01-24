@@ -31,8 +31,9 @@ export default async function DashboardPage() {
 
   return (
     <div>
+        <TopBar />
          <UserDashboard />
-         <TopBar />
+       
       <Dashboard />
     </div>
   );

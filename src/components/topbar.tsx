@@ -4,13 +4,9 @@ import Link from 'next/link'
 import { Button } from './ui/button';
 export default function topbar() {
   return (
-    <div className="col-span-full flex justify-between items-center mb-2">
-     <Link href="/dashboard/addproduct">
-     <Button>
-        Add New Product
-      </Button>
-      </Link>
-      <div className="flex items-center space-x-4">
+    <div className="col-span-full ">
+   
+      <div className="flex items-center space-x-4 flex justify-end" >
         <Link href="/dashboard/addProduct">
           <button className="bg-blue-500 text-white px-4 py-2 rounded">
             <FaBell className="inline mr-2" /> Notifications

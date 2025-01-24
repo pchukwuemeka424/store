@@ -3,7 +3,7 @@ import { createClient } from "@/utils/supabase/server";
 import UserDashboard from "@/components/userdashboard";
 import KycStatus from "@/components/kyc";
 import handleKYCSubmission from "@/actions/auth/kyc";
-
+import TopBar from "@/components/topbar";
 export default async function KycPage() {
   
   const supabase = await createClient();
@@ -28,6 +28,7 @@ export default async function KycPage() {
 
   return (
     <div>
+        <TopBar />
          <UserDashboard />
       <KycStatus handler={handleKYCSubmission} />
     </div>

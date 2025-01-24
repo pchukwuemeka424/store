@@ -35,7 +35,7 @@ export default function UserDashboard() {
         <ul>
           <li className="mb-4 flex items-center">
             <FaHome className="h-5 w-5 mr-2" />
-            <Link href="/dashboard/" className="text-white">
+            <Link href="/dashboard/" className="hover:bg-gray-700 p-2 rounded">
               Dashboard
             </Link>
           </li>
@@ -51,21 +51,11 @@ export default function UserDashboard() {
               Manage Products
             </Link>
           </li>
-          <li className="mb-4 flex items-center">
-            <FaCog className="h-5 w-5 mr-2" />
-            <Link href="#" className="hover:bg-gray-700 p-2 rounded">
-              Settings
-            </Link>
-          </li>
-          <li className="mb-4 flex items-center">
-            <FaLock className="h-5 w-5 mr-2" />
-            <Link href="#" className="hover:bg-gray-700 p-2 rounded">
-              Security
-            </Link>
-          </li>
+          
+       
           <li className="mb-4 flex items-center">
             <FaUserCircle className="h-5 w-5 mr-2" />
-            <Link href="#" className="hover:bg-gray-700 p-2 rounded">
+            <Link href="/dashboard/kyc" className="hover:bg-gray-700 p-2 rounded">
               KYC
             </Link>
           </li>
