@@ -78,7 +78,7 @@ export default function ProductFetch({ }) {
               <Card className="hover:shadow-lg transition">
                 <CardHeader className="p-0">
                   <Image
-                    src={product.image || '/placeholder.png'}
+                      src={`${process.env.NEXT_PUBLIC_IMAGE_URL}${product.image}`} 
                     alt={product.title || `Product ${index + 1}`}
                     className="w-full h-40 object-cover rounded mb-4"
                     width={500}
