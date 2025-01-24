@@ -1,6 +1,7 @@
 "use client";
 import { search } from '@/actions/auth/search';
 import React from 'react'
+import Image from 'next/image';
 
 // import { IoIosArrowBack } from 'react-icons/io';
 
@@ -11,11 +12,24 @@ import { SheetMenu } from './sheetMenu';
 export default function topNav() {
 
   return (
+  <>
+
+
+  
     <div className='border-b border-gray-200 flex justify-between items-center py-4'>
       <div className='font-bold text-2xl relative'>
-       {/* add back arrow button link back to home */}
+        {/* add back arrow button link back to home */}
 
-<SheetMenu/>
+   <div className='flex items-center'>
+   <SheetMenu />
+         <Image 
+           src="https://sxkmrpzbtqpraucnmnjm.supabase.co/storage/v1/object/public/logos/public/1736537418297-logog.png" 
+           alt="Logo" 
+           className="w-10 h-6 sm:w-25 md:w-25" 
+           width={50} 
+           height={50} 
+         />
+   </div>
 
       </div>
       <div className='w-full md:w-[70%] relative'>
@@ -34,7 +48,8 @@ export default function topNav() {
         </form>
 
       </div>
-    
+
     </div>
+  </>
   )
 }

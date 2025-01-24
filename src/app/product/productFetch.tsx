@@ -3,6 +3,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { Card, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import supabaseDb from '@/utils/supabase-db';
+import { formatCurrency } from '@/components/currency';
 
 export const revalidate = 5;
 
@@ -93,7 +94,7 @@ export default function ProductFetch() {
                   {product.user_profile?.stat || 'State'}, {product.user_profile?.city || 'City'}
                 </div>
                 <div className="text-sm font-semibold text-green-500">
-                  ₦{product.price}
+                 {formatCurrency(product.price || 0)}
                 </div>
               </div>
             </div>

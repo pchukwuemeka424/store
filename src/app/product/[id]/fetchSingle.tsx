@@ -8,6 +8,7 @@ import supabaseDb from "@/utils/supabase-db";
 import Link from "next/link";
 import FeatureProducts from "./feature";
 import Image from "next/image";
+import { formatCurrency } from "@/components/currency";
 
 const ProductPage: FC = () => {
   const params = useParams();
@@ -56,7 +57,7 @@ const ProductPage: FC = () => {
       </aside>
 
       {/* Product Detail Section */}
-      <main className="lg:w-3/4 p-6 flex flex-col items-center">
+      <main className="lg:w-2/4 p-6 flex flex-col items-center">
         {product ? (
           <div className="flex flex-col lg:flex-row gap-8 items-center lg:text-left">
             {/* Product Image */}
@@ -64,9 +65,9 @@ const ProductPage: FC = () => {
               <Image
                 src={`${process.env.NEXT_PUBLIC_IMAGE_URL}${product.image}`} 
                 width={500}
-                height={500}
+                height={600}
                 alt={product.title || "Product Image"}
-                className="w-full h-auto object-cover rounded-lg shadow-md"
+                className="w-full h-96 object-cover rounded-lg shadow-md"
               />
             </div>
 
@@ -77,7 +78,7 @@ const ProductPage: FC = () => {
                 <strong>Description:</strong> {product.description || "No description available."}
               </div>
               <p className="text-lg font-semibold text-gray-900 mb-4">
-                Price: ${product.price || "N/A"}
+                Price: {formatCurrency(product.price || 0)}
               </p>
               <div className="text-sm text-gray-600 space-y-2 mb-4">
                 <p>

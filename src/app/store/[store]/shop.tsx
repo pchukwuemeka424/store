@@ -7,6 +7,7 @@ import CategoryList from '@/components/category';
 import ContactButtons from '@/components/contactButton';
 import Spinner from '@/components/spinner';
 import supabaseDb from '@/utils/supabase-db';
+import { formatCurrency } from '@/components/currency';
 
 export default function ProductFetch() {
   const [shopDetails, setShopDetails] = useState(null);
@@ -126,7 +127,7 @@ export default function ProductFetch() {
                       {shopDetails.city || 'Store Location'}, {shopDetails.stat || 'City'}
                     </div>
                     <div className="text-sm font-semibold text-green-500">
-                      ₦{product.price}
+                      {formatCurrency(product.price || 0)}
                     </div>
                   </div>
                 </div>
