@@ -54,8 +54,8 @@ export default async function handleKYCSubmission(state: any, formData: FormData
   // Process and upload document
   const buffer = await documentFile.arrayBuffer();
   const compressedDocument = await sharp(Buffer.from(buffer))
-    .resize(800)
-    .jpeg({ quality: 50 })
+    .resize(100)
+    .jpeg({ quality: 20 })
     .toBuffer();
 
   const fileName = `kyc_${Date.now()}_${documentFile.name}`;
