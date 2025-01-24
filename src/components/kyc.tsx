@@ -6,18 +6,42 @@ import { useRouter } from "next/navigation";
 export default function KYCForm({ handler, kycData }) {
   const [state, action, isPending] = useActionState(handler, undefined);
   const [uploadSuccess, setUploadSuccess] = useState(false);
+  const [documentError, setDocumentError] = useState(""); // State to handle document errors
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const router = useRouter();
+
+  const MAX_FILE_SIZE = 3 * 1024 * 1024; // 3 MB
 
   useEffect(() => {
     if (state?.success) {
       setUploadSuccess(true);
-      router.push("/dashboard/kyc-success");  // Redirect after success
+      router.push("/dashboard/kyc-success"); // Redirect after success
     }
   }, [state, router]);
 
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      if (file.size > MAX_FILE_SIZE) {
+        setDocumentError("Image is too large. Please upload a file smaller than 3MB.");
+        setSelectedFile(null); // Reset the file
+      } else {
+        setDocumentError(""); // Clear error if valid
+        setSelectedFile(file);
+      }
+    }
+  };
+
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    if (!selectedFile) {
+      event.preventDefault(); // Prevent submission if no valid file
+      setDocumentError("Please upload a valid document before submitting.");
+    }
+  };
+
   return (
     <div className="bg-white p-6 rounded-lg shadow-md col-span-full">
-      <form action={action}>
+      <form action={action} onSubmit={handleSubmit}>
         {/* First Name */}
         <div className="mb-4">
           <label htmlFor="firstName" className="block text-sm font-semibold text-gray-700">
@@ -103,10 +127,11 @@ export default function KYCForm({ handler, kycData }) {
             id="document"
             name="document"
             accept="image/*"
+            onChange={handleFileChange}
             className="w-full px-4 py-2 border rounded-lg mt-2"
           />
-          {state?.errors?.document && (
-            <p className="text-red-500 text-sm mt-1">{state.errors.document}</p>
+          {documentError && (
+            <p className="text-red-500 text-sm mt-1">{documentError}</p>
           )}
         </div>
 
@@ -114,9 +139,9 @@ export default function KYCForm({ handler, kycData }) {
         <button
           type="submit"
           className={`bg-blue-500 text-white px-6 py-2 rounded-lg w-26 mt-4 ${
-            isPending ? "opacity-50 cursor-not-allowed" : "hover:bg-blue-600"
+            isPending || documentError ? "opacity-50 cursor-not-allowed" : "hover:bg-blue-600"
           }`}
-          disabled={isPending}
+          disabled={isPending || !!documentError}
         >
           {isPending ? "Processing..." : "Submit KYC"}
         </button>
