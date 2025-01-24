@@ -29,20 +29,20 @@ export default function TopNav() {
         {/* Right: Login Button */}
         <div>
           <button
-            className="flex items-center text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2"
+            className="flex items-center text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 mr-2"
           >
-            <FaUser className="mr-2" /> {/* Login Icon */}
-            Login
+            <FaUser /> {/* Login Icon */}
+           
           </button>
         </div>
       </div>
 
       {/* Mobile Search Bar (visible only on small screens) */}
-      <div className="w-full md:hidden px-4">
+      <div className="w-full md:hidden px-4 my-2">
         <form action={search}>
           <div className="relative">
             <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-              <FaSearch className="w-4 h-4 text-gray-500" />
+              
             </div>
             <input
               name="search"
@@ -54,7 +54,7 @@ export default function TopNav() {
             />
             <button
               type="submit"
-              className="text-white absolute right-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2"
+              className="text-dark absolute right-2.5 bottom-2.5 bg-none focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2"
             >
               <FaSearch className="w-4 h-4" /> {/* Search Icon on Button */}
             </button>
@@ -77,11 +77,11 @@ export default function TopNav() {
         </div>
 
         {/* Middle: Search Bar */}
-        <div className="w-full md:w-[70%]">
+        <div className="w-full md:w-[70%] ">
           <form action={search}>
             <div className="relative">
               <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                <FaSearch className="w-4 h-4 text-gray-500" />
+               
               </div>
               <input
                 name="search"
@@ -93,7 +93,7 @@ export default function TopNav() {
               />
               <button
                 type="submit"
-                className="text-white absolute right-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2"
+                className="text-dark absolute right-2.5 bottom-2.5 bg-none focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-lg px-4 py-2"
               >
                 <FaSearch className="w-4 h-4" /> {/* Search Icon on Button */}
               </button>
