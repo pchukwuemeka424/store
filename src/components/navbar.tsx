@@ -40,7 +40,7 @@ export default function Navbar() {
           {/* Navigation Links */}
           {user ? (
             <div className="flex space-x-6">
-              <Link href="/users/dashboard" className="text-white hover:text-gray-300 transition">
+              <Link href="/dashboard" className="text-white hover:text-gray-300 transition">
                 Dashboard 
               </Link>
               <Link href="/product" className="text-white hover:text-gray-300 transition">
