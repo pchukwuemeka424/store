@@ -1,55 +1,116 @@
-"use client";
+'use client';
+import { FaSearch, FaUser } from 'react-icons/fa';  // Importing React Icons
 import { search } from '@/actions/auth/search';
-import React from 'react'
+import React from 'react';
 import Image from 'next/image';
-
-// import { IoIosArrowBack } from 'react-icons/io';
-
-// import { IoIosHome } from 'react-icons/io';
 import { SheetMenu } from './sheetMenu';
 
-
-export default function topNav() {
-
+export default function TopNav() {
   return (
-  <>
+    <>
+      {/* Mobile Menu */}
+      <div className="border-b border-gray-200 flex justify-between items-center py-4 mx-auto max-w-7xl md:hidden">
+        {/* Left: SheetMenu */}
+        <div className="flex items-center space-x-4">
+          <SheetMenu />
+        </div>
 
+        {/* Center: Logo */}
+        <div className="absolute left-1/2 transform -translate-x-1/2">
+          <Image
+            src="https://sxkmrpzbtqpraucnmnjm.supabase.co/storage/v1/object/public/logos/public/cc.png"
+            alt="Logo"
+            className="w-40 h-14 sm:w-25 md:w-25"
+            width={100}
+            height={100}
+          />
+        </div>
 
-  
-    <div className='border-b border-gray-200 flex justify-between items-center py-4'>
-      <div className='font-bold text-2xl relative'>
-        {/* add back arrow button link back to home */}
-
-   <div className='flex items-center'>
-   <SheetMenu />
-         <Image 
-           src="https://sxkmrpzbtqpraucnmnjm.supabase.co/storage/v1/object/public/logos/public/1736537418297-logog.png" 
-           alt="Logo" 
-           className="w-10 h-6 sm:w-25 md:w-25" 
-           width={50} 
-           height={50} 
-         />
-   </div>
-
+        {/* Right: Login Button */}
+        <div>
+          <button
+            className="flex items-center text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2"
+          >
+            <FaUser className="mr-2" /> {/* Login Icon */}
+            Login
+          </button>
+        </div>
       </div>
-      <div className='w-full md:w-[70%] relative'>
 
-        <form action={search} >
-
+      {/* Mobile Search Bar (visible only on small screens) */}
+      <div className="w-full md:hidden px-4">
+        <form action={search}>
           <div className="relative">
-            <div className="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
-              <svg className="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
-                <path stroke="currentColor" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
-              </svg>
+            <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+              <FaSearch className="w-4 h-4 text-gray-500" />
             </div>
-            <input name="search" type="search" id="default-search" className="block w-full p-4 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Search Mockups, Logos..." required />
-            <button type="submit" className="text-white absolute end-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Search</button>
+            <input
+              name="search"
+              type="search"
+              id="default-search"
+              className="block w-full p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
+              placeholder="Search Mockups, Logos..."
+              required
+            />
+            <button
+              type="submit"
+              className="text-white absolute right-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2"
+            >
+              Search
+            </button>
           </div>
         </form>
-
       </div>
 
-    </div>
-  </>
-  )
+      {/* Desktop Menu (Hidden on Mobile) */}
+      <div className="hidden md:flex justify-between items-center py-4 mx-auto max-w-7xl">
+        {/* Left: Logo and SheetMenu */}
+        <div className="flex items-center space-x-4">
+          <SheetMenu />
+          <Image
+            src="https://sxkmrpzbtqpraucnmnjm.supabase.co/storage/v1/object/public/logos/public/cc.png"
+            alt="Logo"
+            className="w-40 h-14 sm:w-25 md:w-25"
+            width={100}
+            height={100}
+          />
+        </div>
+
+        {/* Middle: Search Bar */}
+        <div className="w-full md:w-[70%]">
+          <form action={search}>
+            <div className="relative">
+              <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                <FaSearch className="w-4 h-4 text-gray-500" />
+              </div>
+              <input
+                name="search"
+                type="search"
+                id="default-search"
+                className="block w-full p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
+                placeholder="Search Mockups, Logos..."
+                required
+              />
+              <button
+                type="submit"
+                className="text-white absolute right-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2"
+              >
+                Search
+              </button>
+            </div>
+          </form>
+        </div>
+
+        {/* Right: Login Button */}
+        <div>
+          <button
+            className="flex items-center text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2"
+          >
+            <FaUser className="mr-2" /> {/* Login Icon */}
+            Login
+          </button>
+        </div>
+      </div>
+    </>
+  );
 }

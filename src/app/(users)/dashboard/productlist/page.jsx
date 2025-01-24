@@ -16,9 +16,9 @@ export default function ProductList() {
       {/* Main Content Area */}
       <div className="flex-1 p-6 bg-gray-50 space-y-6 overflow-y-auto">
         {/* Topbar */}
-        <Userdashboard />
+        
         <Topbar />
-
+        <Userdashboard />
         <Table />
       </div>
     </div>

@@ -103,7 +103,7 @@ export default function ProductFetch() {
         </div>
       </div>
 
-      <div className="grid grid-cols-12 gap-4 p-4 mx-auto max-w-7xl">
+      <div className="grid grid-cols-12 gap-4 p-4 ">
         <CategoryList />
         
         <div className="col-span-12 sm:col-span-9 grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-4">
@@ -114,7 +114,7 @@ export default function ProductFetch() {
                   <Image
                     src={`${process.env.NEXT_PUBLIC_IMAGE_URL}${product.image}`} 
                     alt={product.title || `Product ${index + 1}`}
-                    className="w-full h-40 object-cover rounded mb-4"
+                    className="w-full h-64 object-cover rounded mb-4"
                     width={500}
                     height={500}
                   />
