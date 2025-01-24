@@ -8,8 +8,6 @@ import supabaseDb from "@/utils/supabase-db";
 import Link from "next/link";
 import FeatureProducts from "./feature";
 import Image from "next/image";
-import Spinner from "@/components/spinner";
-import Loading from "./loading";
 
 const ProductPage: FC = () => {
   const params = useParams();
@@ -60,17 +58,17 @@ const ProductPage: FC = () => {
       {/* Product Detail Section */}
       <main className="lg:w-3/4 p-6 flex flex-col items-center">
         {product ? (
-          <div className="flex flex-col lg:flex-row gap-8 items-center  lg:text-left">
+          <div className="flex flex-col lg:flex-row gap-8 items-center lg:text-left">
             {/* Product Image */}
             <div className="lg:w-1/2 w-full">
-  <Image
-     src={`${process.env.NEXT_PUBLIC_IMAGE_URL}${product.image}`} 
-    width={500}
-    height={500}
-    alt={product.title || "Product Image"}
-    className="w-full h-auto object-cover rounded-lg shadow-md"
-  />
-</div>
+              <Image
+                src={`${process.env.NEXT_PUBLIC_IMAGE_URL}${product.image}`} 
+                width={500}
+                height={500}
+                alt={product.title || "Product Image"}
+                className="w-full h-auto object-cover rounded-lg shadow-md"
+              />
+            </div>
 
             {/* Product Details */}
             <div className="lg:w-1/2">
@@ -122,8 +120,7 @@ const ProductPage: FC = () => {
             </div>
           </div>
         ) : (
-          <Loading className="bg-gray-800 bg-opacity-50 p-8 rounded-lg flex items-center justify-center animate-pulse" />
-
+          <p className="text-center text-gray-600">Loading product details...</p>
         )}
         <div className="w-full lg:w-full bg-gray-50 p-4 relative">
           {product && (
