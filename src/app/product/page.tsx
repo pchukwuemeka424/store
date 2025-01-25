@@ -7,7 +7,7 @@ import Slider from '@/components/slider';
 
 export default function Page() {
   return (
-    <div className="space-y-4">
+    <div className="space-y-4 overflow-hidden">
       {/* Full-width Slider */}
      
 
