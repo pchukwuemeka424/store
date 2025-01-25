@@ -12,7 +12,7 @@ export default function SliderComponent() {
     // Fetch avatars from supabase
     const fetchAvatars = async () => {
       const supabase = createClient();
-      const { data: avatars, error } = await supabase.from('user_profile').select("*");
+      const { data: avatars, error } = await supabase.from('banner').select("*");
       if (error) console.error('Error fetching avatars:', error);
       else setAvatars(avatars);
     };
@@ -29,6 +29,8 @@ export default function SliderComponent() {
     autoplaySpeed: 6000,
     cssEase: "linear",
     adaptiveHeight: true
+
+  
   };
 
   return (
@@ -37,13 +39,14 @@ export default function SliderComponent() {
   {avatars.map((avatar) => (
     <div key={avatar.id}>
       <Image
-        src={"https://sxkmrpzbtqpraucnmnjm.supabase.co/storage/v1/object/public/web_images/ccxx.png"}
-        width={100}
-        height={100}
-        alt={`Avatar ${avatar.id}`}
-        unoptimized
-        className="h-64 sm:h-96 sm: w-full border-2 m-3  rounded-lg shadow-lg"
-      />
+  src={avatar.image}
+  width={100}
+  height={100}
+  alt={`Avatar ${avatar.id}`}
+  unoptimized
+  className="w-full h-46 sm:h-64 object-cover"
+/>
+
     </div>
   ))}
 </Slider>
