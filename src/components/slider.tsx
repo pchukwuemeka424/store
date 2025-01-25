@@ -22,7 +22,7 @@ export default function SliderComponent() {
 
   const settings = {
     infinite: true,
-    slidesToShow: 5,
+    slidesToShow: 1,
     slidesToScroll: 1,
     autoplay: true,
     speed: 2000,
@@ -37,12 +37,12 @@ export default function SliderComponent() {
   {avatars.map((avatar) => (
     <div key={avatar.id}>
       <Image
-        src={avatar.avater}
+        src={"https://sxkmrpzbtqpraucnmnjm.supabase.co/storage/v1/object/public/web_images/ccxx.png"}
         width={100}
         height={100}
         alt={`Avatar ${avatar.id}`}
         unoptimized
-        className="h-24 sm:h-26 sm:w-40 w-24 border-2 m-3 p-3 border-gray-300 rounded-lg shadow-lg"
+        className="h-64 sm:h-96 sm: w-full border-2 m-3  rounded-lg shadow-lg"
       />
     </div>
   ))}
