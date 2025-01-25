@@ -12,7 +12,7 @@ export default function Page() {
      
 
       {/* Responsive Grid */}
-      <div className="grid grid-cols-1 gap-4  sm:grid-cols-12">
+      <div className="grid grid-cols-1   sm:grid-cols-12">
         {/* Sidebar for product categories */}
         <div className="sm:col-span-12 lg:col-span-3">
           <CategoryList />

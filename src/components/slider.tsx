@@ -37,7 +37,7 @@ export default function SliderComponent() {
 <Slider {...settings}>
   {/* Map avatars */}
   {avatars.map((avatar) => (
-    <div key={avatar.id} >
+    <div key={avatar.id}  >
       <Image
   src={avatar.image}
   width={100}

@@ -77,7 +77,7 @@ export default function TopNav() {
         </div>
 
         {/* Middle: Search Bar */}
-        <div className="w-full md:w-[70%] ">
+        <div className="w-full md:w-[70%] border ">
           <form action={search}>
             <div className="relative">
               <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
