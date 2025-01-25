@@ -53,7 +53,7 @@ export default async function addProduct(
   const buffer = await imageFile.arrayBuffer();
   const compressedImage = await sharp(Buffer.from(buffer))
     .resize(400)
-    .jpeg({ quality: 40 })
+    .jpeg({ quality: 80 })
     .toBuffer();
 
   const fileName = `${Date.now()}-${imageFile.name}`;
