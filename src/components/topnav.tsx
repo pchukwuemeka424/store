@@ -4,6 +4,8 @@ import { search } from '@/actions/auth/search';
 import React from 'react';
 import Image from 'next/image';
 import { SheetMenu } from './sheetMenu';
+import Link from 'next/link';
+import { Button } from './ui/button';
 
 export default function TopNav() {
   return (
@@ -28,12 +30,13 @@ export default function TopNav() {
 
         {/* Right: Login Button */}
         <div>
-          <button
+         <Link href="/login">
+         <Button
             className="flex items-center text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 mr-2"
           >
-            <FaUser /> {/* Login Icon */}
+            <FaUser className="mr-2" /> Login
            
-          </button>
+          </Button></Link>
         </div>
       </div>
 
@@ -103,12 +106,14 @@ export default function TopNav() {
 
         {/* Right: Login Button */}
         <div>
-          <button
+         <Link href="/login">
+         <button
             className="flex items-center text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2"
           >
             <FaUser className="mr-2" /> {/* Login Icon */}
             Login
           </button>
+          </Link>
         </div>
       </div>
     </>

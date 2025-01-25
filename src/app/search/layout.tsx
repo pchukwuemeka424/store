@@ -8,7 +8,7 @@ export const metadata: Metadata = {
 }
 export default function Layout({ children }) {
   return (
-    <div>
+    <div className="mx-auto max-w-7xl">
       <Topnav />
       <div>{children}</div>
     </div>
