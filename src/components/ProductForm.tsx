@@ -9,10 +9,10 @@ export default function ProductForm({ handler, product }) {
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
-    const MAX_FILE_SIZE = 3 * 1024 * 1024; // 3 MB
+    const MAX_FILE_SIZE = 2.8 * 1024 * 1024; // 3 MB
 
     if (file && file.size > MAX_FILE_SIZE) {
-      setImageError("Image size exceeds 3 MB. Please select a smaller file.");
+      setImageError("Image size Large. Please select a smaller file.");
       setIsImageValid(false);
     } else {
       setImageError("");
