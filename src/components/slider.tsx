@@ -37,14 +37,14 @@ export default function SliderComponent() {
 <Slider {...settings}>
   {/* Map avatars */}
   {avatars.map((avatar) => (
-    <div key={avatar.id}>
+    <div key={avatar.id} >
       <Image
   src={avatar.image}
   width={100}
   height={100}
   alt={`Avatar ${avatar.id}`}
   unoptimized
-  className="w-full h-46 sm:h-64 object-cover"
+  className="w-full h-36 sm:h-64 object-cover m-0 p-0"
 />
 
     </div>

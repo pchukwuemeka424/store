@@ -71,7 +71,7 @@ export default function ProductFetch() {
   }, [handleScroll]);
 
   return (
-    <div className="col-span-12 sm:col-span-9 grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-4">
+    <div className="col-span-12 sm:col-span-9 grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-2">
       {products.map((product, index) => (
         <Link href={`/product/${product.user_id}`} key={index} passHref>
           <Card className="hover:shadow-lg transition">
