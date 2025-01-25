@@ -12,7 +12,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   return (
     <>
   
-      <div >
+      <div className="mx-auto max-w-7xl" >
         <Topnav />
         <div>{children}</div>
       </div>

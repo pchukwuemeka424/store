@@ -19,7 +19,7 @@ export function SheetMenu() {
   return (
     <Sheet>
       <SheetTrigger asChild>
-        <Button className="m-2 text-3xl" variant="outline"><LuList size={30} /></Button>
+        <Button className="sm:block md:hidden m-2 text-3xl" variant="outline"><LuList size={30} /></Button>
       </SheetTrigger>
       <SheetContent side="left">
         <SheetHeader>
