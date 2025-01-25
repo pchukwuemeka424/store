@@ -1,14 +1,21 @@
+import { FaShoppingCart, FaMapMarkerAlt } from 'react-icons/fa'; // Importing location and shopping cart icons
 import supabaseDb from '@/utils/supabase-db';
 import React, { useEffect, useState, useCallback, useRef } from 'react';
-import Image from 'next/image';
 import Link from 'next/link';
-import { Card, CardHeader } from '@/components/ui/card';
+import { Card } from '@/components/ui/card';
 import ProductNotFound from '@/components/ProductNotFound';
+
+const getRandomColor = (name) => {
+  const colors = ['bg-red-200', 'bg-blue-200', 'bg-green-200', 'bg-yellow-200', 'bg-pink-200', 'bg-purple-200'];
+  const index = name.charCodeAt(0) % colors.length; // Ensures consistent color based on shopname
+  return colors[index];
+};
 
 export default function ProductFetch() {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(1);
+  const [hasMore, setHasMore] = useState(true);  // State to track if there are more products
   const isFetching = useRef(false);
 
   const fetchProducts = useCallback(async (page) => {
@@ -19,10 +26,13 @@ export default function ProductFetch() {
       const { data, error } = await supabaseDb
         .from('user_profile')
         .select('*')
-        .order('shopname', { ascending: true }) // Sort alphabetically by shopname
-        .range((page - 1) * 10, page * 10 - 1); // Adjust range to fetch in chunks of 10
+        .order('shopname', { ascending: true })
+        .range((page - 1) * 10, page * 10 - 1);
 
       if (error) throw error;
+
+      // Check if there is more data to load
+      setHasMore(data.length === 10);
 
       setProducts((prevProducts) => [...prevProducts, ...data]);
     } catch (error) {
@@ -39,9 +49,11 @@ export default function ProductFetch() {
 
   const handleScroll = useCallback(() => {
     if (window.innerHeight + document.documentElement.scrollTop >= document.documentElement.offsetHeight) {
-      setPage((prevPage) => prevPage + 1);
+      if (hasMore) {
+        setPage((prevPage) => prevPage + 1);
+      }
     }
-  }, []);
+  }, [hasMore]);
 
   useEffect(() => {
     window.addEventListener('scroll', handleScroll);
@@ -57,29 +69,32 @@ export default function ProductFetch() {
   }
 
   return (
-    <div className="col-span-12 sm:col-span-9 grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 gap-4">
+    <div className="col-span-12 sm:col-span-9 grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
       {products.map((product, index) => (
         <Link href={`/store/${product.username}`} key={index} passHref>
-          <Card className="hover:shadow-lg transition flex align-items-center">
-            <CardHeader className="p-0 flex align-items-center">
-              <Image
-                src={product.avater || `https://placehold.co/200?text=${product.shopname.slice(0, 2).toUpperCase()}`}
-                alt={product.avater || `Product ${index + 1}`}
-                className="w-40 h-40 object-cover rounded mb-4 shadow-md"
-                width={500}
-                height={500}
-              />
-            </CardHeader>
-            <div className="mx-3 flex items-center justify-center">
-              <div>
-                <div className="font-semibold uppercase">{product.shopname}</div>
-                <div className="text-sm capitalize">{product.stat}, {product.city}</div>
+          <Card className="flex items-center p-4 shadow-lg rounded-lg transition-transform transform hover:scale-105">
+            <div className="flex items-center justify-start space-x-4">
+              <div className={`${getRandomColor(product.shopname)} w-16 h-16 rounded-full flex items-center justify-center`}>
+                <span className="text-xl font-semibold text-white">
+                  {product.shopname.slice(0, 2).toUpperCase()}
+                </span>
               </div>
+              <div>
+                <div className="font-bold text-xl text-gray-800">{product.shopname}</div>
+                <div className="flex items-center text-sm text-gray-600 mt-1">
+                  <FaMapMarkerAlt className="mr-2 text-red-500" />
+                  <span className="capitalize">{product.stat}, {product.city}</span>
+                </div>
+              </div>
+            </div>
+            <div className="ml-auto flex items-center justify-center">
+              <FaShoppingCart size={20} className="text-gray-600 hover:text-gray-800" />
             </div>
           </Card>
         </Link>
       ))}
-      {loading && <p>Loading more products...</p>}
+      {loading && <p className="text-center">Loading more products...</p>}
+      {!hasMore && !loading && <p className="text-center text-gray-600">No more images</p>}
     </div>
   );
 }

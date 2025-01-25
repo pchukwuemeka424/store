@@ -1,77 +1,81 @@
 "use client";
-
-import { useActionState } from "react";
 import { useState } from "react";
 import updatePassword from "@/actions/auth/updatePassword";
 import { Button } from "@/components/ui/button";
-
-interface FormData {
-    password: string;
-    confirmPassword: string;
-    token: string;
-    errors: Record<string, string>;
-    isSubmitting: boolean;
-    isValid: boolean;
-}
+import { useRouter } from "next/navigation";
 
 export default function PasswordUpdate() {
-    const [prev, action, isPending] = useActionState<FormData>(
-        updatePassword,
-        {
-            password: "",
-            confirmPassword: "",
-            token: "",
-            errors: {},
-            isSubmitting: false,
-            isValid: true,
-        },
-        null
-    );
-
+    const [formData, setFormData] = useState({
+        email: "",
+        password: "",
+        confirmPassword: "",
+        token: "",
+    });
     const [formErrors, setFormErrors] = useState<Record<string, string>>({});
     const [isSuccess, setIsSuccess] = useState(false);
+    const [isPending, setIsPending] = useState(false);
+    const [successMessage, setSuccessMessage] = useState<string | null>(null);
+    const router = useRouter(); // For redirecting to login page
+
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const { name, value } = e.target;
+        setFormData((prev) => ({ ...prev, [name]: value }));
+    };
 
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        const formData = new FormData(event.currentTarget);
-        const password = formData.get("password") as string;
-        const confirmPassword = formData.get("confirmPassword") as string;
-        const token = formData.get("token") as string;
-
-        // Client-side validation
         const errors: Record<string, string> = {};
-        if (!password) {
+
+        // Validate fields
+        if (!formData.password) {
             errors.password = "Password is required.";
-        } else if (password.length < 8) {
+        } else if (formData.password.length < 8) {
             errors.password = "Password must be at least 8 characters long.";
         }
 
-        if (!confirmPassword) {
+        if (!formData.confirmPassword) {
             errors.confirmPassword = "Confirmation password is required.";
-        } else if (password !== confirmPassword) {
+        } else if (formData.password !== formData.confirmPassword) {
             errors.confirmPassword = "Passwords do not match.";
         }
 
-        if (!token) {
+        if (!formData.token) {
             errors.token = "Invalid or missing reset token.";
         }
 
-        // If there are errors, update state and stop submission
+        if (!formData.email) {
+            errors.email = "Email is required.";
+        }
+
         if (Object.keys(errors).length > 0) {
             setFormErrors(errors);
             return;
         }
 
-        // Clear client-side errors and reset success state
+        // Clear errors and reset success state
         setFormErrors({});
         setIsSuccess(false);
+        setSuccessMessage(null);
+        setIsPending(true);
 
         // Submit to the server
-        const result = await action({ password, confirmPassword, token } as FormData);
+        try {
+            const result = await updatePassword({ errors: {}, isSubmitting: false, isValid: true }, formData);
 
-        // If the submission was successful, display success message
-        if (result?.isValid) {
-            setIsSuccess(true);
+            if (result.isValid) {
+                setSuccessMessage(result.successMessage);
+                // Redirect to login page after a successful password update
+                setTimeout(() => {
+                    router.push("/login");
+                }, 2000); // Wait 2 seconds before redirecting to allow user to see success message
+            } else {
+                setFormErrors(result.errors);
+            }
+        } catch (err) {
+            console.error("Error updating password:", err);
+            setFormErrors({ general: "An unexpected error occurred. Please try again later." });
+        } finally {
+            setIsPending(false);
         }
     };
 
@@ -81,11 +85,28 @@ export default function PasswordUpdate() {
                 <form className="w-full max-w-sm" onSubmit={handleSubmit}>
                     <h2 className="text-3xl font-bold text-center mb-6">Update Password</h2>
 
+                    {/* Email Field */}
+                    <div className="mb-4 relative">
+                        <input
+                            type="email"
+                            name="email"
+                            value={formData.email}
+                            onChange={handleChange}
+                            placeholder="Email"
+                            className="w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
+                        />
+                        {formErrors.email && (
+                            <p className="text-red-500 text-sm mt-1">{formErrors.email}</p>
+                        )}
+                    </div>
+
                     {/* Password Field */}
                     <div className="mb-4 relative">
                         <input
                             type="password"
                             name="password"
+                            value={formData.password}
+                            onChange={handleChange}
                             placeholder="New Password"
                             className="w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
                         />
@@ -99,6 +120,8 @@ export default function PasswordUpdate() {
                         <input
                             type="password"
                             name="confirmPassword"
+                            value={formData.confirmPassword}
+                            onChange={handleChange}
                             placeholder="Confirm Password"
                             className="w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
                         />
@@ -110,31 +133,24 @@ export default function PasswordUpdate() {
                     </div>
 
                     {/* Hidden Token Field */}
-                    <input type="hidden" name="token" value={prev?.token || ""} />
+                    <input type="hidden" name="token" value={formData.token} />
 
                     {/* Submit Button */}
-                    <Button
-                        type="submit"
-                        disabled={isPending}
-                        className="w-full transition"
-                    >
+                    <Button type="submit" disabled={isPending} className="w-full transition">
                         {isPending ? "Updating..." : "Update Password"}
                     </Button>
 
                     {/* General Error Message */}
-                    {prev?.errors.general && (
+                    {formErrors.general && (
                         <p className="text-red-500 text-sm mt-2 text-center">
-                            {prev.errors.general}
+                            {formErrors.general}
                         </p>
                     )}
 
                     {/* Success Message */}
-                    {isSuccess && (
+                    {successMessage && (
                         <p className="text-green-500 text-sm mt-2 text-center">
-                            Password updated successfully. You can now{" "}
-                            <a href="/login" className="text-blue-800 underline">
-                                login
-                            </a>.
+                            {successMessage}
                         </p>
                     )}
                 </form>

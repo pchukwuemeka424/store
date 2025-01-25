@@ -55,8 +55,8 @@ export default function UserDashboard() {
        
           <li className="mb-4 flex items-center">
             <FaUserCircle className="h-5 w-5 mr-2" />
-            <Link href="/dashboard/kyc" className="hover:bg-gray-700 p-2 rounded">
-              KYC
+            <Link href="/dashboard/profile" className="hover:bg-gray-700 p-2 rounded">
+              Profile
             </Link>
           </li>
           <li className="mb-4 flex items-center">
