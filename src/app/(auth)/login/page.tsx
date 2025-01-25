@@ -1,11 +1,9 @@
 "use client"; // This tells Next.js to treat this component as a client-side component
-
 import { useActionState } from 'react';
-import { AiOutlineLock, AiOutlineMail } from 'react-icons/ai';
+import { AiOutlineLock, AiOutlineMail, AiOutlineArrowLeft } from 'react-icons/ai';
 import login from '@/actions/auth/login';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
-
 
 interface FormData {
     email: string;
@@ -26,6 +24,13 @@ export default function Register() {
 
     return (
         <div className="h-screen flex">
+            {/* Button with Arrow to Return Home */}
+            <Link href="/">
+                <Button className="absolute top-4 left-4 flex items-center text-white bg-blue-500 hover:bg-blue-600 hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-800">
+                    <AiOutlineArrowLeft className="mr-2" /> Return to Home
+                </Button>
+            </Link>
+
             <div className="w-full md:w-1/2 bg-white flex justify-center items-center p-8">
                 <form className="w-full max-w-sm" action={action}>
                     <h2 className="text-3xl font-bold text-center mb-6">Login</h2>
@@ -62,10 +67,9 @@ export default function Register() {
                                 {prev.errors.password}
                             </p>
                         )}
-                       
                     </div>
                     <div className="text-right">
-                    <Link className="text-blue-800 text-primary no-underline" href="/forgot">Forgot Password</Link>
+                        <Link className="text-blue-800 text-primary no-underline" href="/forgot">Forgot Password</Link>
                     </div>
 
                     {/* Submit Button */}
@@ -82,8 +86,6 @@ export default function Register() {
                         <p className="text-gray-600">
                             Don&apos;t have an account?
                             <Link className="text-blue-800 text-primary underline-offset-4 hover:underline" href="/register">Register</Link>
-                        {/* add forget password */}
-                           
                         </p>
                     </div>
 

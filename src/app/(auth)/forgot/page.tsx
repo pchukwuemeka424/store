@@ -1,7 +1,7 @@
 "use client";
 
 import { useActionState } from "react";
-import { AiOutlineMail } from "react-icons/ai";
+import { AiOutlineArrowLeft, AiOutlineMail } from "react-icons/ai";
 import resetPassword from "@/actions/auth/resetPassword";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
@@ -27,6 +27,12 @@ export default function PasswordReset() {
 
     return (
         <div className="h-screen flex">
+                      {/* Button with Arrow to Return Home */}
+                      <Link href="/">
+                <Button className="absolute top-4 left-4 flex items-center text-white bg-blue-500 hover:bg-blue-600 hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-800">
+                    <AiOutlineArrowLeft className="mr-2" /> Return to Home
+                </Button>
+            </Link>
             <div className="w-full md:w-1/2 bg-white flex justify-center items-center p-8">
                 <form className="w-full max-w-sm" action={action}>
                     <h2 className="text-3xl font-bold text-center mb-6">Reset Password</h2>
