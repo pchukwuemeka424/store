@@ -2,7 +2,6 @@
 
 import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
-import { NextResponse } from "next/server";
 import sharp from "sharp";
 
 interface FormInput {
