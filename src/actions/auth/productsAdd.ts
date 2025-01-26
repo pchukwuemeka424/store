@@ -2,7 +2,6 @@
 
 import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
-
 import sharp from "sharp";
 
 interface FormInput {
@@ -15,16 +14,12 @@ interface FormInput {
   user_id: string | null;
 }
 
-export default async function addProduct(
-  state: any,
-  formData: FormData
-) {
+export default async function addProduct(state: any, formData: FormData) {
   const supabase = await createClient();
   const userDetails = await supabase.auth.getUser();
 
   const user_id = userDetails.data?.user?.id || null;
 
-  const TARGET_COMPRESSED_SIZE_KB = 200; // Target size for compression
   const MAX_WIDTH = 1000; // Max width for resizing
   const INITIAL_QUALITY = 80; // Initial JPEG compression quality
 
@@ -43,43 +38,35 @@ export default async function addProduct(
     return { errors: { message: "Image file is required." } };
   }
 
-  // Limit file size for mobile devices
-  if (imageFile.size > 2 * 1024 * 1024) { // 2MB limit
-    return { errors: { message: "File size exceeds 2MB limit." } };
-  }
-
-  const imageBuffer = Buffer.from(await imageFile.arrayBuffer());
-  let compressedBuffer = imageBuffer;
-
-  if (imageBuffer.length > TARGET_COMPRESSED_SIZE_KB * 1024) {
-    console.log("Compressing large image...");
-    compressedBuffer = await sharp(imageBuffer)
-      .resize({
-        width: MAX_WIDTH,
-        withoutEnlargement: true,
-      })
-      .jpeg({
-        quality: INITIAL_QUALITY,
-        progressive: true,
-      })
-      .toBuffer();
-  }
-
-  console.log("Final compressed image size:", compressedBuffer.length / 1024, "KB");
-
   const fileName = `${Date.now()}-${imageFile.name}`;
   const filePath = `public/${fileName}`;
 
+  // Read and compress image with sharp
+  const imageBuffer = Buffer.from(await imageFile.arrayBuffer());
+  const compressedBuffer = await sharp(imageBuffer)
+    .resize({
+      width: MAX_WIDTH,
+      withoutEnlargement: true,
+    })
+    .jpeg({
+      quality: INITIAL_QUALITY,
+      progressive: true,
+    })
+    .toBuffer();
+
+  // Upload the compressed image buffer to Supabase storage
   const { data: uploadData, error: uploadError } = await supabase.storage
     .from("products_image")
-    .upload(filePath, compressedBuffer, { contentType: imageFile.type });
+    .upload(filePath, compressedBuffer, {
+      contentType: imageFile.type,
+    });
 
   if (uploadError) {
     console.error("Error uploading image:", uploadError);
     return { errors: { message: "Error uploading image." } };
   }
 
-  console.log("Image uploaded successfully:", uploadData);
+  console.log("Image uploaded successfully");
 
   formInput.image = filePath;
 
