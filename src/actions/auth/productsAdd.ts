@@ -1,4 +1,3 @@
-"use server";
 import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
 import sharp from "sharp";  // Import sharp for image processing
@@ -40,8 +39,8 @@ export default async function addProduct(state: any, formData: FormData) {
 
   // Compress the image using sharp
   const compressedImageBuffer = await sharp(buffer)
-    .resize(1000)  // Resize the image (adjust size as needed)
-    .jpeg({ quality: 100 })  // Compress to JPEG with 80% quality (you can adjust this value)
+    .resize(800)  // Resize the image (adjust size as needed)
+    .jpeg({ quality: 80 })  // Compress to JPEG with 80% quality (you can adjust this value)
     .toBuffer();
 
   const fileName = `${Date.now()}-${imageFile.name}`;
