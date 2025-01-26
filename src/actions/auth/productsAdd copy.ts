@@ -1,6 +1,8 @@
 "use server";
+
 import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
+import sharp from "sharp";
 
 interface FormInput {
   name: string;
@@ -17,6 +19,9 @@ export default async function addProduct(state: any, formData: FormData) {
   const userDetails = await supabase.auth.getUser();
 
   const user_id = userDetails.data?.user?.id || null;
+
+  const MAX_WIDTH = 1000; // Max width for resizing
+  const INITIAL_QUALITY = 80; // Initial JPEG compression quality
 
   const formInput: FormInput = {
     name: formData.get("name")?.toString() || "",
@@ -36,10 +41,23 @@ export default async function addProduct(state: any, formData: FormData) {
   const fileName = `${Date.now()}-${imageFile.name}`;
   const filePath = `public/${fileName}`;
 
-  // Upload the image directly to Supabase storage without compression
+  // Read and compress image with sharp
+  const imageBuffer = Buffer.from(await imageFile.arrayBuffer());
+  const compressedBuffer = await sharp(imageBuffer)
+    .resize({
+      width: MAX_WIDTH,
+      withoutEnlargement: true,
+    })
+    .jpeg({
+      quality: INITIAL_QUALITY,
+      progressive: true,
+    })
+    .toBuffer();
+
+  // Upload the compressed image buffer to Supabase storage
   const { data: uploadData, error: uploadError } = await supabase.storage
     .from("products_image")
-    .upload(filePath, imageFile, {
+    .upload(filePath, compressedBuffer, {
       contentType: imageFile.type,
     });
 
@@ -52,7 +70,6 @@ export default async function addProduct(state: any, formData: FormData) {
 
   formInput.image = filePath;
 
-  // Insert product into database
   const { data: productData, error: insertError } = await supabase
     .from("products")
     .insert({
