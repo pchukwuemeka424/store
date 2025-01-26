@@ -1,6 +1,7 @@
 "use server";
 import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
+import sharp from "sharp";  // Import sharp for image processing
 
 interface FormInput {
   name: string;
@@ -33,14 +34,24 @@ export default async function addProduct(state: any, formData: FormData) {
     return { errors: { message: "Image file is required." } };
   }
 
+  // Convert the File object to a Buffer (needed for sharp)
+  const imageBuffer = await imageFile.arrayBuffer();  // Convert File to ArrayBuffer
+  const buffer = Buffer.from(imageBuffer);  // Convert ArrayBuffer to Buffer
+
+  // Compress the image using sharp
+  const compressedImageBuffer = await sharp(buffer)
+    .resize(800)  // Resize the image (adjust size as needed)
+    .jpeg({ quality: 80 })  // Compress to JPEG with 80% quality (you can adjust this value)
+    .toBuffer();
+
   const fileName = `${Date.now()}-${imageFile.name}`;
   const filePath = `public/${fileName}`;
 
-  // Upload the image directly to Supabase storage without compression
+  // Upload the compressed image directly to Supabase storage
   const { data: uploadData, error: uploadError } = await supabase.storage
     .from("products_image")
-    .upload(filePath, imageFile, {
-      contentType: imageFile.type,
+    .upload(filePath, compressedImageBuffer, {
+      contentType: "image/jpeg",  // Set content type to JPEG
     });
 
   if (uploadError) {
