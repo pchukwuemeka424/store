@@ -2,7 +2,13 @@
 import React, { useState } from "react";
 import { useActionState } from "react";
 
-export default function ProductForm({ handler, product }) {
+interface ProductFormProps {
+  handler: Function;
+  product: any;
+  canUpload: boolean; // Prop to control upload button state
+}
+
+export default function ProductForm({ handler, product, canUpload }: ProductFormProps) {
   const [state, action, isPending] = useActionState(handler, undefined);
   const [imageError, setImageError] = useState(""); // Track image errors
   const [isImageValid, setIsImageValid] = useState(true); // Control button state
@@ -35,6 +41,7 @@ export default function ProductForm({ handler, product }) {
             placeholder="Enter product name"
             defaultValue={product?.name || ""}
             className="w-full px-4 py-2 border rounded-lg mt-2"
+            required
           />
           {state?.errors?.name && (
             <p className="text-red-500 text-sm mt-1">{state.errors.name}</p>
@@ -71,6 +78,7 @@ export default function ProductForm({ handler, product }) {
             placeholder="Enter product price"
             defaultValue={product?.price || ""}
             className="w-full px-4 py-2 border rounded-lg mt-2"
+            required
           />
           {state?.errors?.price && (
             <p className="text-red-500 text-sm mt-1">{state.errors.price}</p>
@@ -87,6 +95,7 @@ export default function ProductForm({ handler, product }) {
             name="category"
             defaultValue={product?.category || ""}
             className="w-full px-4 py-2 border rounded-lg mt-2"
+            required
           >
             <option value="">Select Category</option>
             <option value="electronics">Electronics</option>
@@ -129,6 +138,7 @@ export default function ProductForm({ handler, product }) {
             accept="image/*"
             className="w-full px-4 py-2 border rounded-lg mt-2"
             onChange={handleImageChange}
+            required
           />
           {imageError && <p className="text-red-500 text-sm mt-1">{imageError}</p>}
           {state?.errors?.image && (
@@ -140,9 +150,9 @@ export default function ProductForm({ handler, product }) {
         <button
           type="submit"
           className={`bg-blue-500 text-white px-6 py-2 rounded-lg w-26 mt-4 ${
-            isPending || !isImageValid ? "opacity-50 cursor-not-allowed" : "hover:bg-blue-600"
+            isPending || !isImageValid || !canUpload ? "opacity-50 cursor-not-allowed" : "hover:bg-blue-600"
           }`}
-          disabled={isPending || !isImageValid}
+          disabled={isPending || !isImageValid || !canUpload}
         >
           {isPending ? "Processing..." : "Add Product"}
         </button>

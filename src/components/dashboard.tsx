@@ -24,7 +24,7 @@ const Dashboard = async () => {
   const { data: kyc, error: kycError } = await supabase
     .from("kyc")
     .select("*")
-    .eq("user_id", user.id)
+    .eq("userid", user.id)
     .single();
   
     if (kycError) {
