@@ -1,34 +1,13 @@
 "use client";
-import React, { useState } from "react";
+import React from "react";
 import { useActionState } from "react";
 
-interface ProductFormProps {
-  handler: Function;
-  product: any;
-  canUpload: boolean; // Prop to control upload button state
-}
-
-export default function ProductForm({ handler, product, canUpload }: ProductFormProps) {
+export default function ProductForm({ handler, product }) {
   const [state, action, isPending] = useActionState(handler, undefined);
-  const [imageError, setImageError] = useState(""); // Track image errors
-  const [isImageValid, setIsImageValid] = useState(true); // Control button state
-
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    const MAX_FILE_SIZE = 2.8 * 1024 * 1024; // 3 MB
-
-    if (file && file.size > MAX_FILE_SIZE) {
-      setImageError("Image size Large. Please select a smaller file.");
-      setIsImageValid(false);
-    } else {
-      setImageError("");
-      setIsImageValid(true);
-    }
-  };
 
   return (
     <div className="bg-white p-6 rounded-lg shadow-md col-span-full">
-      <form action={action}>
+      <form action={action} >
         {/* Product Name */}
         <div className="mb-4">
           <label htmlFor="name" className="block text-sm font-semibold text-gray-700">
@@ -41,7 +20,6 @@ export default function ProductForm({ handler, product, canUpload }: ProductForm
             placeholder="Enter product name"
             defaultValue={product?.name || ""}
             className="w-full px-4 py-2 border rounded-lg mt-2"
-            required
           />
           {state?.errors?.name && (
             <p className="text-red-500 text-sm mt-1">{state.errors.name}</p>
@@ -59,7 +37,7 @@ export default function ProductForm({ handler, product, canUpload }: ProductForm
             placeholder="Enter product description"
             defaultValue={product?.description || ""}
             className="w-full px-4 py-2 border rounded-lg mt-2"
-            rows={3}
+            rows="3"
           ></textarea>
           {state?.errors?.description && (
             <p className="text-red-500 text-sm mt-1">{state.errors.description}</p>
@@ -78,7 +56,6 @@ export default function ProductForm({ handler, product, canUpload }: ProductForm
             placeholder="Enter product price"
             defaultValue={product?.price || ""}
             className="w-full px-4 py-2 border rounded-lg mt-2"
-            required
           />
           {state?.errors?.price && (
             <p className="text-red-500 text-sm mt-1">{state.errors.price}</p>
@@ -95,7 +72,6 @@ export default function ProductForm({ handler, product, canUpload }: ProductForm
             name="category"
             defaultValue={product?.category || ""}
             className="w-full px-4 py-2 border rounded-lg mt-2"
-            required
           >
             <option value="">Select Category</option>
             <option value="electronics">Electronics</option>
@@ -137,10 +113,7 @@ export default function ProductForm({ handler, product, canUpload }: ProductForm
             name="image"
             accept="image/*"
             className="w-full px-4 py-2 border rounded-lg mt-2"
-            onChange={handleImageChange}
-            required
           />
-          {imageError && <p className="text-red-500 text-sm mt-1">{imageError}</p>}
           {state?.errors?.image && (
             <p className="text-red-500 text-sm mt-1">{state.errors.image}</p>
           )}
@@ -150,9 +123,9 @@ export default function ProductForm({ handler, product, canUpload }: ProductForm
         <button
           type="submit"
           className={`bg-blue-500 text-white px-6 py-2 rounded-lg w-26 mt-4 ${
-            isPending || !isImageValid || !canUpload ? "opacity-50 cursor-not-allowed" : "hover:bg-blue-600"
+            isPending ? "opacity-50 cursor-not-allowed" : "hover:bg-blue-600"
           }`}
-          disabled={isPending || !isImageValid || !canUpload}
+          disabled={isPending}
         >
           {isPending ? "Processing..." : "Add Product"}
         </button>
