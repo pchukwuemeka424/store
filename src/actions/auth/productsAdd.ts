@@ -2,6 +2,7 @@
 
 import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
+import { NextResponse } from "next/server";
 import sharp from "sharp";
 
 interface FormInput {
@@ -15,8 +16,6 @@ interface FormInput {
 }
 
 export default async function addProduct(
-
-  
   state: any, // Replace `any` with the specific type for `state` if known
   formData: FormData
 ) {
@@ -24,8 +23,11 @@ export default async function addProduct(
   const userDetails = await supabase.auth.getUser();
 
   const user_id = userDetails.data?.user?.id || null;
-  console.log("User ID:", user_id);
-  const MAX_FILE_SIZE = 50 * 1024 * 1024; // 5 MB
+
+  const TARGET_COMPRESSED_SIZE_KB = 200; // Target compressed size in KB
+  const MAX_WIDTH = 1000; // Max width for resizing
+  const INITIAL_QUALITY = 80; // Initial JPEG compression quality
+  const MIN_QUALITY = 30; // Minimum quality to avoid over-compression
 
   const formInput: FormInput = {
     name: formData.get("name")?.toString() || "",
@@ -37,41 +39,56 @@ export default async function addProduct(
     user_id: user_id,
   };
 
-  console.log("Product data ready to be processed:", formInput);
-
+  // Validate if an image file is provided
   const imageFile = formData.get("image") as File | null;
   if (!imageFile) {
-    console.error("No image provided.");
     return { errors: { message: "Image file is required." } };
   }
 
-  if (imageFile.size > MAX_FILE_SIZE) {
-    console.error("Image file size exceeds the limit.");
-    return { errors: { message: `Image must be less than ${MAX_FILE_SIZE / (1024 * 1024)} MB.` } };
+  // Read the image file into a buffer
+  const imageBuffer = Buffer.from(await imageFile.arrayBuffer());
+  let compressedBuffer = imageBuffer;
+  let quality = INITIAL_QUALITY;
+
+  // Compress image only if it exceeds the target size
+  if (imageBuffer.length > TARGET_COMPRESSED_SIZE_KB * 1024) {
+    console.log("Compressing large image...");
+    while (
+      compressedBuffer.length > TARGET_COMPRESSED_SIZE_KB * 1024 &&
+      quality >= MIN_QUALITY
+    ) {
+      compressedBuffer = await sharp(imageBuffer)
+        .resize({ width: MAX_WIDTH }) // Resize to max width of 1000px
+        .jpeg({ quality }) // Compress to target quality
+        .toBuffer();
+
+      console.log(
+        `Compression attempt with quality ${quality}: ${compressedBuffer.length / 1024} KB`
+      );
+      quality -= 10; // Reduce quality for further compression
+    }
   }
 
-  const buffer = await imageFile.arrayBuffer();
-  const compressedImage = await sharp(Buffer.from(buffer))
-    .resize(400)
-    .jpeg({ quality: 80 })
-    .toBuffer();
+  console.log("Final compressed image size:", compressedBuffer.length / 1024, "KB");
 
+  // Generate a file name and upload the compressed image
   const fileName = `${Date.now()}-${imageFile.name}`;
   const filePath = `public/${fileName}`;
 
-  const { data, error: uploadError } = await supabase.storage
+  const { data: uploadData, error: uploadError } = await supabase.storage
     .from("products_image")
-    .upload(filePath, compressedImage, { contentType: "image/jpeg" });
+    .upload(filePath, compressedBuffer, { contentType: "image/jpeg" });
 
   if (uploadError) {
     console.error("Error uploading image:", uploadError);
     return { errors: { message: "Error uploading image." } };
   }
 
-  console.log("Image uploaded successfully:", data);
+  console.log("Image uploaded successfully:", uploadData);
 
   formInput.image = filePath;
 
+  // Insert product details into the database
   const { data: productData, error: insertError } = await supabase
     .from("products")
     .insert({
@@ -89,6 +106,8 @@ export default async function addProduct(
     return { errors: { message: "Error inserting product." } };
   }
 
-  redirect("/dashboard/productlist");
-  return { success: true, data: productData };
+  console.log("Product added successfully:", productData);
+
+  // Redirect to the product list dashboard
+  return redirect("/dashboard/productlist");
 }
