@@ -26,7 +26,6 @@ export default async function login(prev: LoginState, formData: FormData) {
         password: formData.get("password"),
     });
 
-    // Handle validation errors
     if (!validated.success) {
         const errors = validated.error.flatten().fieldErrors;
 
@@ -40,19 +39,19 @@ export default async function login(prev: LoginState, formData: FormData) {
         };
     }
 
-    const superbase = await createClient();
+    const supabase = await createClient();
 
     // Authenticate the user
-    const { data, error } = await superbase.auth.signInWithPassword({
+    const { data: authData, error: authError } = await supabase.auth.signInWithPassword({
         email: validated.data.email,
         password: validated.data.password,
     });
 
-    if (error) {
+    if (authError || !authData?.user) {
         return {
             ...prev,
             errors: {
-                general: error.message || "Invalid credentials",
+                general: authError?.message || "Invalid credentials",
             },
             email: formData.get("email"),
             password: formData.get("password"),
@@ -61,8 +60,30 @@ export default async function login(prev: LoginState, formData: FormData) {
         };
     }
 
-    // Redirect to the home page or dashboard
-    redirect('/dashboard');
+    // Fetch user role from the `user_profile` table
+    const { data: userProfile, error: profileError } = await supabase
+        .from("user_profile")
+        .select("role")
+        .eq("id", authData.user.id)
+        .single();
+
+    if (profileError || !userProfile) {
+        return {
+            ...prev,
+            errors: {
+                general: profileError?.message || "User profile not found",
+            },
+            isSubmitting: false,
+            isValid: false,
+        };
+    }
+
+    // Redirect based on role
+    if (userProfile.role === "admin") {
+        redirect('/admin/dashboard');
+    } else {
+        redirect('/dashboard');
+    }
 
     return {
         ...prev,
