@@ -43,12 +43,7 @@ export default function Navbar() {
               <Link href="/dashboard" className="text-white hover:text-gray-300 transition">
                 Dashboard 
               </Link>
-              <Link href="/product" className="text-white hover:text-gray-300 transition">
-                Stores
-              </Link>
-              <Link href="/" className="text-white hover:text-gray-300 transition">
-                Products
-              </Link>
+            
               {/* Logout Button */}
               <LogoutButton />
             </div>
