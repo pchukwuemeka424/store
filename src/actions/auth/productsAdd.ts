@@ -1,6 +1,6 @@
+"use server";
 import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
-import sharp from "sharp";  // Import sharp for image processing
 
 interface FormInput {
   name: string;
@@ -15,7 +15,6 @@ interface FormInput {
 export default async function addProduct(state: any, formData: FormData) {
   const supabase = await createClient();
   const userDetails = await supabase.auth.getUser();
-
   const user_id = userDetails.data?.user?.id || null;
 
   const formInput: FormInput = {
@@ -33,36 +32,53 @@ export default async function addProduct(state: any, formData: FormData) {
     return { errors: { message: "Image file is required." } };
   }
 
-  // Convert the File object to a Buffer (needed for sharp)
-  const imageBuffer = await imageFile.arrayBuffer();  // Convert File to ArrayBuffer
-  const buffer = Buffer.from(imageBuffer);  // Convert ArrayBuffer to Buffer
+  // Handle compressed image if provided by the client
+  const compressedImageFile = formData.get("compressed_image") as File | null;
 
-  // Compress the image using sharp
-  const compressedImageBuffer = await sharp(buffer)
-    .resize(800)  // Resize the image (adjust size as needed)
-    .jpeg({ quality: 80 })  // Compress to JPEG with 80% quality (you can adjust this value)
-    .toBuffer();
+  if (compressedImageFile) {
+    const imageBuffer = await compressedImageFile.arrayBuffer();
+    const buffer = Buffer.from(imageBuffer);
 
-  const fileName = `${Date.now()}-${imageFile.name}`;
-  const filePath = `public/${fileName}`;
+    const fileName = `${Date.now()}-${compressedImageFile.name}`;
+    const filePath = `public/compressed/${fileName}`;
 
-  // Upload the compressed image directly to Supabase storage
-  const { data: uploadData, error: uploadError } = await supabase.storage
-    .from("products_image")
-    .upload(filePath, compressedImageBuffer, {
-      contentType: "image/jpeg",  // Set content type to JPEG
-    });
+    // Upload the compressed image directly to Supabase storage
+    const { data: uploadData, error: uploadError } = await supabase.storage
+      .from("products_image")
+      .upload(filePath, buffer, {
+        contentType: compressedImageFile.type,
+      });
 
-  if (uploadError) {
-    console.error("Error uploading image:", uploadError);
-    return { errors: { message: "Error uploading image." } };
+    if (uploadError) {
+      console.error("Error uploading compressed image:", uploadError);
+      return { errors: { message: "Error uploading compressed image." } };
+    }
+
+    formInput.image = filePath;
+  } else {
+    // If no compressed image is provided, handle the original image upload
+    const imageBuffer = await imageFile.arrayBuffer();
+    const buffer = Buffer.from(imageBuffer);
+
+    const fileName = `${Date.now()}-${imageFile.name}`;
+    const filePath = `public/${fileName}`;
+
+    // Upload the original image directly to Supabase storage
+    const { data: uploadData, error: uploadError } = await supabase.storage
+      .from("products_image")
+      .upload(filePath, buffer, {
+        contentType: imageFile.type, // Use the original file's content type
+      });
+
+    if (uploadError) {
+      console.error("Error uploading original image:", uploadError);
+      return { errors: { message: "Error uploading image." } };
+    }
+
+    formInput.image = filePath;
   }
 
-  console.log("Image uploaded successfully");
-
-  formInput.image = filePath;
-
-  // Insert product into database
+  // Insert product into the database
   const { data: productData, error: insertError } = await supabase
     .from("products")
     .insert({
@@ -71,7 +87,7 @@ export default async function addProduct(state: any, formData: FormData) {
       price: formInput.price,
       category: formInput.category,
       stock: formInput.stock,
-      image: filePath,
+      image: formInput.image,
       id: user_id,
     });
 
