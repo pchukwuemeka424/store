@@ -1,13 +1,20 @@
-'use client';
-import { FaSearch, FaUser } from 'react-icons/fa';  // Importing React Icons
+"use server";
+import { FaSearch, FaSignOutAlt, FaUser } from 'react-icons/fa';  // Importing React Icons
 import { search } from '@/actions/auth/search';
 import React from 'react';
 import Image from 'next/image';
 import { SheetMenu } from './sheetMenu';
 import Link from 'next/link';
 import { Button } from './ui/button';
+import LogoutButton from './logoutButton';
+import { createClient } from '@/utils/supabase/server';
 
-export default function TopNav() {
+export default async function TopNav() {
+  const supabase =await  createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+
+ 
+
   return (
     <>
       {/* Mobile Menu */}
@@ -30,13 +37,18 @@ export default function TopNav() {
 
         {/* Right: Login Button */}
         <div>
-         <Link href="/login">
-         <Button
-            className="flex items-center text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 mr-2"
-          >
+        {!user ?(
+          <Link href="/login">
+          <Button
+            className="flex items-center text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 mr-2">
             <FaUser className="mr-2" /> Login
-           
-          </Button></Link>
+          </Button>
+        </Link>
+        ):(
+          <LogoutButton />
+        )}
+          
+
         </div>
       </div>
 
@@ -45,7 +57,7 @@ export default function TopNav() {
         <form action={search}>
           <div className="relative">
             <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-              
+
             </div>
             <input
               name="search"
@@ -84,7 +96,7 @@ export default function TopNav() {
           <form action={search}>
             <div className="relative">
               <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-               
+
               </div>
               <input
                 name="search"
@@ -106,14 +118,16 @@ export default function TopNav() {
 
         {/* Right: Login Button */}
         <div>
-         <Link href="/login">
-         <button
-            className="flex items-center text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2"
-          >
-            <FaUser className="mr-2" /> {/* Login Icon */}
-            Login
-          </button>
-          </Link>
+        {!user ?(
+          <Link href="/login">
+          <Button
+            className="flex items-center text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 mr-2">
+            <FaUser className="mr-2" /> Login
+          </Button>
+        </Link>
+        ):(
+          <LogoutButton />
+        )}
         </div>
       </div>
     </>

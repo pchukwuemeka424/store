@@ -4,6 +4,8 @@ import { Button } from './ui/button';
 import { redirect } from 'next/navigation';
 import logout from '@/actions/auth/logout.ts';
 import { useActionState } from 'react';
+import { FaS } from 'react-icons/fa6';
+import { FaSignOutAlt } from 'react-icons/fa';
 
 export default function LogoutButton() {
   const [state, action, isPending] = useActionState(logout, undefined, null);
@@ -21,7 +23,7 @@ export default function LogoutButton() {
   return (
     <form action={action}>
       <Button type="submit" disabled={isPending}>
-        {isPending ? 'Logging out...' : 'Logout'}
+      <FaSignOutAlt className="mr-2" />  {isPending ? 'Logging out...' : 'Logout'}
       </Button>
     </form>
   );
