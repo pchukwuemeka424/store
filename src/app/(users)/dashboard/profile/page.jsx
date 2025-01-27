@@ -39,7 +39,7 @@ export default async function Profile() {
       {/* Main Content Area */}
       <div className="flex-1 p-6 bg-gray-50 space-y-6 overflow-y-auto">
         {/* Dashboard & Topbar */}
-        <Userdashboard />
+      
         <Topbar />
         <div className="min-w-2">
           {/* Profile Form */}

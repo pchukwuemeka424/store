@@ -29,7 +29,7 @@ export default async function KycPage() {
   return (
     <div>
         <TopBar />
-         <UserDashboard />
+
       <KycStatus handler={handleKYCSubmission} />
     </div>
   );

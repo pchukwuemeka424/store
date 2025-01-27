@@ -18,7 +18,7 @@ export default function ProductList() {
         {/* Topbar */}
         
         <Topbar />
-        <Userdashboard />
+
         <Table />
       </div>
     </div>
