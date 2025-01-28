@@ -27,9 +27,9 @@ const Dashboard = async () => {
     .eq("userid", user.id)
     .single();
   
-    if (kycError) {
+    // user doesnt exit in table 
+    if(kycError){
       console.log("Error fetching kyc:");
-  
     }
 
       // user profile products
@@ -53,7 +53,7 @@ const Dashboard = async () => {
   ];
   const revenue = "$12,450"; // Example data
   const pendingOrders = 34; // Example data
-  const kycStatus = kyc?.kyc_status; // Example data
+  const kycStatus = kyc?.kyc_status || "Pending"; // Example data
 
   return (
     <div className="min-h-screen bg-gray-100 p-6">
