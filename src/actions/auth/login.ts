@@ -80,7 +80,7 @@ export default async function login(prev: LoginState, formData: FormData) {
 
     // Redirect based on role
     if (userProfile.role === "admin") {
-        redirect('/admin/dashboard');
+        redirect('/admin/');
     } else {
         redirect('/dashboard');
     }
