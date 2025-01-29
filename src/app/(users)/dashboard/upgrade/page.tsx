@@ -1,5 +1,5 @@
 "use server";
-import FlutterWaveClient from "@/components/FlutterWaveClient";
+
 import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
 import React from "react";
@@ -48,13 +48,13 @@ const UpgradePage = async () => {
           <div className="bg-blue-500 text-white p-4 rounded-md shadow-md">
             <h3 className="text-lg font-semibold">Standard Plan</h3>
             <p className="text-sm">$10/month</p>
-            <FlutterWaveClient amount={1500} user={user} />
+     
           </div>
 
           <div className="bg-purple-600 text-white p-4 rounded-md shadow-md">
             <h3 className="text-lg font-semibold">Premium Plan</h3>
             <p className="text-sm">$25/month</p>
-            <FlutterWaveClient amount={2500} user={user} />
+          
           </div>
         </div>
       </div>
