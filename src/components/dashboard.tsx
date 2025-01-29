@@ -12,6 +12,7 @@ import {
 import { Button } from "./ui/button";
 import Link from "next/link";
 import { FaRegCreditCard } from "react-icons/fa6";
+import LogoutButton from "./logoutButton";
 
 const Dashboard = async () => {
   const supabase = await createClient();
@@ -50,7 +51,8 @@ const Dashboard = async () => {
       {/* Header */}
       <header className="bg-white shadow-md p-4 rounded-md flex justify-between items-center">
         <h1 className="text-xl font-bold text-gray-800">Dashboard</h1>
-        <button className="px-4 py-2 bg-blue-500 text-white rounded-md">Logout</button>
+    <LogoutButton />
+            
       </header>
 
       {/* Main Content */}
