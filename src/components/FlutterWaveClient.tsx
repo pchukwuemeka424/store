@@ -32,7 +32,7 @@ export default function FlutterWaveClient({ amount, user }: FlutterWaveClientPro
       name: user.username || "John Doe",
     },
     customizations: {
-      title: "Upgrade Plan",
+      title: "ExShop",
       description: `Payment for upgrade ($${amount / 10})`,
       logo: "https://st2.depositphotos.com/4403291/7418/v/450/depositphotos_74189661-stock-illustration-online-shop-log.jpg",
     },
