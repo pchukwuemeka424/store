@@ -14,19 +14,20 @@ import { FaEye } from "react-icons/fa";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { createClient } from "@/utils/supabase/client";
+import Image from "next/image";
 
 const supabase = createClient();
 
 export default function ModalEdit({ product }: { product: any }) {
   // Initialize state with default values from the product
   const [formData, setFormData] = useState({
-    username: product.username || "N/A",
-    shopname: product.shopname || "N/A",
-    phone: product.phone || "N/A",
-    state: product.stat || "N/A",
+    first_name: product.first_name || "N/A",
+    last_name: product.last_name || "N/A",
+    verification_type: product.verification_type || "N/A",
+    id_number: product.id_number || "N/A",
+    document: product.document || "N/A",
     kyc_status: product.kyc_status || "Pending",
-    sub_plan: product.sub_plan || "N/A",
-    id: product.id
+    id: product.id,
   });
   const [loading, setLoading] = useState(false);
 
@@ -41,21 +42,20 @@ export default function ModalEdit({ product }: { product: any }) {
 
     try {
       const { error } = await supabase
-        .from("user_profile")
+        .from("kyc") // Replace with your actual KYC table name
         .update({
-          username: formData.username,
-          shopname: formData.shopname,
-          phone: formData.phone,
-          stat: formData.state,
+          first_name: formData.first_name,
+          last_name: formData.last_name,
+          verification_type: formData.verification_type,
+          id_number: formData.id_number,
           kyc_status: formData.kyc_status,
-          sub_plan: formData.sub_plan,
         })
         .eq("id", product.id);
 
       if (error) {
-        console.log("Error updating user:", product.id);
+        console.error("Error updating KYC data:", error.message);
       } else {
-        alert("User updated successfully!");
+        alert("KYC data updated successfully!");
       }
     } catch (err) {
       console.error("Unexpected error:", err);
@@ -67,7 +67,6 @@ export default function ModalEdit({ product }: { product: any }) {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        {/* Wrap the button content in a <span> to avoid nesting */}
         <span>
           <Button>
             <FaEye className="mr-1" />
@@ -77,52 +76,61 @@ export default function ModalEdit({ product }: { product: any }) {
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Edit User</DialogTitle>
+          <DialogTitle>Edit KYC Data</DialogTitle>
           <DialogDescription>
-            Update user details and save the changes.
+            Update KYC details and save the changes.
           </DialogDescription>
         </DialogHeader>
+ 
+        <div>
+         <Image
+           src={`${process.env.NEXT_PUBLIC_IMAGE_URL_KYC}${product.document}`}
+           alt="Product"
+           width={100}
+           height={100}
+           className="rounded w-full h-full"
+         />
+        </div>
         <form onSubmit={handleSubmit}>
-          <div className="grid gap-4 grid-cols-2">
-          
+          <div className="grid gap-4 grid-cols-2 ">
             <div>
-              <Label htmlFor="username">Username</Label>
+              <Label htmlFor="first_name">First Name</Label>
               <Input
-                id="username"
-                name="username"
-                value={formData.username}
+                id="first_name"
+                name="first_name"
+                value={formData.first_name}
                 onChange={handleInputChange}
-                placeholder="Enter username"
+                placeholder="Enter first name"
               />
             </div>
             <div>
-              <Label htmlFor="shopname">Shop Name</Label>
+              <Label htmlFor="last_name">Last Name</Label>
               <Input
-                id="shopname"
-                name="shopname"
-                value={formData.shopname}
+                id="last_name"
+                name="last_name"
+                value={formData.last_name}
                 onChange={handleInputChange}
-                placeholder="Enter shop name"
+                placeholder="Enter last name"
               />
             </div>
             <div>
-              <Label htmlFor="phone">Phone</Label>
+              <Label htmlFor="verification_type">Verification Type</Label>
               <Input
-                id="phone"
-                name="phone"
-                value={formData.phone}
+                id="verification_type"
+                name="verification_type"
+                value={formData.verification_type}
                 onChange={handleInputChange}
-                placeholder="Enter phone number"
+                placeholder="Enter verification type"
               />
             </div>
             <div>
-              <Label htmlFor="state">State</Label>
+              <Label htmlFor="id_number">ID Number</Label>
               <Input
-                id="state"
-                name="state"
-                value={formData.state}
+                id="id_number"
+                name="id_number"
+                value={formData.id_number}
                 onChange={handleInputChange}
-                placeholder="Enter state"
+                placeholder="Enter ID number"
               />
             </div>
             <div>
@@ -137,20 +145,6 @@ export default function ModalEdit({ product }: { product: any }) {
                 <option value="Pending">Pending</option>
                 <option value="Approved">Approved</option>
                 <option value="Rejected">Rejected</option>
-              </select>
-            </div>
-            <div>
-              <Label htmlFor="sub_plan">Plan</Label>
-              <select
-                id="sub_plan"
-                name="sub_plan"
-                value={formData.sub_plan}
-                onChange={handleInputChange}
-                className="border w-full border-gray-300 rounded p-2"
-              >
-                <option value="Free">Free</option>
-                <option value="Standard">Standard</option>
-                <option value="Vip">Vip</option>
               </select>
             </div>
           </div>
