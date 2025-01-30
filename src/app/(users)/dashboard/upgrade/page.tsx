@@ -1,8 +1,16 @@
-"use client";
 import React from "react";
+import { FaCrown } from "react-icons/fa";
+import { Button } from "@/components/ui/button";
 
 
 const UpgradePage = () => {
+
+
+  const handlePayment = () => {
+    // Integrate Paystack payment gateway
+    console.log("Initiate Paystack payment");
+  };
+
   return (
     <div className="min-h-screen bg-gray-100 flex flex-col items-center p-6">
       <div className="bg-white p-8 rounded-lg shadow-lg max-w-md w-full text-center">
@@ -16,10 +24,7 @@ const UpgradePage = () => {
           <div className="bg-blue-500 text-white p-4 rounded-md shadow-md">
             <h3 className="text-lg font-semibold">Standard Plan</h3>
             <p className="text-sm">$10/month</p>
-            <Button
-              onClick={() => handlePayment(100)}
-              className="mt-2 bg-white text-blue-500 hover:bg-gray-200"
-            >
+            <Button onClick={handlePayment} className="mt-2 bg-white text-blue-500">
               Upgrade Now
             </Button>
           </div>
@@ -27,10 +32,7 @@ const UpgradePage = () => {
           <div className="bg-purple-600 text-white p-4 rounded-md shadow-md">
             <h3 className="text-lg font-semibold">Premium Plan</h3>
             <p className="text-sm">$25/month</p>
-            <Button
-              onClick={() => handlePayment(250)}
-              className="mt-2 bg-white text-purple-600 hover:bg-gray-200"
-            >
+            <Button onClick={handlePayment} className="mt-2 bg-white text-purple-600">
               Upgrade Now
             </Button>
           </div>
