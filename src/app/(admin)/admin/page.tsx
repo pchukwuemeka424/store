@@ -1,7 +1,12 @@
+import AdminDashboard from '@/components/adminDashboard'
+import AdminMenu from '@/components/app-sidebar'
 import React from 'react'
 
 export default function Dashboard() {
   return (
-    <div>Dashboard</div>
+    <div>
+
+      <AdminDashboard />
+    </div>
   )
 }

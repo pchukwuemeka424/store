@@ -1,10 +1,10 @@
 import React from 'react'
-import Dashboard from './dashboard'
+import { AppSidebar } from '@/components/app-sidebar'
 
 export default function layout({children}:{children:React.ReactNode}) {
   return (
     <div className='mx-auto max-w-7xl'>
-        Admin Dashboard
+        <AppSidebar />
         {children}
     </div>
   )
