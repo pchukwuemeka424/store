@@ -1,10 +1,11 @@
 "use client";  // This tells Next.js to treat this component as a client-side component
 
-import { useActionState } from 'react';
+import { useActionState, useEffect } from 'react';
 import { AiOutlineShop, AiOutlineUser, AiOutlinePhone, AiOutlineLock, AiOutlineMail, AiOutlineArrowLeft } from 'react-icons/ai';
 import register from '@/actions/auth/register';
 import { Button } from '@/components/ui/button';
 import  Link from 'next/link';
+import { redirect } from 'next/navigation';
 interface FormData {
     email: string;
     username: string;
@@ -14,6 +15,7 @@ interface FormData {
     errors: Record<string, string>;
     isSubmitting: boolean;
     isValid: boolean;
+    successMessage?: string;
 }
 
 export default function Register() {
@@ -26,7 +28,19 @@ export default function Register() {
         errors: {},
         isSubmitting: false,
         isValid: true,
+        successMessage: "",
+        
     }, null);
+
+       // Redirect to login after showing success message
+       useEffect(() => {
+        if (prev?.successMessage) {
+            setTimeout(() => {
+                redirect('/login');
+            }, 3000);
+        }
+    }, [prev?.successMessage]);
+
 
     return (
         <div className="h-screen flex">
@@ -148,6 +162,12 @@ export default function Register() {
                     {prev?.errors.general && (
                         <p className="text-red-500 text-sm mt-2 text-center">
                             {prev.errors.general}
+                        </p>
+                    )}
+                        {/* Success Message */}
+                        {prev?.successMessage && (
+                        <p className="text-green-600 text-center mt-2">
+                            {prev.successMessage}
                         </p>
                     )}
                 </form>

@@ -1,9 +1,8 @@
 "use server";
-
-import { createClient } from '@/utils/supabase/server';
 import { redirect } from 'next/navigation';
+import { createClient } from '@/utils/supabase/server';
 import { z } from "zod";
-
+import { Resend } from 'resend';
 interface FormData {
     get: (key: string) => string | null;
 }
@@ -12,7 +11,10 @@ interface RegisterState {
     errors: Record<string, string>;
     isSubmitting: boolean;
     isValid: boolean;
+    successMessage?: string;
 }
+
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 export default async function register(prev: RegisterState, formData: FormData) {
   
@@ -80,6 +82,7 @@ export default async function register(prev: RegisterState, formData: FormData) 
     const { data, error } = await superbase.auth.signUp({
         email: validated.data.email,
         password: validated.data.password,
+        
     });
 
     if (error && error.message === 'User already registered') {
@@ -114,7 +117,19 @@ export default async function register(prev: RegisterState, formData: FormData) 
 
     // Success message display
     console.log('Registration successful, please login to continue');
-
+try {
+    await resend.emails.send({
+        from: 'MStore <team@tslinkinternational.com>',
+        to: validated.data.email,
+        subject: 'Welcome to MStore',
+        html: `<h1>Thanks for registering with MStore</h1>
+        <p>Username: ${validated.data.username}</p>
+        <p>Shopname: ${validated.data.shopname}</p>
+        <p>Phone: ${validated.data.phone}</p>`,
+    })
+} catch (error) {
+    console.error('Error sending email:', error);
+}
     // Redirect to login page
     redirect('/login');
 
@@ -123,5 +138,6 @@ export default async function register(prev: RegisterState, formData: FormData) 
         errors: {},
         isSubmitting: false,
         isValid: true,
+        successMessage: "Registration successful! Redirecting to login...",
     };
 }
