@@ -62,6 +62,7 @@ const ProductPage: FC = () => {
           <div className="flex flex-col lg:flex-row gap-8 items-center lg:text-left">
             {/* Product Image */}
             <div className="lg:w-1/2 w-full">
+            
               <Image
                 src={`${process.env.NEXT_PUBLIC_IMAGE_URL}${product.image}`} 
                 width={500}

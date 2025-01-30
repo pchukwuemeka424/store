@@ -77,7 +77,7 @@ export default function FeatureProducts<T>({ currentProductId, currentProductTit
             <Card className="hover:shadow-lg transition mx-2">
               <CardHeader className='p-0'>
                 <Image
-                  src={product.image || '/default-placeholder.png'}
+                  src={`${process.env.NEXT_PUBLIC_IMAGE_URL}${product.image}`} 
                   alt={product.title}
                   className="w-full h-40 object-cover rounded mb-4"
                   width={500}
