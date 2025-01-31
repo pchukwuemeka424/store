@@ -74,7 +74,7 @@ export default function FeatureProducts<T>({ currentProductId, currentProductTit
       {featureProducts.map((product) => (
         <div key={product.id}>
           <Link href={`/product/${product.user_id}`} key={product.user_id} passHref>
-            <Card className="hover:shadow-lg transition mx-2">
+            <Card className="hover:shadow-lg transition mx-1 p-0">
               <CardHeader className='p-0'>
                 <Image
                   src={`${process.env.NEXT_PUBLIC_IMAGE_URL}${product.image}`} 

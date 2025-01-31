@@ -106,7 +106,7 @@ const ProductPage: FC = () => {
              
               </div>
                 
-              <div className="flex flex-wrap gap-4 justify-center lg:justify-start mt-4">
+              <div className="flex space-x-1">
                 <Link
                   href={`/store/${product.user_profile?.username || "#"}`}
                   rel="noopener noreferrer"
@@ -135,7 +135,7 @@ href={`https://api.whatsapp.com/send?phone=234${product.user_profile?.phone.subs
         ) : (
           <p className="text-center text-gray-600">Loading product details...</p>
         )}
-        <div className="w-full lg:w-full bg-gray-50 p-4 relative">
+        <div className="w-full lg:w-full bg-gray-50  relative">
           {product && (
             <FeatureProducts currentProductId={product.id} currentProductTitle={product.title} />
           )}
