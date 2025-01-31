@@ -1,6 +1,6 @@
 "use client";
 
-import { useParams } from "next/navigation";
+import { useParams, useSearchParams } from "next/navigation";
 import { useState, useEffect, FC } from "react";
 import { FaStore, FaPhone, FaMapMarkerAlt, FaWhatsapp } from "react-icons/fa";
 import CategoryList from "@/components/category";
@@ -10,9 +10,22 @@ import FeatureProducts from "./feature";
 import Image from "next/image";
 import { formatCurrency } from "@/components/currency";
 
+
+
+
 const ProductPage: FC = () => {
   const params = useParams();
   const { id } = params || {};
+
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+      setIsClient(true);
+  }, []);
+
+
+ 
+ 
 
   const [product, setProduct] = useState<any | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -71,7 +84,7 @@ const ProductPage: FC = () => {
                 className="w-full h-96 object-cover rounded-lg shadow-md"
               />
             </div>
-
+        
             {/* Product Details */}
             <div className="lg:w-1/2">
               <div className="text-2xl capitalize font-bold text-gray-800 mb-2">{product.title || "Product Title"}</div>
@@ -90,12 +103,9 @@ const ProductPage: FC = () => {
                   <FaMapMarkerAlt className="inline mr-2" />
                   Location: {product.user_profile?.city || "N/A"}, {product.user_profile?.stat || "N/A"}
                 </p>
-                <p>
-                  <FaPhone className="inline mr-2" />
-                  Contact: {product.user_profile?.phone || "N/A"}
-                </p>
+             
               </div>
-
+                
               <div className="flex flex-wrap gap-4 justify-center lg:justify-start mt-4">
                 <Link
                   href={`/store/${product.user_profile?.username || "#"}`}
@@ -104,20 +114,21 @@ const ProductPage: FC = () => {
                 >
                   <FaStore /> Visit Store
                 </Link>
-                <a
+                <Link
                   href={`tel:${product.user_profile?.phone || "#"}`}
                   className="bg-orange-600 text-white text-sm px-4 py-2 rounded-md flex items-center gap-2 hover:bg-orange-700 transition-colors"
                 >
                   <FaPhone /> Call
-                </a>
-                <a
-                  href={`https://wa.me/${product.user_profile?.phone || "#"}`}
+                  </Link>
+                <Link
+href={`https://api.whatsapp.com/send?phone=234${product.user_profile?.phone || "#"}&text=I'm%20interested%20in%20your%20product%20${isClient ? encodeURIComponent(window.location.href) : ""}`}
+
                   target="_blank"
                   rel="noopener noreferrer"
                   className="bg-green-500 text-white text-sm px-4 py-2 rounded-md flex items-center gap-2 hover:bg-green-600 transition-colors"
                 >
                   <FaWhatsapp /> Message
-                </a>
+                  </Link>
               </div>
             </div>
           </div>

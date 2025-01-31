@@ -105,7 +105,7 @@ const Dashboard = async () => {
             <h2 className="text-lg font-semibold">Subscription Plan</h2>
           </div>
           <p className="text-3xl font-bold">{subscriptionPlan}</p>
-          <Link href="/dashboard/upgrade">
+          <Link href="#">
             <Button className="px-4 py-2 bg-yellow-400 text-gray-900 rounded-md shadow-md">Upgrade Plan</Button>
           </Link>
         </div>
@@ -123,13 +123,13 @@ const Dashboard = async () => {
           </div>
           <p className="text-3xl font-bold">{kycStatus}</p>
           <div className="flex space-x-4">
-            <Link href="/dashboard/kyc">
-              <Button className="px-4 py-2 rounded-md shadow-md">
-                <FaFileAlt size={20} className="inline mr-2" />
-                Upload Documents
-              </Button>
-            </Link>
-            <button className="px-4 py-2 bg-gray-100 text-gray-800 rounded-md shadow-md">View Details</button>
+         {/* if pending show button  */}
+            {kycStatus === "Pending" && (
+              <Link href="/dashboard/kyc">
+                <Button className="px-4 py-2 bg-yellow-400 text-gray-900 rounded-md shadow-md">Update KYC</Button>
+              </Link>
+            )}
+           
           </div>
         </div>
 
