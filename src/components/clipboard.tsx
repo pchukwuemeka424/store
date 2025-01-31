@@ -29,7 +29,7 @@ const ShopUrlDisplay = ({ siteData, profile }) => {
 
   return (
     siteData?.siteUrl && (
-      <div className="flex items-center space-x-4 bg-gray-100 p-4 rounded-md shadow-md">
+      <div className="bg-gray-100 p-4 rounded-md shadow-md">
         <span className="text-gray-800 font-semibold">Shop URL: </span>
         <a href={`${siteData.siteUrl}store/${profile?.username}`} className="text-blue-500 hover:underline">
           {siteData.siteUrl}store/{profile?.username}

@@ -62,11 +62,13 @@ const Dashboard = async () => {
   return (
     <div className="min-h-screen bg-gray-100 p-6">
       {/* Header */}
-      <ShopUrlDisplay siteData={siteData} profile={profile} />
       <header className="bg-white shadow-md p-4 rounded-md flex justify-between items-center">
         <h1 className="text-xl font-bold text-gray-800">Dashboard</h1>
         <LogoutButton />
       </header>
+     <ShopUrlDisplay siteData={siteData} profile={profile} />
+   
+  
 
       {/* Main Content */}
       <div className="mt-6 grid grid-cols-1 lg:grid-cols-4 gap-6">
