@@ -136,6 +136,10 @@ href={`https://api.whatsapp.com/send?phone=234${product.user_profile?.phone.subs
           <p className="text-center text-gray-600">Loading product details...</p>
         )}
         <div className="w-full lg:w-full bg-gray-50  relative">
+          {/* related products */}
+          <div className="text-2xl font-bold text-gray-800 mb-4">
+            Related Products
+          </div>
           {product && (
             <FeatureProducts currentProductId={product.id} currentProductTitle={product.title} />
           )}

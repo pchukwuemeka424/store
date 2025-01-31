@@ -4,10 +4,12 @@ import Link from 'next/link';
 import { Card, CardHeader, CardTitle } from '@/components/ui/card';
 import { useParams } from 'next/navigation';
 import CategoryList from '@/components/category';
-import ContactButtons from '@/components/contactButton';
+import ContactButtons from '@/components/headerUser';
 import Spinner from '@/components/spinner';
 import supabaseDb from '@/utils/supabase-db';
 import { formatCurrency } from '@/components/currency';
+import HeaderMenu from '@/components/headerUser';
+
 
 export default function ProductFetch() {
   const [shopDetails, setShopDetails] = useState(null);
@@ -81,40 +83,20 @@ export default function ProductFetch() {
 
   return (
     <div>
-      <div
-        className="relative bg-cover bg-center"
-        style={{
-          backgroundImage: `url('https://sxkmrpzbtqpraucnmnjm.supabase.co/storage/v1/object/sign/web_images/bg.jpg?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJ3ZWJfaW1hZ2VzL2JnLmpwZyIsImlhdCI6MTczNjQzNjEzOCwiZXhwIjoyMDUxNzk2MTM4fQ.d0S0B714IYris2YO8zcNgfacVOeMOKTn4LJZPM009gQ')`,
-        }}
-      >
-        {/* Overlay */}
-        <div className="absolute inset-0 bg-black bg-opacity-80"></div>
-
-        {/* Content */}
-        <div className="relative h-40 flex justify-between items-center p-4 border-b mx-auto max-w-7xl">
-          <Image
-            src={shopDetails.avater}
-            alt={shopDetails.shopname || `Shop Name`}
-            className="h-20 object-cover rounded mb-4"
-            width={100}
-            height={100}
-          />
-          <ContactButtons shopDetails={shopDetails} />
-        </div>
-      </div>
+<HeaderMenu shopDetails={shopDetails} />
 
       <div className="grid grid-cols-12 gap-4 p-4 ">
         <CategoryList />
-        
+
         <div className="col-span-12 sm:col-span-9 grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-4">
           {products.map((product, index) => (
             <Link href={`/product/${product.user_id}`} key={product.user_id || index} passHref>
               <Card className="hover:shadow-lg transition">
                 <CardHeader className="p-0">
                   <Image
-                    src={`${process.env.NEXT_PUBLIC_IMAGE_URL}${product.image}`} 
+                    src={`${process.env.NEXT_PUBLIC_IMAGE_URL}${product.image}`}
                     alt={product.title || `Product ${index + 1}`}
-                  className="w-full h-40 sm:h-64 object-cover rounded mb-4"
+                    className="w-full h-40 sm:h-64 object-cover rounded mb-4"
                     width={500}
                     height={500}
                   />
