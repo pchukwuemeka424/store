@@ -121,7 +121,7 @@ const ProductPage: FC = () => {
                   <FaPhone /> Call
                   </Link>
                 <Link
-href={`https://api.whatsapp.com/send?phone=234${product.user_profile?.phone || "#"}&text=I'm%20interested%20in%20your%20product%20${isClient ? encodeURIComponent(window.location.href) : ""}`}
+href={`https://api.whatsapp.com/send?phone=234${product.user_profile?.phone.substring(1) || "#"}&text=I'm%20interested%20in%20your%20product%20${isClient ? encodeURIComponent(window.location.href) : ""}`}
 
                   target="_blank"
                   rel="noopener noreferrer"
