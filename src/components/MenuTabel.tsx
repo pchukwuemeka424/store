@@ -3,10 +3,10 @@
 import React, { useState, useEffect } from "react";
 import { createClient } from "@/utils/supabase/client";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import ModelKyc from "./modal";
+
 const supabase = createClient();
 
-export default function KYCUpdateTable() {
+export default function MenuUpdateTable() {
   const [kycRecords, setKycRecords] = useState<any[]>([]);
   const [filteredRecords, setFilteredRecords] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
@@ -22,7 +22,7 @@ export default function KYCUpdateTable() {
 
     try {
       const { data, error: fetchError, count } = await supabase
-        .from("kyc") // Replace with your actual KYC table name
+        .from("menu") // Replace with your actual KYC table name
         .select(
           "*",
           { count: "exact" }
@@ -94,12 +94,9 @@ export default function KYCUpdateTable() {
             <TableRow>
 
               <TableHead>User ID</TableHead>
-              <TableHead>First Name</TableHead>
-              <TableHead>Last Name</TableHead>
-              <TableHead>Verification Type</TableHead>
-              <TableHead>ID Number</TableHead>
-              <TableHead>KYC Status</TableHead>
-              <TableHead>Created Date</TableHead>
+              <TableHead>Menu Name</TableHead>
+              <TableHead>Hyper</TableHead>
+
               <TableHead>Actions</TableHead>
             </TableRow>
           </TableHeader>
@@ -108,14 +105,11 @@ export default function KYCUpdateTable() {
               <TableRow key={record.id}>
                 <TableCell>{record.id}</TableCell>
               
-                <TableCell>{record.first_name || "N/A"}</TableCell>
-                <TableCell>{record.last_name || "N/A"}</TableCell>
-                <TableCell>{record.verification_type || "N/A"}</TableCell>
-                <TableCell>{record.id_number || "N/A"}</TableCell>
-                <TableCell>{record.kyc_status || "Pending"}</TableCell>
-                <TableCell>{new Date(record.created_at).toLocaleDateString()}</TableCell>
+                <TableCell>{record.title || "N/A"}</TableCell>
+                <TableCell>{record.url || "N/A"}</TableCell>
+
                 <TableCell>
-                <ModelKyc product={record} />
+                action
                 </TableCell>
               </TableRow>
             ))}

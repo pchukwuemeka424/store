@@ -1,6 +1,33 @@
-import React from 'react';
+"use client";
+
+import { createClient } from "@/utils/supabase/client";
+import React, { useEffect, useState } from "react";
 
 export default function Catlist({ product }) {
+    const supabase = createClient();
+    const [kycRecords, setKycRecords] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+
+    useEffect(() => {
+        const fetchCategories = async () => {
+            try {
+                const { data, error } = await supabase.from("category").select("*");
+                if (error) throw error;
+                setKycRecords(data);
+            } catch (err) {
+                setError(err.message);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchCategories();
+    }, [supabase]);
+
+    if (loading) return <div>Loading...</div>;
+    if (error) return <div>Error: {error}</div>;
+
     return (
         <select
             id="category"
@@ -9,21 +36,11 @@ export default function Catlist({ product }) {
             className="w-full px-4 py-2 border rounded-lg mt-2"
         >
             <option value="">Select Category</option>
-            <option value="electronics">Electronics</option>
-            <option value="fashion">Fashion</option>
-            <option value="home">Home & Kitchen</option>
-            <option value="toys">Toys</option>
-            <option value="beauty">Beauty & Personal Care</option>
-            <option value="sports">Sports & Outdoors</option>
-            <option value="automotive">Automotive</option>
-            <option value="books">Books</option>
-            <option value="health">Health & Wellness</option>
-            <option value="office">Office Supplies</option>
-            <option value="garden">Garden & Outdoor</option>
-            <option value="pets">Pet Supplies</option>
-            <option value="groceries">Groceries</option>
-            <option value="music">Musical Instruments</option>
-            <option value="travel">Travel & Luggage</option>
+            {kycRecords?.map((record) => (
+                <option key={record.id} value={record.title}>
+                    {record.title}
+                </option>
+            ))}
         </select>
     );
 }

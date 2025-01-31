@@ -7,10 +7,13 @@ import { Plus, Trash } from "lucide-react";
 import SiteLogoModel from "@/components/siteLogoModel";
 import Image from "next/image";
 import AddMenu from "@/actions/auth/addMenu";
+import AddCat from "@/actions/auth/addCat";
 import { useActionState } from "react";
-
+import MenuTabel from "@/components/MenuTabel";
+import CatTabel from "@/components/CatTabel";
 export default function SettingsPage({ userDetails, siteInfo }) {
   const [state, action, isPending] = useActionState(AddMenu, undefined);
+  const[state1, action1, isPending1] = useActionState(AddCat, undefined);
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-3 gap-6 p-6">
@@ -51,42 +54,27 @@ export default function SettingsPage({ userDetails, siteInfo }) {
             </form>
           </div>
           <div className="mt-4">
-            <table className="w-full border-collapse border border-gray-300">
-              <thead>
-                <tr className="bg-gray-100">
-                  <th className="border border-gray-300 p-2">Menu Name</th>
-                  <th className="border border-gray-300 p-2">Hyperlink</th>
-                  <th className="border border-gray-300 p-2">Action</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td className="border border-gray-300 p-2">Home</td>
-                  <td className="border border-gray-300 p-2">/home</td>
-                  <td className="border border-gray-300 p-2 text-center">
-                    <Button variant="destructive" size="sm">
-                      <Trash className="w-4 h-4" />
-                    </Button>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
+          <MenuTabel />
           </div>
         </CardContent>
       </Card>
 
       <Card>
-        <CardHeader>Banner</CardHeader>
+        <CardHeader>Add Category</CardHeader>
         <CardContent>
           <div className="space-y-4">
-            <Input placeholder="Banner Title" name="banner_title" type="text" />
-            <Input
-              placeholder="Banner Subtitle"
-              name="banner_subtitle"
-              type="text"
-            />
-            <input type="file" accept="image/*" />
+          <form action={action1}>
+              <Input
+                placeholder="Enter Category Name"
+                name="title"
+                type="text"
+              />
+              <Button className="mt-2" type="submit" disabled={isPending}>
+                <Plus className="w-4 h-4 mr-2" /> Add Category
+              </Button>
+            </form>
           </div>
+          <CatTabel />
         </CardContent>
       </Card>
     </div>

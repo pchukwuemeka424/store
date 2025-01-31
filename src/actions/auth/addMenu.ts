@@ -8,7 +8,7 @@ export default async function addMenu(state: any, formData: FormData) {
   const menu_link = formData.get("menu_link")?.toString() || "";
 
   const { error } = await supabase
-    .from("menu")
+    .from("category")
     .insert([{ title: menu_name, url: menu_link }]);
 
   if (error) {
