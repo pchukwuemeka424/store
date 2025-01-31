@@ -30,7 +30,7 @@ const Dashboard = async () => {
   const { data: kyc, error: kycError } = await supabase
     .from("kyc")
     .select("*")
-    .eq("userid", user.id)
+    .eq("user_id", user.id)
     .single();
 
   // user profile products
