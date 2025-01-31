@@ -18,6 +18,7 @@ import { FaRegCreditCard } from "react-icons/fa6";
 import LogoutButton from "./logoutButton";
 import Logo from "./logo";
 import LogoModel from "./logoModel";
+import ShopUrlDisplay from "./clipboard";
 
 
 const Dashboard = async () => {
@@ -46,6 +47,14 @@ const Dashboard = async () => {
     .select("*", { count: "exact" })
     .eq("id", user.id);
 
+        // Get site information
+        const { data: siteData } = await supabase
+          .from("site_info")
+          .select("*")
+          .single();
+ 
+ 
+
   const accountStatus = profile?.account_status;
   const subscriptionPlan = profile?.subscription_plan || "Free";
   const kycStatus = kyc?.kyc_status || "Pending";
@@ -53,6 +62,7 @@ const Dashboard = async () => {
   return (
     <div className="min-h-screen bg-gray-100 p-6">
       {/* Header */}
+      <ShopUrlDisplay siteData={siteData} profile={profile} />
       <header className="bg-white shadow-md p-4 rounded-md flex justify-between items-center">
         <h1 className="text-xl font-bold text-gray-800">Dashboard</h1>
         <LogoutButton />
