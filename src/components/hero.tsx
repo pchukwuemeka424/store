@@ -1,78 +1,145 @@
 "use client";
-import React from "react";
-import { AiOutlineSearch } from "react-icons/ai";
-import { search } from "@/actions/auth/search";
-import Link from "next/link";
-import { FaBox, FaShoppingCart, FaSignInAlt, FaTags, FaUserPlus } from "react-icons/fa";
-import Banner from "./banner";
+import { FaSearch, FaUser } from 'react-icons/fa';
+import { search } from '@/actions/auth/search';
+import React, { useState, useEffect } from 'react';
+import Image from 'next/image';
+import { SheetMenu } from './sheetMenu';
+import Link from 'next/link';
+import { Button } from './ui/button';
+import LogoutButton from './logoutButton';
+import { createClient } from '@/utils/supabase/client';
 
-export default function Navbar() {
+export default function TopNav() {
+  const [user, setUser] = useState(null);
+  const [logo, setLogo] = useState<string | null>(null);
+
+  useEffect(() => {
+    const supabase = createClient();
+
+    async function fetchUser() {
+      const { data: { user } } = await supabase.auth.getUser();
+      setUser(user);
+    }
+
+    async function fetchLogo() {
+      const { data, error } = await supabase
+        .from('site_info')
+        .select("logo")
+        .single();
+
+      if (error) {
+        console.error("Error fetching logo:", error);
+        setLogo("/default-logo.png");
+      } else {
+        setLogo(data?.logo || "/default-logo.png");
+      }
+    }
+
+    fetchUser();
+    fetchLogo();
+  }, []);
+
   return (
-   <>
+    <>
+      {/* Mobile Menu with Search Bar */}
+      <div className="border-b border-gray-200 flex justify-between items-center py-4 mx-auto max-w-7xl md:hidden">
+        {/* Left: SheetMenu */}
+        <div className="flex items-center space-x-4">
+          <SheetMenu />
+        </div>
 
-    <section className="h-screen relative flex flex-col justify-center items-center bg-cover bg-center 
-    bg-[url('https://scholarmedia.africa/wp-content/uploads/2023/03/A-woman-trader-e1680190679909.jpg')]">
-      {/* Background Overlay */}
-      <div className="absolute inset-0 bg-blue-900 bg-opacity-80"></div>
+        {/* Center: Logo */}
+        <div className="absolute left-1/2 transform -translate-x-1/2">
+          <Image
+            src={logo || "/default-logo.png"}
+            alt="Logo"
+            className="w-32 h-10"
+            width={100}
+            height={100}
+          />
+        </div>
 
-      {/* Content Container */}
-      <div className="relative container mx-auto text-center px-4">
-        {/* Hero Content */}
-        <h1 className="text-2xl sm:text-4xl font-bold text-white mb-4">
-          Find What You&apos;re Looking For
-        </h1>
-        <p className="text-gray-200 mb-8 md:w-2/4 w-full mx-auto">
-          Discover products, connect with vendors, and access detailed information across our platform for seamless browsing, purchasing, and partnership opportunities.
-        </p>
-
-        {/* Search Bar */}
+        {/* Right: Login Button */}
         <div>
-          <form action={search} className="flex flex-col sm:flex-row justify-center items-center gap-2 sm:gap-0">
-            <input
-              required
-              type="text"
-              name="search"
-              placeholder="Search here..."
-              className="w-full sm:max-w-md px-4 py-4 border border-gray-300 rounded-md sm:rounded-l-md focus:outline-none focus:ring-2 focus:ring-blue-400"
-            />
-            <button
-              type="submit"
-              className="w-full sm:w-auto bg-blue-500 text-white px-6 py-2 rounded-md sm:rounded-r-md hover:bg-blue-600 transition flex items-center justify-center"
-            >
-              <AiOutlineSearch className="w-6 h-6 mr-2" />
-              Search
-            </button>
-          </form>
-
-
-
-          <div className="flex justify-center items-center gap-4 mt-6">
-            {/* Online Vendors Box */}
-            <div className="h-28 w-28 sm:h-28 sm:w-28 bg-blue-500 flex flex-col items-center justify-center rounded-md shadow-md text-white">
-              <Link href="/vendor">
-                <div className="flex flex-col items-center justify-center">
-                  <FaBox size={40} />
-                  <span className="mt-2">Vendors</span>
-                </div>
-              </Link>
-            </div>
-
-            {/* Products Box */}
-            <div className="h-28 w-28 sm:h-28 sm:w-28 bg-green-500 flex flex-col items-center justify-center rounded-md shadow-md text-white">
-              <Link href="/product">
-                <div className="flex flex-col items-center justify-center">
-                  <FaShoppingCart size={40} />
-                  <span className="mt-2">Products</span>
-                </div>
-              </Link>
-            </div>
-          </div>
-
-
-
+          {!user ? (
+            <Link href="/login">
+              <Button className="flex items-center text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 mr-2">
+                <FaUser className="mr-2" /> Login
+              </Button>
+            </Link>
+          ) : (
+            <LogoutButton />
+          )}
         </div>
       </div>
-    </section>
-   </>
+
+      {/* Mobile Search Bar */}
+      <div className="md:hidden px-4 py-2">
+        <form action={search} className="relative">
+          <input
+            name="search"
+            type="search"
+            className="block w-full p-3 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
+            placeholder="Search..."
+            required
+          />
+          <button
+            type="submit"
+            className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-600"
+          >
+            <FaSearch className="w-5 h-5" />
+          </button>
+        </form>
+      </div>
+
+      {/* Desktop Menu */}
+      <div className="hidden md:flex justify-between items-center py-4 mx-auto max-w-7xl">
+        {/* Left: Logo and SheetMenu */}
+        <div className="flex items-center space-x-4">
+          <SheetMenu />
+          <Image
+            src={logo || "/default-logo.png"}
+            alt="Logo"
+            className="w-40 h-14"
+            width={100}
+            height={100}
+          />
+        </div>
+
+        {/* Middle: Search Bar */}
+        <div className="w-full md:w-[70%] border">
+          <form action={search}>
+            <div className="relative">
+              <input
+                name="search"
+                type="search"
+                className="block w-full p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
+                placeholder="Search Mockups, Logos..."
+                required
+              />
+              <button
+                type="submit"
+                className="text-dark absolute right-2.5 bottom-2.5 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-lg px-4 py-2"
+              >
+                <FaSearch className="w-4 h-4" />
+              </button>
+            </div>
+          </form>
+        </div>
+
+        {/* Right: Login Button */}
+        <div>
+          {!user ? (
+            <Link href="/login">
+              <Button className="flex items-center text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 mr-2">
+                <FaUser className="mr-2" /> Login
+              </Button>
+            </Link>
+          ) : (
+            <LogoutButton />
+          )}
+        </div>
+      </div>
+    </>
   );
 }
