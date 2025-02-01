@@ -69,7 +69,7 @@ export default function SettingsPage({ userDetails, siteInfo }) {
                 name="title"
                 type="text"
               />
-              <Button className="mt-2" type="submit" disabled={isPending}>
+              <Button className="mt-2" type="submit" disabled={isPending1}>
                 <Plus className="w-4 h-4 mr-2" /> Add Category
               </Button>
             </form>

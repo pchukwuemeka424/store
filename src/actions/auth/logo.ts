@@ -38,7 +38,7 @@ export default async function handleLogoSubmission(_: any, formData: FormData) {
     // Compress the image
     const buffer = await documentFile.arrayBuffer();
     const compressedDocument = await sharp(Buffer.from(buffer))
-      .resize({ width: 300, height: 300, fit: "cover" })
+      // .resize({ width: 300, height: 300, fit: "cover" })
       .jpeg({ quality: 70 })
       .toBuffer();
 
