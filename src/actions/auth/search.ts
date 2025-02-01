@@ -4,11 +4,11 @@
 import { redirect } from "next/navigation";
 
 export async function search(formData: FormData) {
-  const searchQuery = formData.get("search");
-  // redirect to product page
-  console.log(searchQuery);
-  redirect(`/search/?q=${searchQuery}`);
+  const search = formData.get('search');
+  const state = formData.get('state');
 
-  return searchQuery;
+  // Perform search logic here
+  redirect(`/search/?q=${search}&state=${state}`);
 }
 
+ 

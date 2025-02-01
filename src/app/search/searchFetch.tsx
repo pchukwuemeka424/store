@@ -11,9 +11,15 @@ export default function SearchProduct() {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(1);
-  const search = useSearchParams().get('q');
 
-  const fetchProducts = useCallback(async (page, search) => {
+  // Get search params
+  const searchParams = useSearchParams();
+  const search = searchParams.get('q');
+  const state = searchParams.get('state');
+
+  // Fetch products function
+  const fetchProducts = useCallback(async (page, search, state) => {
+    setLoading(true);
     try {
       let query = supabaseDb
         .from('products')
@@ -31,16 +37,16 @@ export default function SearchProduct() {
       if (search) {
         query = query.ilike('title', `%${search}%`);
       }
+      if (state) {
+        query = query.ilike('state',`%${state}%`); // Ensure 'stat' matches your actual DB column
+      }
 
       const { data, error } = await query;
-
       if (error) throw error;
 
       setProducts((prevProducts) => {
-        const newProducts = data.filter((product) =>
-          !prevProducts.some((prevProduct) => prevProduct.id === product.id)
-        );
-        return [...prevProducts, ...newProducts];
+        if (page === 1) return data; // Reset on new search
+        return [...prevProducts, ...data.filter((p) => !prevProducts.some((prev) => prev.id === p.id))];
       });
     } catch (error) {
       console.error('Error fetching products:', error.message);
@@ -49,18 +55,23 @@ export default function SearchProduct() {
     }
   }, []);
 
+  // Effect to fetch products when search or state changes
   useEffect(() => {
     setProducts([]);
     setPage(1);
-    fetchProducts(1, search);
-  }, [search, fetchProducts]);
+    fetchProducts(1, search, state);
+  }, [search, state, fetchProducts]);
 
+  // Effect to fetch more products when page changes
   useEffect(() => {
-    fetchProducts(page, search);
-  }, [page, search, fetchProducts]);
+    if (page > 1) {
+      fetchProducts(page, search, state);
+    }
+  }, [page, search, state, fetchProducts]);
 
+  // Infinite scrolling
   const handleScroll = useCallback(() => {
-    if (window.innerHeight + document.documentElement.scrollTop >= document.documentElement.offsetHeight) {
+    if (window.innerHeight + document.documentElement.scrollTop >= document.documentElement.offsetHeight - 10) {
       setPage((prevPage) => prevPage + 1);
     }
   }, []);
@@ -91,9 +102,9 @@ export default function SearchProduct() {
           <Card className="hover:shadow-lg transition">
             <CardHeader className='p-0'>
               <Image
-                 src={`${process.env.NEXT_PUBLIC_IMAGE_URL}${product.image}`} 
+                src={`${process.env.NEXT_PUBLIC_IMAGE_URL}${product.image}`} 
                 alt={product.title || `Product ${index + 1}`}
-                   className="w-full h-40 sm:h-64 object-cover rounded mb-4"
+                className="w-full h-40 sm:h-64 object-cover rounded mb-4"
                 width={500}
                 height={500}
               />
@@ -101,11 +112,11 @@ export default function SearchProduct() {
             <div className="px-4">
               <CardTitle className="capitalize text-sm font-bold">{product.title}</CardTitle>
               <CardDescription className="capitalize text-sm text-gray-600">
-                {product.user_profile.shopname || 'Store Name'}
+                {product.user_profile?.shopname || 'Store Name'}
               </CardDescription>
               <div className="flex justify-between items-center mb-3">
                 <div className="capitalize text-xs text-gray-600">
-                  {product.user_profile.stat || 'City'}, {product.user_profile.city || 'City'}
+                  {product.user_profile?.stat || 'State'}, {product.user_profile?.city || 'City'}
                 </div>
                 <div className="text-sm font-semibold text-green-500">
                   ₦{product.price}

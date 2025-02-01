@@ -5,7 +5,14 @@ import { search } from "@/actions/auth/search";
 import Link from "next/link";
 import { FaBox, FaShoppingCart, FaSignInAlt, FaTags, FaUserPlus } from "react-icons/fa";
 import Banner from "./banner";
-
+import { nigeriaStates } from './states';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 export default function Navbar() {
   return (
    <>
@@ -33,11 +40,24 @@ export default function Navbar() {
               type="text"
               name="search"
               placeholder="Search here..."
-              className="w-full sm:max-w-md px-4 py-4 border border-gray-300 rounded-md sm:rounded-l-md focus:outline-none focus:ring-2 focus:ring-blue-400"
+              className="w-full sm:max-w-md px-4 py-4 border border-gray-300  focus:outline-none focus:ring-2 focus:ring-blue-400"
             />
+       
+            <Select name="state">
+            <SelectTrigger className="w-full sm:w-36 bg-white px-4 py-6 border  focus:outline-none focus:ring-2 focus:ring-blue-400">
+              <SelectValue placeholder="Select State" />
+            </SelectTrigger>
+            <SelectContent>
+              {nigeriaStates.map((state) => (
+                <SelectItem key={state} value={state}>
+                  {state}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
             <button
               type="submit"
-              className="w-full sm:w-auto bg-blue-500 text-white px-6 py-2 rounded-md sm:rounded-r-md hover:bg-blue-600 transition flex items-center justify-center"
+              className="w-full sm:w-auto bg-blue-500 text-white px-6 py-4 rounded-md sm:rounded-r-md hover:bg-blue-600 transition flex items-center justify-center"
             >
               <AiOutlineSearch className="w-6 h-6 mr-2" />
               Search
