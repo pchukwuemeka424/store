@@ -38,9 +38,12 @@ export default async function handleLogoSubmission(_: any, formData: FormData) {
     // Compress the image
     const buffer = await documentFile.arrayBuffer();
     const compressedDocument = await sharp(Buffer.from(buffer))
-      .resize({ width: 300, height: 300, fit: "cover" })
+      // .resize({ width: 300, height: 300, fit: "cover" })
       .jpeg({ quality: 70 })
       .toBuffer();
+
+
+      
 
     // Generate file path
     const fileName = `avatar_${user_id}_${Date.now()}.jpg`;
@@ -63,8 +66,8 @@ export default async function handleLogoSubmission(_: any, formData: FormData) {
     // Update user profile with new avatar URL
     const { error: updateError } = await supabase
       .from("site_info")
-      .insert({ logo: imageUrl, user_id }) // Fixed `avater` typo
- 
+      .update({ logo: imageUrl })
+      .eq("user_id", user_id); 
 
     if (updateError) {
       console.error("Error updating user profile:", updateError);
