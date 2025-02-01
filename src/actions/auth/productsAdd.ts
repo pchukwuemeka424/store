@@ -8,6 +8,7 @@ interface FormInput {
   price: number;
   category: string;
   stock: number;
+  stateLocal: string;
   image: string | null;
   user_id: string | null;
 }
@@ -23,6 +24,7 @@ export default async function addProduct(state: any, formData: FormData) {
     price: formData.get("price") ? parseFloat(formData.get("price")?.toString() || "0") : 0,
     category: formData.get("category")?.toString() || "",
     stock: formData.get("stock") ? parseInt(formData.get("stock")?.toString() || "0", 10) : 0,
+    stateLocal: formData.get("state")?.toString() || "",
     image: null,
     user_id: user_id,
   };
@@ -88,6 +90,7 @@ export default async function addProduct(state: any, formData: FormData) {
       category: formInput.category,
       stock: formInput.stock,
       image: formInput.image,
+      state: formInput.stateLocal,
       id: user_id,
     });
 

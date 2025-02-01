@@ -15,7 +15,7 @@ import Link from 'next/link';
 export default function ProductCategories() {
   // Handle form submission
   const handleSubmit = (event) => {
-    event.preventDefault();
+    event.preventDefault(); 
     const formData = new FormData(event.target);
     const search = formData.get('search');
     const state = formData.get('state');

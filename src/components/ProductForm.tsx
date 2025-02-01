@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import { useActionState } from "react";
 import Catlist from "./catlist";
 
-export default function ProductForm({ handler, product }) {
+export default function ProductForm({ handler, product,profile }) {
   const [state, action, isPending] = useActionState(handler, undefined);
   const [imageError, setImageError] = useState(""); // Track image errors
   const [isImageValid, setIsImageValid] = useState(true); // Control button state
@@ -69,6 +69,17 @@ export default function ProductForm({ handler, product }) {
   return (
     <div className="bg-white p-6 rounded-lg shadow-md col-span-full">
       <form action={action} onSubmit={handleSubmit}>
+
+
+        {/* state */}
+        <input
+            type="hidden"
+            id="state"
+            name="state"
+            placeholder="Enter product name"
+            defaultValue={profile?.stat || ""}
+            className="w-full px-4 py-2 border rounded-lg mt-2"
+          />
         {/* Product Name */}
         <div className="mb-4">
           <label htmlFor="name" className="block text-sm font-semibold text-gray-700">

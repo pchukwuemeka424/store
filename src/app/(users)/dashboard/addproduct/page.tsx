@@ -29,7 +29,7 @@ export default async function Product() {
   // Fetch user profile
   const { data: profile, error: profileError } = await supabase
     .from("user_profile")
-    .select("plan")
+    .select("plan,stat")
     .eq("id", user.id)
     .single();
 
@@ -72,7 +72,7 @@ export default async function Product() {
           </div>
         )}
 
-        <ProductForm handler={addProduct} canUpload={canUpload} />
+        <ProductForm handler={addProduct} canUpload={canUpload} profile={profile} />
       </div>
     </div>
   );
