@@ -11,7 +11,6 @@ export default function SearchProduct() {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(1);
-  const [hasMore, setHasMore] = useState(true);
 
   // Get search params
   const searchParams = useSearchParams();
@@ -20,7 +19,6 @@ export default function SearchProduct() {
 
   // Fetch products function
   const fetchProducts = useCallback(async (page, search, state) => {
-    if (!hasMore) return;
     setLoading(true);
     try {
       let query = supabaseDb
@@ -40,32 +38,27 @@ export default function SearchProduct() {
         query = query.ilike('title', `%${search}%`);
       }
       if (state) {
-        query = query.ilike('state', `%${state}%`);
+        query = query.ilike('state',`%${state}%`); // Ensure 'stat' matches your actual DB column
       }
 
       const { data, error } = await query;
       if (error) throw error;
 
-      if (data.length === 0) {
-        setHasMore(false);
-      } else {
-        setProducts((prevProducts) => {
-          if (page === 1) return data;
-          return [...prevProducts, ...data.filter((p) => !prevProducts.some((prev) => prev.id === p.id))];
-        });
-      }
+      setProducts((prevProducts) => {
+        if (page === 1) return data; // Reset on new search
+        return [...prevProducts, ...data.filter((p) => !prevProducts.some((prev) => prev.id === p.id))];
+      });
     } catch (error) {
       console.error('Error fetching products:', error.message);
     } finally {
       setLoading(false);
     }
-  }, [hasMore]);
+  }, []);
 
   // Effect to fetch products when search or state changes
   useEffect(() => {
     setProducts([]);
     setPage(1);
-    setHasMore(true);
     fetchProducts(1, search, state);
   }, [search, state, fetchProducts]);
 
@@ -78,11 +71,10 @@ export default function SearchProduct() {
 
   // Infinite scrolling
   const handleScroll = useCallback(() => {
-    if (!hasMore || loading) return;
     if (window.innerHeight + document.documentElement.scrollTop >= document.documentElement.offsetHeight - 10) {
       setPage((prevPage) => prevPage + 1);
     }
-  }, [hasMore, loading]);
+  }, []);
 
   useEffect(() => {
     window.addEventListener('scroll', handleScroll);
@@ -135,7 +127,6 @@ export default function SearchProduct() {
         </Link>
       ))}
       {loading && <p>Loading more products...</p>}
-      {!hasMore && <p className="text-center text-gray-500 col-span-full">No more products available</p>}
     </div>
   );
 }
