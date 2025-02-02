@@ -106,7 +106,7 @@ export default function KYCUpdateTable() {
           <TableBody>
             {currentRecords.map((record) => (
               <TableRow key={record.id}>
-                <TableCell>{record.id}</TableCell>
+                <TableCell>{record.user_id}</TableCell>
               
                 <TableCell>{record.first_name || "N/A"}</TableCell>
                 <TableCell>{record.last_name || "N/A"}</TableCell>

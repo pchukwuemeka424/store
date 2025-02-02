@@ -17,6 +17,15 @@ export async function updateKYC(data: any) {
     })
     .eq("id", data.id);
 
+
+   const { error: profileError } = await supabase
+    .from("user_profile")
+    .update({
+      kyc_status: data.kyc_status,
+    })
+    .eq("user_id", data.user_id);
+
+
   if (error) return { error: error.message };
 
   revalidatePath("/admin/kyc", "page"); // Ensure cache refresh

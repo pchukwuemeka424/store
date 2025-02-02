@@ -24,6 +24,7 @@ export default function ModalEdit({ product }: { product: any }) {
     id_number: product.id_number || "N/A",
     kyc_status: product.kyc_status || "Pending",
     id: product.id,
+    user_id: product.user_id,
   });
 
   const [loading, setLoading] = useState(false);
@@ -81,6 +82,7 @@ export default function ModalEdit({ product }: { product: any }) {
         <form onSubmit={handleSubmit}>
           <div className="grid gap-4 grid-cols-2">
             <div>
+            <Input id="user_id" name="user_id" value={formData.user_id} onChange={handleInputChange} />
               <Label htmlFor="first_name">First Name</Label>
               <Input id="first_name" name="first_name" value={formData.first_name} onChange={handleInputChange} />
             </div>
