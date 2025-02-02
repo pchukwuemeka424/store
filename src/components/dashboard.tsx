@@ -19,6 +19,7 @@ import LogoutButton from "./logoutButton";
 import Logo from "./logo";
 import LogoModel from "./logoModel";
 import ShopUrlDisplay from "./clipboard";
+import BannerModel from "./bannerModel";
 
 
 const Dashboard = async () => {
@@ -137,9 +138,17 @@ const Dashboard = async () => {
         <div className="bg-gradient-to-r from-gray-700 to-gray-900 text-white p-6 rounded-md shadow-md flex flex-col space-y-4">
           <div className="flex items-center space-x-4">
            <Image src={profile.avater} alt="Logo" width={40} height={40} />
-            <h2 className="text-lg font-semibold">Update Logo</h2>
+            <h2 className="text-lg font-semibold">Change Logo</h2>
           </div>
           <LogoModel  />
+        </div>
+          {/* Banner Update Section */}
+          <div className="bg-gradient-to-r from-gray-700 to-gray-900 text-white p-6 rounded-md shadow-md flex flex-col space-y-4">
+          <div className="flex items-center space-x-4">
+           <Image src={profile.banner} alt="Logo" width={100} height={60} />
+            <h2 className="text-lg font-semibold">Change Banner</h2>
+          </div>
+          <BannerModel  />
         </div>
       </div>
     </div>

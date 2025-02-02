@@ -5,23 +5,22 @@ import Link from 'next/link';
 import { Card, CardHeader, CardTitle } from '@/components/ui/card';
 import { useParams } from 'next/navigation';
 import CategoryList from '@/components/category';
-import ContactButtons from '@/components/headerUser';
 import Spinner from '@/components/spinner';
 import supabaseDb from '@/utils/supabase-db';
 import { formatCurrency } from '@/components/currency';
 import HeaderMenu from '@/components/headerUser';
-
 
 export default function ProductFetch() {
   const [shopDetails, setShopDetails] = useState(null);
   const [products, setProducts] = useState([]);
   const [page, setPage] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
-  const [noMoreProducts, setNoMoreProducts] = useState(false); // Track if no more products
+  const [noMoreProducts, setNoMoreProducts] = useState(false);
   const isFetching = useRef(false);
+
   const { store } = useParams();
 
-  const fetchProducts = useCallback(async (page: number) => {
+  const fetchProducts = useCallback(async (page) => {
     if (isFetching.current) return;
     isFetching.current = true;
     setIsLoading(true);
@@ -38,9 +37,9 @@ export default function ProductFetch() {
       setShopDetails(data);
 
       if (data?.products) {
-        const newProducts = data.products.slice((page - 1) * 10, page * 10); // Fetch 10 products per page
+        const newProducts = data.products.slice((page - 1) * 10, page * 10);
         if (newProducts.length === 0) {
-          setNoMoreProducts(true); // No more products to fetch
+          setNoMoreProducts(true);
         } else {
           setProducts((prevProducts) => [...prevProducts, ...newProducts]);
         }
@@ -53,6 +52,10 @@ export default function ProductFetch() {
     }
   }, [store]);
 
+  useEffect(() => {
+    fetchProducts(page);
+  }, [page, fetchProducts]);
+
   const handleScroll = useCallback(() => {
     const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
     const scrollHeight = document.documentElement.scrollHeight;
@@ -64,17 +67,9 @@ export default function ProductFetch() {
   }, [noMoreProducts]);
 
   useEffect(() => {
-    fetchProducts(page);
-  }, [page, fetchProducts]);
-
-  useEffect(() => {
-    const debouncedHandleScroll = () => {
-      window.requestAnimationFrame(handleScroll);
-    };
-
-    window.addEventListener('scroll', debouncedHandleScroll);
+    window.addEventListener('scroll', handleScroll);
     return () => {
-      window.removeEventListener('scroll', debouncedHandleScroll);
+      window.removeEventListener('scroll', handleScroll);
     };
   }, [handleScroll]);
 
@@ -84,12 +79,19 @@ export default function ProductFetch() {
 
   return (
     <div>
-<HeaderMenu shopDetails={shopDetails} />
-
-      <div className="grid grid-cols-12 gap-4 p-4 ">
+      <HeaderMenu shopDetails={shopDetails} />
+      <div className="grid grid-cols-12 gap-4 p-4">
         <CategoryList />
-
         <div className="col-span-12 sm:col-span-9 grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-4">
+          <div className="col-span-2 sm:col-span-4 grid grid-cols-1">
+           <Image
+              src={shopDetails.banner}
+              alt={shopDetails.username || 'Store Image'}
+              className="w-full h-auto sm:h-64 md:h-96 object-fill rounded mb-4"
+              width={500}
+              height={500}
+            />
+          </div>
           {products.map((product, index) => (
             <Link href={`/product/${product.user_id}`} key={product.user_id || index} passHref>
               <Card className="hover:shadow-lg transition">
@@ -104,7 +106,6 @@ export default function ProductFetch() {
                 </CardHeader>
                 <div className="px-4">
                   <CardTitle className="text-sm font-bold">{product.title}</CardTitle>
-
                   <div className="flex justify-between items-center mb-3">
                     <div className="text-xs text-gray-600">
                       {shopDetails.city || 'Store Location'}, {shopDetails.stat || 'City'}
@@ -118,9 +119,7 @@ export default function ProductFetch() {
             </Link>
           ))}
         </div>
-
         {isLoading && <div className="col-span-full text-center text-gray-500">Loading more products...</div>}
-
         {noMoreProducts && !isLoading && (
           <div className="col-span-full text-center text-gray-500">No more images to display.</div>
         )}

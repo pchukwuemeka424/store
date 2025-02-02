@@ -13,7 +13,7 @@ export default function layout({ children }) {
        
     <div className='mx-auto max-w-7xl'>
           <Topnav />
-
+      
           <div> {children} </div>
       </div>
     
