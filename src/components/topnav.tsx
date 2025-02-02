@@ -50,6 +50,7 @@ export default function TopNav() {
 
         {/* Center: Logo */}
         <div className="absolute left-1/2 transform -translate-x-1/2">
+        <Link href="/">
           <Image
             src={logo || "/default-logo.png"}
             alt="Logo"
@@ -57,6 +58,7 @@ export default function TopNav() {
             width={100}
             height={100}
           />
+        </Link>
         </div>
 
         {/* Right: Login Button */}
@@ -97,6 +99,7 @@ export default function TopNav() {
         {/* Left: Logo and SheetMenu */}
         <div className="flex items-center space-x-4">
           <SheetMenu />
+          <Link href="/">
           <Image
             src={logo || "/default-logo.png"}
             alt="Logo"
@@ -104,6 +107,7 @@ export default function TopNav() {
             width={100}
             height={100}
           />
+          </Link>
         </div>
 
         {/* Middle: Search Bar */}

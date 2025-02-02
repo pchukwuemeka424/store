@@ -39,14 +39,16 @@ export default function Navbar() {
           {/* Logo */}
           <div className="text-2xl font-bold text-white">
             {logo && (
-            <Image 
+           <Link href="/">
+             <Image 
             src={logo} 
             alt="Logo" 
             className="w-36 h-30 sm:w-56 sm:h-20 object-contain" 
             width={340} 
             height={30} 
-          />
+          /></Link>
             )}
+            
           </div>
 
           {/* Spacer to push items to the right */}
