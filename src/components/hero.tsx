@@ -19,11 +19,11 @@ export default function Navbar() {
         {/* Content Container */}
         <div className="relative container mx-auto text-center px-4">
           {/* Hero Content */}
-          <h1 className="text-2xl sm:text-4xl font-bold text-white mb-4">
+          <h1 className="text-2xl sm:text-4xl font-bold text-white mb-2">
             Find What You&apos;re Looking For
           </h1>
-          <p className="text-gray-200 mb-8 md:w-2/4 w-full mx-auto">
-            Discover products, connect with vendors, and access detailed information across our platform for seamless browsing, purchasing, and partnership opportunities.
+          <p className="text-gray-200 mb-3 md:w-2/4 w-full mx-auto">
+            Discover products, connect with vendors within Nigeria.
           </p>
 
           {/* Search Bar */}
