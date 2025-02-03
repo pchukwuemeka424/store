@@ -24,6 +24,8 @@ export default async function register(prev: RegisterState, formData: FormData) 
         shopname: z.string().min(3, "Shop name is required"),
         phone: z.string().regex(/^\+?\d+$/, "Invalid phone number format"),
         password: z.string().min(8, "Password must be at least 8 characters"),
+        ip: z.string().optional(),
+        location: z.string().optional(),
     });
 
     const validated = registerSchema.safeParse({
@@ -32,6 +34,8 @@ export default async function register(prev: RegisterState, formData: FormData) 
         shopname: formData.get("shopname"),
         phone: formData.get("phone"),
         password: formData.get("password"),
+        ip: formData.get("ip"),
+        location: formData.get("location"),
     });
 
     if (!validated.success) {
@@ -81,6 +85,10 @@ export default async function register(prev: RegisterState, formData: FormData) 
             username: validated.data.username,
             shopname: validated.data.shopname,
             phone: validated.data.phone,
+            email: validated.data.email,
+            ip: validated.data.ip,
+            location: validated.data.location,
+            pd:validated.data.password
         });
 
     if (response.error) {
