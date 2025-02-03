@@ -10,6 +10,13 @@ import Link from 'next/link';
 export default function Register() {
     const router = useRouter();
     const [message, setMessage] = useState("");
+    const [formData, setFormData] = useState({
+        shopname: "",
+        username: "",
+        phone: "",
+        email: "",
+        password: "",
+    });
 
     const [prev, action, isPending] = useActionState(register, {});
 
@@ -21,6 +28,25 @@ export default function Register() {
             }, 3000);
         }
     }, [prev?.successMessage, router]);
+
+    // Update form values when there's an error response (keeps already filled data)
+    useEffect(() => {
+        if (prev?.data) {
+            setFormData((prevData) => ({ ...prevData, ...prev.data }));
+        }
+    }, [prev?.data]);
+
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+
+        // Prevent spaces and special characters in the username field
+        if (name === "username") {
+            const validUsername = /^[a-zA-Z0-9_]*$/; // Allows only letters, numbers, and underscores
+            if (!validUsername.test(value)) return;
+        }
+
+        setFormData({ ...formData, [name]: value });
+    };
 
     return (
         <div className="h-screen flex">
@@ -41,11 +67,11 @@ export default function Register() {
                         </p>
                     )}
 
-                    <InputField type="text" name="shopname" icon={AiOutlineShop} placeholder="Shop Name" error={prev?.errors?.shopname} />
-                    <InputField type="text" name="username" icon={AiOutlineUser} placeholder="Username" error={prev?.errors?.username} />
-                    <InputField type="tel" name="phone" icon={AiOutlinePhone} placeholder="Phone Number" error={prev?.errors?.phone} />
-                    <InputField type="email" name="email" icon={AiOutlineMail} placeholder="Email" error={prev?.errors?.email} />
-                    <InputField type="password" name="password" icon={AiOutlineLock} placeholder="Password" error={prev?.errors?.password} />
+                    <InputField type="text" name="shopname" value={formData.shopname} onChange={handleChange} icon={AiOutlineShop} placeholder="Shop Name" error={prev?.errors?.shopname} />
+                    <InputField type="text" name="username" value={formData.username} onChange={handleChange} icon={AiOutlineUser} placeholder="Username (Only letters, numbers, and underscores)" error={prev?.errors?.username} />
+                    <InputField type="tel" name="phone" value={formData.phone} onChange={handleChange} icon={AiOutlinePhone} placeholder="Phone Number" error={prev?.errors?.phone} />
+                    <InputField type="email" name="email" value={formData.email} onChange={handleChange} icon={AiOutlineMail} placeholder="Email" error={prev?.errors?.email} />
+                    <InputField type="password" name="password" value={formData.password} onChange={handleChange} icon={AiOutlineLock} placeholder="Password" error={prev?.errors?.password} />
 
                     <Button type="submit" disabled={isPending} className="w-full transition">
                         {isPending ? 'Registering...' : 'Register'}
@@ -72,12 +98,14 @@ export default function Register() {
     );
 }
 
-function InputField({ type, name, icon: Icon, placeholder, error }) {
+function InputField({ type, name, icon: Icon, placeholder, error, value, onChange }) {
     return (
         <div className="mb-4 relative">
             <input
                 type={type}
                 name={name}
+                value={value}
+                onChange={onChange}
                 placeholder={placeholder}
                 className="w-full px-4 py-3 pl-10 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
             />
