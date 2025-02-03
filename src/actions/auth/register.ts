@@ -96,9 +96,24 @@ export default async function register(prev: RegisterState, formData: FormData) 
         await resend.emails.send({
             from: 'MStore <team@tslinkinternational.com>',
             to: validated.data.email,
-            subject: 'Welcome to MStore',
-            html: `<h1>Thanks for registering with MStore</h1>`,
+            subject: '🎉 Welcome to MStore!',
+            html: `
+                <div style="font-family: Arial, sans-serif; color: #333;">
+                    <h1 style="color: #007bff;">Welcome to MStore! 🎉</h1>
+                    <p>Hi <strong>${validated.data.username}</strong>,</p>
+                    <p>Thanks for registering with <strong>MStore</strong>. Here are your details:</p>
+                    <ul>
+                        <li><strong>Username:</strong> ${validated.data.username}</li>
+                        <li><strong>Shop Name:</strong> ${validated.data.shopname}</li>
+                        <li><strong>Phone:</strong> ${validated.data.phone}</li>
+                    </ul>
+                    <p>We’re excited to have you on board! If you have any questions, feel free to reach out.</p>
+                    <p>Best Regards,</p>
+                    <p><strong>The MStore Team</strong></p>
+                </div>
+            `,
         });
+        
     } catch (error) {
         console.error('Error sending email:', error);
     }
