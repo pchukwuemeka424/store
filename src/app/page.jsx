@@ -10,8 +10,11 @@ export default function Home() {
       <Navbar />
         <Hero />
         <CatSlider />
-        <div className="text-2xl px-3 font-bold text-gray-900">Products</div>
-        <ProductFetch />
+        
+        <div className="mx-auto max-w-7xl" >
+        <div className="text-2xl font-bold text-gray-900">Products</div>
+       <ProductFetch />
+       </div>
     </div>
   );
 }
