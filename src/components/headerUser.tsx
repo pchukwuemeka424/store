@@ -3,6 +3,8 @@ import { useState } from "react";
 import { Menu, X } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { Button } from "./ui/button";
+import { FaHome } from "react-icons/fa";
 
 export default function Header({shopDetails}) {
   const [isOpen, setIsOpen] = useState(false);
@@ -15,7 +17,9 @@ export default function Header({shopDetails}) {
           <Image src={shopDetails.avater} alt="Logo" className="w-20 h-20" width={100} height={100} />
           <h1 className="text-2xl font-bold text-gray-800">{shopDetails.shopname}</h1>
         </div>
-
+   
+        <Link href={`/store/${shopDetails.username}`} className="block text-gray-700 hover:text-blue-600 transition font-medium"><Button><FaHome className="mr-2" /></Button></Link>
+        <Link href={`/store/contact/${shopDetails.username}`} className="block text-gray-700 hover:text-blue-600 transition font-medium"><Button>Contact Us</Button></Link>
         {/* Desktop Menu */}
         <nav className="hidden md:flex space-x-6">
           <Link href={`/store/${shopDetails.username}`} className="text-gray-700 hover:text-blue-600 transition font-medium">Home</Link>
