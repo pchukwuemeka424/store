@@ -5,6 +5,7 @@ import "slick-carousel/slick/slick-theme.css";
 import Slider from "react-slick";
 import { createClient } from "@/utils/supabase/client";
 import Image from "next/image";
+import Link from "next/link";
 
 export default function SliderComponent() {
   const [categorys, setcategorys] = useState([]);
@@ -39,24 +40,25 @@ export default function SliderComponent() {
 
   return (
     <div className="max-w-7xl mx-auto ">
-           <div className="text-2x px-2 my-2 font-bold text-gray-900">Categories</div>
+      <div className="text-2x px-2 my-2 font-bold text-gray-900">Categories</div>
       <Slider {...settings} className="mx-auto">
-
         {categorys.map((category) => (
           <div key={category.id} className="p-2">
-            <div className="relative">
-              <Image
-                src={category.image}
-                width={100}
-                height={100}
-                alt={`Category ${category.id}`}
-                unoptimized
-                className="w-full h-44 sm:h-64 object-cover rounded-lg shadow-lg"
-              />
-              <div className="absolute bottom-0 left-0 right-0 bg-black/60 text-white text-center text-sm font-semibold py-2">
-                {category.title}
+            <Link href={`/products/${category.title}`}>
+              <div className="relative cursor-pointer">
+                <Image
+                  src={category.image}
+                  width={100}
+                  height={100}
+                  alt={`Category ${category.id}`}
+                  unoptimized
+                  className="w-full h-44 sm:h-64 object-cover rounded-lg shadow-lg"
+                />
+                <div className="absolute bottom-0 left-0 right-0 bg-black/60 text-white text-center text-sm font-semibold py-2">
+                  {category.title}
+                </div>
               </div>
-            </div>
+            </Link>
           </div>
         ))}
       </Slider>
