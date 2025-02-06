@@ -138,7 +138,7 @@ export default function Page() {
                     {p.user_profile?.stat || 'State'}, {p.user_profile?.city || 'City'}
                   </div>
                   <div className="text-sm font-semibold text-green-500">
-                      {formatCurrency(product.price || 0)}
+                      {formatCurrency(p.price || 0)}
                   </div>
                 </div>
               </div>
