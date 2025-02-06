@@ -53,7 +53,7 @@ export default function SliderComponent() {
                 unoptimized
                 className="w-full h-44 sm:h-64 object-cover rounded-lg shadow-lg"
               />
-              <div className="absolute bottom-0 left-0 right-0 bg-black/60 text-white text-center text-lg font-semibold py-2">
+              <div className="absolute bottom-0 left-0 right-0 bg-black/60 text-white text-center text-sm font-semibold py-2">
                 {category.title}
               </div>
             </div>
