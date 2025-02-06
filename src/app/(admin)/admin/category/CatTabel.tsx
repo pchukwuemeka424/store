@@ -5,8 +5,8 @@ import { createClient } from "@/utils/supabase/client";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import Image from "next/image";
 import CatModel from "./catModel";
-
-
+import { Button } from "@/components/ui/button";
+import DeletCat from "./DeletCat";
 
 const supabase = createClient();
 
@@ -16,7 +16,7 @@ export default function MenuUpdateTable() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage] = useState(5);
+  const [itemsPerPage] = useState(10);
   const [totalPages, setTotalPages] = useState(1);
   const [searchQuery, setSearchQuery] = useState("");
 
@@ -25,15 +25,16 @@ export default function MenuUpdateTable() {
     setError(null);
 
     try {
+      const from = (currentPage - 1) * itemsPerPage;
+      const to = from + itemsPerPage - 1;
+
       const { data, error: fetchError, count } = await supabase
-        .from("category") // Replace with your actual KYC table name
-        .select(
-          "*",
-          { count: "exact" }
-        );
+        .from("category") // Ensure correct table name
+        .select("*", { count: "exact" })
+        .range(from, to); // Pagination applied at DB level
 
       if (fetchError) {
-        setError("Error fetching KYC records.");
+        setError("Error fetching records.");
         return;
       }
 
@@ -56,43 +57,31 @@ export default function MenuUpdateTable() {
     const query = event.target.value.toLowerCase();
     setSearchQuery(query);
 
-    const filtered = kycRecords.filter(
-      (record) =>
-        record.first_name?.toLowerCase().includes(query) ||
-        record.last_name?.toLowerCase().includes(query) ||
-        record.id_number?.toLowerCase().includes(query)
+    const filtered = kycRecords.filter((record) =>
+      record.title?.toLowerCase().includes(query) // Use `title` field for filtering
     );
 
     setFilteredRecords(filtered);
     setCurrentPage(1);
   };
 
-  const currentRecords = filteredRecords.slice(
-    (currentPage - 1) * itemsPerPage,
-    currentPage * itemsPerPage
-  );
-
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
   };
 
   return (
-    <div>
-
-<div className="flex justify-end">
-<CatModel />
-</div>
-
+    <div className="p-4">
       {error && <p className="text-red-500">{error}</p>}
 
-      <div className="mb-4">
+      <div className="mb-4 flex justify-between">
         <input
           type="text"
-          placeholder="Search by name or ID number"
+          placeholder="Search by category name"
           value={searchQuery}
           onChange={handleSearch}
-          className="p-2 border border-gray-300 rounded"
+          className="p-2 border border-gray-300 rounded w-full max-w-md"
         />
+        <CatModel />
       </div>
 
       {loading ? (
@@ -101,7 +90,6 @@ export default function MenuUpdateTable() {
         <Table>
           <TableHeader>
             <TableRow>
-
               <TableHead>ID</TableHead>
               <TableHead>Category Name</TableHead>
               <TableHead>Banner</TableHead>
@@ -109,22 +97,26 @@ export default function MenuUpdateTable() {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {currentRecords.map((record) => (
+            {filteredRecords.map((record) => (
               <TableRow key={record.id}>
                 <TableCell>{record.id}</TableCell>
-              
                 <TableCell>{record.title || "N/A"}</TableCell>
                 <TableCell>
-                  <Image
-                    src={record.banner}
-                    alt="Banner"
-                    width={100}
-                    height={100}
-                  />
-        
-                  </TableCell>
-                <TableCell>
-                action
+                  {record.banner ? (
+                    <Image
+                      src={record.banner}
+                      alt="Banner"
+                      width={100}
+                      height={100}
+                      className="rounded"
+                    />
+                  ) : (
+                    "No Image"
+                  )}
+                </TableCell>
+                <TableCell className="flex gap-2">
+                  <CatModel record={record} />
+                  <DeletCat record={record} refreshData={fetchKycRecords} />
                 </TableCell>
               </TableRow>
             ))}
@@ -132,22 +124,22 @@ export default function MenuUpdateTable() {
         </Table>
       )}
 
-      <div className="pagination mt-4">
-        <button
+      <div className="pagination mt-4 flex justify-center items-center gap-4">
+        <Button
           onClick={() => handlePageChange(currentPage - 1)}
           disabled={currentPage === 1}
-          className="p-2 border border-gray-300 rounded mr-2"
+          variant="outline"
         >
           Previous
-        </button>
+        </Button>
         <span>{`Page ${currentPage} of ${totalPages}`}</span>
-        <button
+        <Button
           onClick={() => handlePageChange(currentPage + 1)}
           disabled={currentPage === totalPages}
-          className="p-2 border border-gray-300 rounded ml-2"
+          variant="outline"
         >
           Next
-        </button>
+        </Button>
       </div>
     </div>
   );

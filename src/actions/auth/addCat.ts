@@ -2,7 +2,6 @@
 import { revalidatePath } from "next/cache";
 import { createClient } from "@/utils/supabase/server";
 import sharp from "sharp";
-import { title } from "process";
 
 export default async function bannerAction(_: any, formData: FormData) {
   const supabase = await createClient();
@@ -39,7 +38,6 @@ export default async function bannerAction(_: any, formData: FormData) {
     // Compress the image
     const buffer = await documentFile.arrayBuffer();
     const compressedDocument = await sharp(Buffer.from(buffer))
-      // .resize({ width: 300, height: 300, fit: "cover" })
       .jpeg({ quality: 70 })
       .toBuffer();
 
@@ -61,18 +59,24 @@ export default async function bannerAction(_: any, formData: FormData) {
     const { data: publicUrlData } = supabase.storage.from("logos").getPublicUrl(filePath);
     const imageUrl = publicUrlData.publicUrl;
 
-    // Update user profile with new avatar URL
+    // Extract the category ID from the form data
+    const categoryId = formData.get("id");
+
+    // Update category with new banner and title
     const { error: updateError } = await supabase
       .from("category")
-      .insert({ banner: imageUrl,title:formData.get("title")}) // Fixed `avater` typo
-
+      .update({
+        banner: imageUrl,
+        title: formData.get("title"),
+      })
+      .eq("id", categoryId);
 
     if (updateError) {
-      console.error("Error updating user profile:", updateError);
-      return { errors: { message: `Error updating user profile: ${updateError.message}` } };
+      console.error("Error updating category:", updateError);
+      return { errors: { message: `Error updating category: ${updateError.message}` } };
     }
 
-    revalidatePath("/dashboard");
+    revalidatePath("/category");
     return { success: true, message: "Banner updated successfully!" };
   } catch (error: any) {
     console.error("Error processing document:", error);

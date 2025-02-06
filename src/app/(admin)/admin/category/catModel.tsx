@@ -15,13 +15,12 @@ import { FaEye, FaFileAlt } from "react-icons/fa";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { createClient } from "@/utils/supabase/client";
-import BanM from "./banM";
 import { FaF } from "react-icons/fa6";
 import CatForm from "./catForm";
 
 
 
-export default function BannwerModalLogo() {
+export default function BannwerModalLogo({record}) {
 
 
   return (
@@ -30,19 +29,19 @@ export default function BannwerModalLogo() {
       <span>
           <Button>
        <FaFileAlt />
-         Add Category
+      
           </Button>
         </span>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Add Category</DialogTitle>
+          <DialogTitle>Update Category</DialogTitle>
           <DialogDescription>
-         Add Category
+         Update Category
           </DialogDescription>
         </DialogHeader>
  
-    <CatForm />
+    <CatForm record={record} />
       </DialogContent>
     </Dialog>
   );
