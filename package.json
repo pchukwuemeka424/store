@@ -32,6 +32,7 @@
     "react-image-file-resizer": "^0.4.8",
     "react-slick": "^0.30.3",
     "react-toastify": "^11.0.2",
+    "react-webcam": "^7.2.0",
     "resend": "^4.1.1",
     "sharp": "^0.33.5",
     "sim-ph": "^1.0.1",
