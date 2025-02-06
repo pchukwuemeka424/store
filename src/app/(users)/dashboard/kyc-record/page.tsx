@@ -9,6 +9,8 @@ const KycVideoRecording: React.FC = () => {
   const [recording, setRecording] = useState(false);
   const [mediaRecorder, setMediaRecorder] = useState<MediaRecorder | null>(null);
   const [stream, setStream] = useState<MediaStream | null>(null);
+  const [videoBlob, setVideoBlob] = useState<Blob | null>(null); // Store video blob
+  const [recorded, setRecorded] = useState(false); // Flag for completed recording
 
   const startRecording = async () => {
     if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
@@ -32,24 +34,9 @@ const KycVideoRecording: React.FC = () => {
 
         recorder.onstop = async () => {
           const blob = new Blob(chunks, { type: 'video/mp4' });
-          const videoUrl = URL.createObjectURL(blob);
-
-          // Save video to Supabase
-          const { data, error } = await supabase
-            .storage
-            .from('videos')
-            .upload(`kyc/${Date.now()}.mp4`, blob, {
-              cacheControl: '3600',
-              upsert: false,
-            });
-
-          if (error) {
-            console.error('Error uploading video: ', error);
-          } else {
-            console.log('Video uploaded successfully: ', data);
-          }
-
-          // Stop all tracks of the stream to release the camera
+          setVideoBlob(blob);
+          setRecording(false);
+          setRecorded(true);
           userStream.getTracks().forEach(track => track.stop());
         };
 
@@ -57,6 +44,13 @@ const KycVideoRecording: React.FC = () => {
         setMediaRecorder(recorder);
         setStream(userStream);
         setRecording(true);
+
+        // Stop recording after 10 seconds
+        setTimeout(() => {
+          if (recorder.state === 'recording') {
+            recorder.stop();
+          }
+        }, 10000); // 10 seconds
       }
     } catch (error) {
       console.error('Error accessing media devices: ', error);
@@ -64,10 +58,38 @@ const KycVideoRecording: React.FC = () => {
     }
   };
 
-  const stopRecording = () => {
+  const cancelRecording = () => {
     if (mediaRecorder && stream) {
       mediaRecorder.stop();
+      stream.getTracks().forEach(track => track.stop());
       setRecording(false);
+      setRecorded(false);
+      setVideoBlob(null);
+    }
+  };
+
+  const submitRecording = async () => {
+    if (!videoBlob) return;
+
+    try {
+      const { data, error } = await supabase
+        .storage
+        .from('videos')
+        .upload(`kyc/${Date.now()}.mp4`, videoBlob, {
+          cacheControl: '3600',
+          upsert: false,
+        });
+
+      if (error) {
+        console.error('Error uploading video: ', error);
+        alert('There was an error uploading the video.');
+      } else {
+        console.log('Video uploaded successfully: ', data);
+        alert('Video submitted successfully!');
+      }
+    } catch (error) {
+      console.error('Error submitting video: ', error);
+      alert('An error occurred while submitting the video.');
     }
   };
 
@@ -80,21 +102,40 @@ const KycVideoRecording: React.FC = () => {
           <video ref={videoRef} autoPlay muted className="w-full max-w-md rounded-lg shadow-lg" />
         </div>
 
-        <div className="flex justify-center">
-          {!recording ? (
+        <div className="flex justify-center space-x-4">
+          {!recording && !recorded && (
             <button
               onClick={startRecording}
               className="px-6 py-3 bg-blue-500 text-white font-semibold rounded-lg shadow-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400"
             >
               Start Recording
             </button>
-          ) : (
+          )}
+
+          {recording && (
             <button
-              onClick={stopRecording}
-              className="px-6 py-3 bg-red-500 text-white font-semibold rounded-lg shadow-md hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-400"
+              onClick={cancelRecording}
+              className="px-6 py-3 bg-gray-500 text-white font-semibold rounded-lg shadow-md hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-400"
             >
-              Stop Recording
+              Cancel Recording
             </button>
+          )}
+
+          {recorded && (
+            <>
+              <button
+                onClick={submitRecording}
+                className="px-6 py-3 bg-green-500 text-white font-semibold rounded-lg shadow-md hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-400"
+              >
+                Submit
+              </button>
+              <button
+                onClick={cancelRecording}
+                className="px-6 py-3 bg-red-500 text-white font-semibold rounded-lg shadow-md hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-400"
+              >
+                Rerecord
+              </button>
+            </>
           )}
         </div>
       </div>
