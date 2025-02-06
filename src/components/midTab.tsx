@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import React from 'react';
+import { Store, Package, ShoppingBag } from 'lucide-react';
 
 export default function MidTab() {
     return (
@@ -8,7 +9,7 @@ export default function MidTab() {
                 <div>
                     <Link href="/vendor" passHref>
                         <div
-                            className="h-28 flex items-center justify-center relative overflow-hidden rounded-2xl shadow-lg cursor-pointer transition-transform transform hover:scale-105 sm:flex sm:flex-col sm:text-center"
+                            className="h-28 flex flex-col items-center justify-center relative overflow-hidden rounded-2xl shadow-lg cursor-pointer transition-transform transform hover:scale-105 text-white sm:text-center"
                             style={{
                                 backgroundImage:
                                     "linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('https://sxkmrpzbtqpraucnmnjm.supabase.co/storage/v1/object/public/web_images//nax.jpg')",
@@ -16,9 +17,8 @@ export default function MidTab() {
                                 backgroundPosition: 'center',
                             }}
                         >
-                            <div className="absolute inset-0 flex items-center justify-center">
-                                <span className="text-white text-xl font-semibold sm:text-lg">Vendors</span>
-                            </div>
+                            <Store size={24} className="mb-1" />
+                            <span className="text-xl font-semibold sm:text-lg">Vendors</span>
                         </div>
                     </Link>
                 </div>
@@ -26,7 +26,7 @@ export default function MidTab() {
                 <div>
                     <Link href="/product" passHref>
                         <div
-                            className="h-28 flex items-center justify-center relative overflow-hidden rounded-2xl shadow-lg cursor-pointer transition-transform transform hover:scale-105 sm:flex sm:flex-col sm:text-center"
+                            className="h-28 flex flex-col items-center justify-center relative overflow-hidden rounded-2xl shadow-lg cursor-pointer transition-transform transform hover:scale-105 text-white sm:text-center"
                             style={{
                                 backgroundImage:
                                     "linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('https://sxkmrpzbtqpraucnmnjm.supabase.co/storage/v1/object/public/web_images//prpr.jpg')",
@@ -34,27 +34,25 @@ export default function MidTab() {
                                 backgroundPosition: 'center',
                             }}
                         >
-                            <div className="absolute inset-0 flex items-center justify-center">
-                                <span className="text-white text-xl font-semibold sm:text-lg">Products</span>
-                            </div>
+                            <Package size={24} className="mb-1" />
+                            <span className="text-xl font-semibold sm:text-lg">Products</span>
                         </div>
                     </Link>
                 </div>
 
                 <div>
-                    <Link href="/create-store" passHref>
+                    <Link href="/register" passHref>
                         <div
-                            className="h-28 flex items-center justify-center relative overflow-hidden rounded-2xl shadow-lg cursor-pointer transition-transform transform hover:scale-105 sm:flex sm:flex-col sm:text-center"
+                            className="h-28 flex flex-col items-center justify-center relative overflow-hidden rounded-2xl shadow-lg cursor-pointer transition-transform transform hover:scale-105 text-white sm:text-center"
                             style={{
                                 backgroundImage:
-                                    "linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('https://sxkmrpzbtqpraucnmnjm.supabase.co/storage/v1/object/public/web_images//store.jpg')",
+                                    "linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('https://sxkmrpzbtqpraucnmnjm.supabase.co/storage/v1/object/public/web_images//download.jpg')",
                                 backgroundSize: 'cover',
                                 backgroundPosition: 'center',
                             }}
                         >
-                            <div className="absolute inset-0 flex items-center justify-center">
-                                <span className="text-white text-xl font-semibold sm:text-lg">Create Store</span>
-                            </div>
+                            <ShoppingBag size={24} className="mb-1" />
+                            <span className="text-xl font-semibold sm:text-lg">Create Store</span>
                         </div>
                     </Link>
                 </div>

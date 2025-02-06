@@ -66,14 +66,14 @@ export default function Navbar() {
             </div>
           ) : (
             <div className="flex flex-row gap-4 justify-center">
-              <Link href="/register" className="text-white hover:text-gray-300 transition">
+              <Link href="/register" className="hidden sm:block text-white hover:text-gray-300 transition">
                 <button className="flex items-center px-4 py-2  bg-rose-700 text-white rounded-md hover:bg-orange-600 transition justify-center whitespace-nowrap">
                   <ShoppingCart className="mr-2" /> Create Store
                 </button>
               </Link>
 
               <Link href="/login" className="text-white hover:text-gray-300 transition">
-                <button className="flex items-center px-4 py-2 bg-amber-50 text-black rounded-md justify-center">
+                <button className="flex items-center px-4 mx-2 py-2 bg-rose-700 text-white rounded-md justify-center">
                  <FaLock className="mr-2" />
                  Login
                 </button>
