@@ -57,7 +57,7 @@ export default async function handleKYCSubmission(state: any, formData: FormData
     // Efficiently process and compress the document
     const buffer = await documentFile.arrayBuffer();
     const compressedDocument = await sharp(Buffer.from(buffer))
-      .resize({ width: 100, height: 100, fit: "inside" }) // Resize to fit within 1000x1000 if larger
+      // .resize({ width: 100, height: 100, fit: "inside" }) // Resize to fit within 1000x1000 if larger
       .jpeg({ quality: 40 }) // Adjust quality as needed
       .toBuffer();
   
