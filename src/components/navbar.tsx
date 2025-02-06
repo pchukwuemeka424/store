@@ -5,6 +5,8 @@ import { createClient } from '@/utils/supabase/client';
 import LogoutButton from './logoutButton';
 import Image from 'next/image';
 import { ShoppingCart } from 'lucide-react';
+import { FaL } from 'react-icons/fa6';
+import { FaLock } from 'react-icons/fa';
 
 export default function Navbar() {
   const [user, setUser] = useState(null);
@@ -65,14 +67,15 @@ export default function Navbar() {
           ) : (
             <div className="flex flex-row gap-4 justify-center">
               <Link href="/register" className="text-white hover:text-gray-300 transition">
-                <button className="flex items-center px-4 py-2 bg-orange-500 text-white rounded-md hover:bg-orange-600 transition justify-center whitespace-nowrap">
+                <button className="flex items-center px-4 py-2  bg-rose-700 text-white rounded-md hover:bg-orange-600 transition justify-center whitespace-nowrap">
                   <ShoppingCart className="mr-2" /> Create Store
                 </button>
               </Link>
 
               <Link href="/login" className="text-white hover:text-gray-300 transition">
-                <button className="flex items-center px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition justify-center">
-                  Login
+                <button className="flex items-center px-4 py-2 bg-amber-50 text-black rounded-md justify-center">
+                 <FaLock className="mr-2" />
+                 Login
                 </button>
               </Link>
             </div>

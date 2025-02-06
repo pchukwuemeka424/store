@@ -13,7 +13,7 @@ export default function Home() {
       
         <CatSlider />
         
-        <div className="mx-auto max-w-7xl" >
+        <div className="mx-auto max-w-6xl" >
         <div className="text-2x px-2 font-bold text-gray-900">Feature Products</div>
        <ProductFetch />
        </div>

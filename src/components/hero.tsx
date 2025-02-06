@@ -15,7 +15,7 @@ export default function Navbar() {
         bg-[url('https://scholarmedia.africa/wp-content/uploads/2023/03/A-woman-trader-e1680190679909.jpg')]"
       >
         {/* Background Overlay */}
-        <div className="absolute inset-0 bg-blue-900 bg-opacity-80"></div>
+        <div className="absolute inset-0 bg-black bg-opacity-50"></div>
 
         {/* Content Container */}
         <div className="relative container mx-auto text-center px-4">
@@ -59,7 +59,7 @@ export default function Navbar() {
 
               <button
                 type="submit"
-                className="w-full sm:w-auto bg-blue-500 text-white px-6 py-2 rounded-md sm:rounded-r-md hover:bg-blue-600 transition flex items-center justify-center"
+                className="w-full sm:w-auto bg-rose-700 text-white px-6 py-2 rounded-md sm:rounded-r-md hover:bg-blue-600 transition flex items-center justify-center"
               >
                 <AiOutlineSearch className="w-6 h-6 mr-2" />
                 Search
