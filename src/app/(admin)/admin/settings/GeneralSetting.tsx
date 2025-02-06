@@ -10,7 +10,7 @@ import AddMenu from "@/actions/auth/addMenu";
 import AddCat from "@/actions/auth/addCat";
 import { useActionState } from "react";
 import MenuTabel from "@/components/MenuTabel";
-import CatTabel from "@/components/CatTabel";
+import CatTabel from "@/app/(admin)/admin/category/CatTabel";
 export default function SettingsPage({ userDetails, siteInfo }) {
   const [state, action, isPending] = useActionState(AddMenu, undefined);
   const[state1, action1, isPending1] = useActionState(AddCat, undefined);

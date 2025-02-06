@@ -3,6 +3,10 @@
 import React, { useState, useEffect } from "react";
 import { createClient } from "@/utils/supabase/client";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import Image from "next/image";
+import CatModel from "./catModel";
+
+
 
 const supabase = createClient();
 
@@ -74,6 +78,11 @@ export default function MenuUpdateTable() {
 
   return (
     <div>
+
+<div className="flex justify-end">
+<CatModel />
+</div>
+
       {error && <p className="text-red-500">{error}</p>}
 
       <div className="mb-4">
@@ -95,7 +104,7 @@ export default function MenuUpdateTable() {
 
               <TableHead>ID</TableHead>
               <TableHead>Category Name</TableHead>
-  
+              <TableHead>Banner</TableHead>
               <TableHead>Actions</TableHead>
             </TableRow>
           </TableHeader>
@@ -105,6 +114,15 @@ export default function MenuUpdateTable() {
                 <TableCell>{record.id}</TableCell>
               
                 <TableCell>{record.title || "N/A"}</TableCell>
+                <TableCell>
+                  <Image
+                    src={record.banner}
+                    alt="Banner"
+                    width={100}
+                    height={100}
+                  />
+        
+                  </TableCell>
                 <TableCell>
                 action
                 </TableCell>

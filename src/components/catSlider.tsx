@@ -28,7 +28,7 @@ export default function SliderComponent() {
     slidesToScroll: 1,
     autoplay: true,
     speed: 2000,
-    autoplaySpeed: 6000,
+    autoplaySpeed: 3000,
     cssEase: "linear",
     adaptiveHeight: true,
     responsive: [
@@ -44,7 +44,7 @@ export default function SliderComponent() {
       <Slider {...settings} className="mx-auto">
         {categorys.map((category) => (
           <div key={category.id} className="p-2">
-            <Link href={`/products/${category.title}`}>
+            <Link href={`/products/${category.id}`}>
               <div className="relative cursor-pointer">
                 <Image
                   src={category.image}
