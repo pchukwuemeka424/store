@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { Card, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import ProductNotFound from '@/components/ProductNotFound';
 import { useParams } from 'next/navigation';
+import { formatCurrency } from '@/components/currency';
 
 export default function Page() {
   const { product } = useParams();
@@ -137,7 +138,7 @@ export default function Page() {
                     {p.user_profile?.stat || 'State'}, {p.user_profile?.city || 'City'}
                   </div>
                   <div className="text-sm font-semibold text-green-500">
-                    ₦{p.price}
+                      {formatCurrency(product.price || 0)}
                   </div>
                 </div>
               </div>
