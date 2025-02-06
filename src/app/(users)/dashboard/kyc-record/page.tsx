@@ -72,13 +72,32 @@ const KycVideoRecording: React.FC = () => {
   };
 
   return (
-    <div>
-      <video ref={videoRef} autoPlay muted />
-      {!recording ? (
-        <button onClick={startRecording}>Start Recording</button>
-      ) : (
-        <button onClick={stopRecording}>Stop Recording</button>
-      )}
+    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 p-4">
+      <div className="w-full max-w-lg bg-white p-6 rounded-lg shadow-md">
+        <h1 className="text-3xl font-semibold text-center mb-6 text-gray-800">KYC Video Recording</h1>
+        
+        <div className="flex justify-center mb-4">
+          <video ref={videoRef} autoPlay muted className="w-full max-w-md rounded-lg shadow-lg" />
+        </div>
+
+        <div className="flex justify-center">
+          {!recording ? (
+            <button
+              onClick={startRecording}
+              className="px-6 py-3 bg-blue-500 text-white font-semibold rounded-lg shadow-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400"
+            >
+              Start Recording
+            </button>
+          ) : (
+            <button
+              onClick={stopRecording}
+              className="px-6 py-3 bg-red-500 text-white font-semibold rounded-lg shadow-md hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-400"
+            >
+              Stop Recording
+            </button>
+          )}
+        </div>
+      </div>
     </div>
   );
 };
