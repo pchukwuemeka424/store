@@ -38,8 +38,10 @@ export default function SliderComponent() {
   };
 
   return (
-    <div className="max-w-7xl mx-auto py-8">
+    <div className="max-w-7xl mx-auto ">
+           <div className="text-2x px-2 my-2 font-bold text-gray-900">Categories</div>
       <Slider {...settings} className="mx-auto">
+
         {categorys.map((category) => (
           <div key={category.id} className="p-2">
             <div className="relative">

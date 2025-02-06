@@ -6,6 +6,7 @@ import { search } from "@/actions/auth/search";
 import Link from "next/link";
 import { nigeriaStates } from "./states";
 
+
 export default function Navbar() {
   return (
     <>
@@ -65,7 +66,12 @@ export default function Navbar() {
               </button>
             </form>
           </div>
+       
         </div>
+
+             
+
+
       </section>
     </>
   );
