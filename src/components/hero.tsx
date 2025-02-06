@@ -59,7 +59,7 @@ export default function Navbar() {
 
               <button
                 type="submit"
-                className="w-full sm:w-auto bg-rose-700 text-white px-6 py-2 rounded-md sm:rounded-r-md hover:bg-blue-600 transition flex items-center justify-center"
+                className="w-full sm:w-auto bg-rose-700 text-white px-6 py-2 rounded-md sm:rounded-r-md flex items-center justify-center"
               >
                 <AiOutlineSearch className="w-6 h-6 mr-2" />
                 Search
