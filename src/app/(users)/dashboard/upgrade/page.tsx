@@ -15,33 +15,32 @@ export default function Page() {
         const { data: { user }, error: authError } = await supabase.auth.getUser();
         if (authError || !user) {
           console.error("Authentication error:", authError?.message);
-          return { errors: { message: "Authentication error" } };
+          setError("Authentication error");
+          return;
         }
 
-        // Fetch user profile details
         const { data, error: dataError } = await supabase
           .from("user_profile")
           .select("*")
           .eq("id", user.id)
-          .single();  // Add .single() to return only one row
+          .single();
 
         if (dataError) throw dataError;
         setUserDetails(data);
       } catch (error) {
-        setError(error.message || "Something went wrong while fetching user data.");
+        setError(error.message || "Failed to fetch user data.");
       }
     };
 
     fetchUser();
 
-    // Dynamically load the Rave payment script
+    // Load Flutterwave Payment Script
     const script = document.createElement("script");
-    script.src = "https://api.ravepay.co/flwv3-pug/getpaidx/api/flwpbf-inline.js";
+    script.src = "https://checkout.flutterwave.com/v3.js";
     script.async = true;
-    script.onload = () => console.log("Rave Payment Script Loaded");
+    script.onload = () => console.log("Flutterwave Payment Script Loaded");
     document.body.appendChild(script);
 
-    // Cleanup the script after the component is unmounted
     return () => {
       document.body.removeChild(script);
     };
@@ -54,38 +53,33 @@ export default function Page() {
     }
 
     setLoading(true);
-    setError(""); // Clear any previous error
+    setError(""); // Clear previous error
 
-    const API_publicKey = "FLWPUBK-9fbfe594212abb645780903215b7cc5a-X";
+    const publicKey = process.env.NEXT_PUBLIC_FLW_PUBLIC_KEY; // Use public key, not secret key
+    const txRef = `rave-${Date.now()}-${Math.floor(Math.random() * 100000)}`;
 
     try {
-      const x = getpaidSetup({
-        PBFPubKey: API_publicKey,
-        customer_email: userDetails?.email || "user@example.com",
+      FlutterwaveCheckout({
+        public_key: publicKey,
+        tx_ref: txRef,
         amount: 2000,
-        customer_phone: "234099940409",
         currency: "NGN",
-        txref: "rave-123456",
-        meta: [
-          {
-            metaname: "flightID",
-            metavalue: "AP1234",
-          },
-        ],
-        onclose: function () {},
+        payment_options: "card, mobilemoney, ussd",
+        customer: {
+          email: userDetails?.email || "user@example.com",
+          phone_number: "234099940409",
+          name: userDetails?.name || "User",
+        },
         callback: function (response) {
-          var txref = response.data.txRef;
-          console.log("This is the response returned after a charge", response);
-          if (
-            response.data.chargeResponseCode === "00" ||
-            response.data.chargeResponseCode === "0"
-          ) {
-            // redirect to a success page
+          console.log("Payment Response:", response);
+          if (response.status === "successful") {
+            // Handle successful payment
           } else {
-            // redirect to a failure page
+            setError("Payment failed. Please try again.");
           }
-
-          x.close();
+          setLoading(false);
+        },
+        onclose: function () {
           setLoading(false);
         },
       });
@@ -98,7 +92,7 @@ export default function Page() {
   return (
     <>
       <Head>
-        <script src="https://api.ravepay.co/flwv3-pug/getpaidx/api/flwpbf-inline.js"></script>
+        <title>Upgrade Plan</title>
       </Head>
 
       <div className="min-h-screen bg-gray-100 flex items-center justify-center">
