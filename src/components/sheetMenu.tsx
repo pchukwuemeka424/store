@@ -14,8 +14,27 @@ import Link from "next/link"
 import { LuList } from "react-icons/lu";
 import CategoryList from "@/components/category";
 import { FaTv, FaTshirt, FaHome, FaDumbbell, FaPaw, FaGem, FaBaby, FaGamepad, FaHeart } from "react-icons/fa";
+import { createClient } from "@/utils/supabase/client";
+import { useEffect, useState } from "react";
 
 export function SheetMenu() {
+
+  const supabase = createClient();
+  const [categorys, setcategorys] = useState([]);
+  
+  useEffect(()=>{
+  
+    const fetchCategories = async () => {
+      const { data: categories, error } = await supabase
+      .from("category")
+      .select("*");
+      if (error) console.error("Error fetching categories:", error);
+      else setcategorys(categories);
+    };
+  
+    fetchCategories();
+  
+  },[])
   return (
     <Sheet>
       <SheetTrigger asChild>
@@ -28,46 +47,14 @@ export function SheetMenu() {
         </SheetHeader>
 
         <ul className="space-y-2 my-3 border-b shadow">
-          <Link href="/products/electronics">
-            <li className="cursor-pointer border-b p-2"><FaTv className="inline mr-2" />Electronics</li>
-          </Link>
-          <Link href="/products/clothing">
-            <li className="cursor-pointer border-b p-2"><FaTshirt className="inline mr-2" />Clothing</li>
-          </Link>
-          <Link href="/products/home-appliances">
-            <li className="cursor-pointer border-b p-2"><FaHome className="inline mr-2" />Home Appliances</li>
-          </Link>
-
-          <Link href="/products/sports">
-            <li className="cursor-pointer border-b p-2"><FaDumbbell className="inline mr-2" />Sports</li>
-          </Link>
-          <Link href="/products/toys">
-            <li className="cursor-pointer border-b p-2"><FaPaw className="inline mr-2" />Toys</li>
-          </Link>
-          <Link href="/products/beauty">
-            <li className="cursor-pointer border-b p-2"><FaGem className="inline mr-2" />Beauty</li>
-          </Link>
-
-          <Link href="/products/jewelry">
-            <li className="cursor-pointer border-b p-2"><FaGem className="inline mr-2" />Jewelry</li>
-          </Link>
-
-
-          <Link href="/products/baby-products">
-            <li className="cursor-pointer border-b p-2"><FaBaby className="inline mr-2" />Baby Products</li>
-          </Link>
-          <Link href="/products/pet-supplies">
-            <li className="cursor-pointer border-b p-2"><FaPaw className="inline mr-2" />Pet Supplies</li>
-          </Link>
-
-
-          <Link href="/products/video-games">
-            <li className="cursor-pointer border-b p-2"><FaGamepad className="inline mr-2" />Video Games</li>
-          </Link>
-          <Link href="/products/health-beauty">
-            <li className="cursor-pointer border-b p-2"><FaHeart className="inline mr-2" />Health & Beauty</li>
-          </Link>
-
+        {categorys.map((category) => (
+          <li key={category.id}>
+            <Link href={`/products/${category.id}`} className="flex items-center py-2 px-4 hover:bg-gray-100">
+              <FaGem className="mr-2 text-rose-700" />
+              {category.title}
+            </Link>
+          </li>
+        ))}
 
 
         </ul>
