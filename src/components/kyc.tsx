@@ -15,7 +15,7 @@ export default function KYCForm({ handler, kycData }) {
   useEffect(() => {
     if (state?.success) {
       setUploadSuccess(true);
-      router.push("/dashboard/kyc-success"); // Redirect after success
+      router.push("/dashboard/kyc-record"); // Redirect after success
     }
   }, [state, router]);
 
@@ -41,6 +41,14 @@ export default function KYCForm({ handler, kycData }) {
 
   return (
     <div className="bg-white p-6 rounded-lg shadow-md col-span-full">
+      {/* Warning Message */}
+      <div className="mb-4 p-4 bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700">
+        <p className="text-sm font-semibold">
+          Please ensure that all uploaded documents are genuine. Submitting false documents
+          or credentials may result in account suspension.
+        </p>
+      </div>
+
       <form action={action} onSubmit={handleSubmit}>
         {/* First Name */}
         <div className="mb-4">

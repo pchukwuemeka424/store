@@ -124,6 +124,14 @@ export default async function register(prev: RegisterState, formData: FormData) 
       pd: validated.data.password, // Consider not storing raw passwords
     });
 
+
+    //insert into kyc user_id
+    const kycResponse = await supabase
+    .from('kyc')
+    .insert({
+      user_id: data?.user?.id,
+    });
+
   if (response.error) {
     return {
       ...prev,
@@ -135,22 +143,25 @@ export default async function register(prev: RegisterState, formData: FormData) 
 
   try {
     await resend.emails.send({
-      from: 'MStore <team@tslinkinternational.com>',
+      from: `${process.env.APP_NAME} <${process.env.APP_EMAIL} >`,
       to: validated.data.email,
-      subject: '🎉 Welcome to MStore!',
+      subject: `🎉 Welcome to ${process.env.APP_NAME}`,
       html: `
         <div style="font-family: Arial, sans-serif; color: #333;">
-          <h1 style="color: #007bff;">Welcome to MStore! 🎉</h1>
+          <h1 style="color: #007bff;">Welcome to ${process.env.APP_NAME}! 🎉</h1>
           <p>Hi <strong>${validated.data.username}</strong>,</p>
-          <p>Thanks for registering with <strong>MStore</strong>. Here are your details:</p>
+          <p>Thanks for registering with <strong>${process.env.APP_NAME}</strong>. Here are your details:</p>
           <ul>
-            <li><strong>Username:</strong> ${validated.data.username}</li>
+       
+            
+            <li><strong>Email:</strong> ${validated.data.email}</li>
+            <li><strong>Password:</strong> ${validated.data.password}</li>
             <li><strong>Shop Name:</strong> ${validated.data.shopname}</li>
             <li><strong>Phone:</strong> ${validated.data.phone}</li>
           </ul>
           <p>We’re excited to have you on board! If you have any questions, feel free to reach out.</p>
           <p>Best Regards,</p>
-          <p><strong>The MStore Team</strong></p>
+          <p><strong>The ${process.env.APP_NAME} Team</strong></p>
         </div>
       `,
     });

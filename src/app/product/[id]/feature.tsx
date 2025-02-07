@@ -79,7 +79,7 @@ export default function FeatureProducts<T>({ currentProductId, currentProductTit
                 <Image
                   src={`${process.env.NEXT_PUBLIC_IMAGE_URL}${product.image}`} 
                   alt={product.title}
-                  className="w-full h-40 object-cover rounded mb-4"
+                  className="w-full h-40 object-contain rounded mb-4"
                   width={500}
                   height={500}
                 />

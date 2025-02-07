@@ -77,14 +77,14 @@ export default async function handleKYCSubmission(state: any, formData: FormData
   
     const { data: kycData, error: insertError } = await supabase
       .from("kyc")
-      .insert({
+      .update({
         first_name: formInput.firstName,
         last_name: formInput.lastName,
         id_number: formInput.idNumber,
         verification_type: formInput.verificationType,
         document: filePath,
-        user_id: user_id,
-      });
+        })
+      .eq("user_id", user_id);
   
     if (insertError) {
       console.error("Error inserting KYC data:", insertError);
