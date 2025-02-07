@@ -186,6 +186,7 @@ const VideoVerification: React.FC = () => {
         )}
 
         <div className="flex justify-center space-x-4">
+          {/* Start Recording Button */}
           {!recording && !recorded && (
             <button
               onClick={startRecording}
@@ -195,6 +196,7 @@ const VideoVerification: React.FC = () => {
             </button>
           )}
 
+          {/* Cancel Button while Recording */}
           {recording && (
             <button
               onClick={() => setRecording(false)}
@@ -204,6 +206,7 @@ const VideoVerification: React.FC = () => {
             </button>
           )}
 
+          {/* Submit and Rerecord after Recording */}
           {recorded && (
             <>
               <button
