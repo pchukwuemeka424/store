@@ -106,7 +106,7 @@ const Dashboard = async () => {
             <h2 className="text-lg font-semibold">Subscription Plan</h2>
           </div>
           <p className="text-3xl font-bold">{subscriptionPlan}</p>
-          <Link href="#">
+          <Link href="/dashboard/upgrade">
             <Button className="px-4 py-2 bg-yellow-400 text-gray-900 rounded-md shadow-md">Upgrade Plan</Button>
           </Link>
         </div>

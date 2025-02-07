@@ -53,7 +53,7 @@ export default async function Product() {
   return (
     <div className="flex flex-col md:flex-row h-screen">
       <div className="flex-1 p-6 bg-gray-50 space-y-6 overflow-y-auto">
-        <Topbar />
+     
         
         {/* Debugging logs */}
         <pre className="bg-gray-100 p-2 text-xs">

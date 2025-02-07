@@ -28,7 +28,7 @@ export default async function KycPage() {
 
   return (
     <div>
-        <TopBar />
+       
 
       <KycStatus handler={handleKYCSubmission} />
     </div>

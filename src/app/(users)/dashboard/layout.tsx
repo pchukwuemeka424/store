@@ -2,7 +2,7 @@ import React from 'react';
 import { createClient } from '@/utils/supabase/server';
 import { redirect } from 'next/navigation';
 import { Metadata } from 'next';
-
+import TopBar from '@/components/topbar'
 // Add metadata
 export const metadata: Metadata = {
   title: process.env.APP_NAME || 'Default Title',
@@ -25,6 +25,9 @@ export default async function Layout({ children }: { children: React.ReactNode }
   }
 
   return(
-    <div>{children}</div>
+    
+    <div>
+       <TopBar />
+      {children}</div>
   )
 }
