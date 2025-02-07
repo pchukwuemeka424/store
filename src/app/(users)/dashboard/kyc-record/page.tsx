@@ -2,6 +2,8 @@
 
 import React, { useRef, useState, useEffect } from "react";
 import { createClient } from "@/utils/supabase/client";
+import { redirect } from "next/navigation";
+import { FaVideo } from "react-icons/fa"; // Import the video icon
 
 const supabase = createClient();
 
@@ -15,6 +17,7 @@ const VideoVerification: React.FC = () => {
   const [countdown, setCountdown] = useState<number | null>(null);
   const [isClient, setIsClient] = useState(false);
   const [uploading, setUploading] = useState(false);
+  const [kycData, setKycData] = useState<{ name: string; id_number: string } | null>(null);
 
   useEffect(() => {
     setIsClient(true);
@@ -26,6 +29,26 @@ const VideoVerification: React.FC = () => {
       return () => clearTimeout(timer);
     }
   }, [countdown, recording]);
+
+  useEffect(() => {
+    const fetchKycData = async () => {
+      const user = await supabase.auth.getUser();
+      const userId = user?.data?.user?.id;
+
+      if (!userId) return;
+
+      const { data, error } = await supabase.from("kyc").select("*").eq("user_id", userId).single();
+
+      if (error) {
+        console.error("Error fetching KYC data:", error.message);
+        return;
+      }
+
+      setKycData(data);
+    };
+
+    fetchKycData();
+  }, []);
 
   const startRecording = async () => {
     if (typeof window === "undefined") return;
@@ -96,11 +119,9 @@ const VideoVerification: React.FC = () => {
       return;
     }
 
-    // Generate a unique filename
     const filename = `${userId}-${Date.now()}.mp4`;
 
-    // Upload video to Supabase Storage
-    const { data, error } = await supabase.storage.from("videos").upload(filename, videoBlob, {
+    const { error } = await supabase.storage.from("videos").upload(filename, videoBlob, {
       contentType: "video/mp4",
     });
 
@@ -111,16 +132,9 @@ const VideoVerification: React.FC = () => {
       return;
     }
 
-    // Get public URL
-    const { data: publicUrlData } = supabase.storage.from("videos").getPublicUrl(filename);
-    const videoPath = publicUrlData.publicUrl;
+    const { publicUrl } = supabase.storage.from("videos").getPublicUrl(filename);
 
-    // Insert video path & user ID into database
-    const { error: dbError } = await supabase.from("kyc")
-    .update([
-      { video: videoPath },
-    ])
-    .eq("user_id", userId);
+    const { error: dbError } = await supabase.from("kyc").update({ video: publicUrl }).eq("user_id", userId);
 
     if (dbError) {
       console.error("Database update error:", dbError.message);
@@ -131,6 +145,7 @@ const VideoVerification: React.FC = () => {
 
     alert("Video uploaded successfully!");
     setUploading(false);
+    redirect("/dashboard/kyc-success");
   };
 
   if (!isClient) {
@@ -143,12 +158,19 @@ const VideoVerification: React.FC = () => {
         <h1 className="text-3xl font-bold mb-4 text-blue-400">
           10-Second Video Verification
         </h1>
-        <p className="text-gray-300 mb-4">
-          Please clearly state your name and ID number.
-        </p>
+        {kycData ? (
+          <p className="text-gray-300 mb-4">
+            Please clearly state your <strong className="font-semibold text-2xl"> {kycData?.first_name} {kycData?.last_name}</strong> and ID number {kycData.id_number}.
+          </p>
+        ) : (
+          <p className="text-gray-300 mb-4">Fetching KYC data...</p>
+        )}
 
-        <div className="relative mb-4">
-          <video ref={videoRef} autoPlay className="w-full max-w-md rounded-lg shadow-lg border border-blue-500" />
+        <div className="relative mb-4 w-full max-w-md h-56 flex items-center justify-center bg-gray-700 rounded-lg shadow-lg border border-blue-500 overflow-hidden">
+          {!recording && !recorded && (
+            <FaVideo className="text-gray-400 text-6xl absolute" />
+          )}
+          <video ref={videoRef} autoPlay className="absolute w-full h-full object-cover" />
           {recording && countdown !== null && (
             <div className="absolute top-4 left-1/2 transform -translate-x-1/2 bg-red-600 text-white px-4 py-2 rounded-lg text-lg">
               {countdown}
@@ -187,9 +209,7 @@ const VideoVerification: React.FC = () => {
               <button
                 onClick={uploadVideo}
                 disabled={uploading}
-                className={`px-6 py-3 ${
-                  uploading ? "bg-gray-500" : "bg-green-500 hover:bg-green-600"
-                } text-white font-semibold rounded-lg shadow-md transition`}
+                className={`px-6 py-3 ${uploading ? "bg-gray-500" : "bg-green-500 hover:bg-green-600"} text-white font-semibold rounded-lg shadow-md transition`}
               >
                 {uploading ? "Uploading..." : "Submit"}
               </button>
