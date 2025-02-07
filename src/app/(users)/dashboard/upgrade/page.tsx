@@ -34,16 +34,18 @@ export default function Page() {
 
     fetchUser();
 
-    // Load Flutterwave Payment Script
-    const script = document.createElement("script");
-    script.src = "https://checkout.flutterwave.com/v3.js";
-    script.async = true;
-    script.onload = () => console.log("Flutterwave Payment Script Loaded");
-    document.body.appendChild(script);
-
-    return () => {
-      document.body.removeChild(script);
-    };
+    // Load Flutterwave Payment Script if not already loaded
+    if (!document.querySelector('script[src="https://checkout.flutterwave.com/v3.js"]')) {
+      const script = document.createElement("script");
+      script.src = "https://checkout.flutterwave.com/v3.js";
+      script.async = true;
+      script.onload = () => console.log("Flutterwave Payment Script Loaded");
+      document.body.appendChild(script);
+      
+      return () => {
+        document.body.removeChild(script);
+      };
+    }
   }, []);
 
   const handlePayment = async () => {
@@ -55,14 +57,14 @@ export default function Page() {
     setLoading(true);
     setError(""); // Clear previous error
 
-    const publicKey = process.env.NEXT_PUBLIC_FLW_PUBLIC_KEY; // Use public key, not secret key
+    const publicKey = process.env.NEXT_PUBLIC_FLW_PUBLIC_KEY;
     const txRef = `rave-${Date.now()}-${Math.floor(Math.random() * 100000)}`;
 
     try {
       FlutterwaveCheckout({
         public_key: publicKey,
         tx_ref: txRef,
-        amount: 2000,
+        amount: 100,
         currency: "NGN",
         payment_options: "card, mobilemoney, ussd",
         customer: {
@@ -70,10 +72,23 @@ export default function Page() {
           phone_number: "234099940409",
           name: userDetails?.name || "User",
         },
-        callback: function (response) {
+        callback: async function (response) {
           console.log("Payment Response:", response);
           if (response.status === "successful") {
-            // Handle successful payment
+            // Update user_profile subscription plan
+            const supabase = createClient();
+            const { error: updateError } = await supabase
+              .from("user_profile")
+              .update({ subscription_plan: "premium" })
+              .eq("id", userDetails.id);
+
+            if (updateError) {
+              console.error("Error updating user profile:", updateError);
+              setError("Failed to update user profile.");
+            } else {
+              console.log("User profile updated successfully.");
+              window.location.href = "/dashboard";
+            }
           } else {
             setError("Payment failed. Please try again.");
           }
