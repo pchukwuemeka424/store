@@ -6,7 +6,7 @@ import { User } from "lucide-react";
 import UserDashboard from "@/components/userdashboard";
 
 export default async function DashboardPage() {
-  
+
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
 
@@ -25,15 +25,12 @@ export default async function DashboardPage() {
     return null;
   }
 
-  if(profile.stat=== null || profile.city === null || profile.phone === null){
+  if (profile.stat === null || profile.city === null || profile.phone === null) {
     redirect("/dashboard/profile");
   }
 
   return (
     <div>
-      
-  
-       
       <Dashboard />
     </div>
   );
