@@ -78,6 +78,16 @@ export async function updateKYC(data: any) {
       `,
     });
   }
+// delete video using [video_path]
+  const { error: videoError } = await supabase
+    .storage
+    .from("videos")
+    .remove([data.video]);
+  if (videoError) {
+    console.error("Error deleting video from bucket:", videoError);
+    alert("Failed to delete the video from the storage bucket.");
+    return;
+  }
 
   revalidatePath("/admin/kyc", "page"); // Ensure cache refresh
   return { success: true };

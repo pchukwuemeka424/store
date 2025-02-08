@@ -26,6 +26,7 @@ export default function ModalEdit({ product }: { product: any }) {
     id_number: product?.id_number || "",
     kyc_status: product?.kyc_status || "Pending",
     id: product?.id,
+    video: product?.video,
     user_id: product?.user_id,
   });
 
@@ -95,7 +96,7 @@ export default function ModalEdit({ product }: { product: any }) {
         <form onSubmit={handleSubmit}>
           <div className="grid gap-4 grid-cols-2">
             <div>
-          
+          <input type="hidden" name="video" value={formData.video}  onChange={handleInputChange} />
               <Label htmlFor="first_name">First Name</Label>
               <Input
                 id="first_name"
