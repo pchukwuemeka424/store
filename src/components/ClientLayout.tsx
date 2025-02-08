@@ -39,7 +39,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
           isSidebarOpen ? "translate-x-0" : "-translate-x-full"
         }`}
       >
-        <div className="flex items-center justify-between p-4 border-b border-blue-500 md:hidden">
+        <div className="flex items-center justify-between  border-b border-blue-500 md:hidden">
           <span className="text-lg font-semibold text-white">Dashboard</span>
           <Button variant="ghost" onClick={() => setIsSidebarOpen(false)}>
             <X className="w-6 h-6 text-white hover:text-gray-200" />
@@ -102,7 +102,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
           </Button>
           <span className="text-lg font-semibold text-white">Dashboard</span>
         </header>
-        <main className="flex-1 p-6 bg-white rounded-xl shadow-md m-4 text-gray-800">
+        <main className="flex-1  bg-white rounded-xl shadow-md m-4 text-gray-800">
           {children}
         </main>
       </div>
