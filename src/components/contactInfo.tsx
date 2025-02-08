@@ -82,7 +82,7 @@ const ContactInfo = ({ shopDetails }) => {
 </div>
               
               {/* Social Icons */}
-              <div className="block sm:flex gap-4 mt-6 space-y-2 ">
+              <div className="block sm:flex gap-4 mt-6 space-y-2-2 sm:space-y-0">
                 {facebook && (
                   <a href={facebook} target="_blank" rel="noopener noreferrer">
                     <Button className="bg-blue-600 text-white p-3 rounded-full shadow-md hover:bg-blue-700">
@@ -92,7 +92,7 @@ const ContactInfo = ({ shopDetails }) => {
                 )}
                 {twitter && (
                   <a href={twitter} target="_blank" rel="noopener noreferrer">
-                    <Button className="bg-blue-400 text-white p-3 rounded-full shadow-md my-2 hover:bg-blue-500">
+                    <Button className="bg-blue-400 text-white p-3 rounded-full shadow-md hover:bg-blue-500">
                       <FaTwitter className="w-5 h-5" /> Twitter
                     </Button>
                   </a>
@@ -106,7 +106,7 @@ const ContactInfo = ({ shopDetails }) => {
                 )}
                 {phone && (
                   <a href={whatsapp} target="_blank" rel="noopener noreferrer">
-                    <Button className="bg-green-500 text-white p-3 rounded-full shadow-md my-2 hover:bg-green-600">
+                    <Button className="bg-green-500 text-white p-3 rounded-full shadow-md hover:bg-green-600">
                       <FaWhatsapp className="w-5 h-5" />  WhatsApp
                     </Button>
                   </a>
