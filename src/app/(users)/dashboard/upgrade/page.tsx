@@ -64,6 +64,7 @@ export default function Page() {
       FlutterwaveCheckout({
         public_key: publicKey,
         tx_ref: txRef,
+         redirect_url: "/dashboard/success",
         amount: 100,
         currency: "NGN",
         payment_options: "card, mobilemoney, ussd",
@@ -76,18 +77,15 @@ export default function Page() {
           console.log("Payment Response:", response);
           if (response.status === "successful") {
             // Update user_profile subscription plan
-            const supabase = createClient();
-            const { error: updateError } = await supabase
-              .from("user_profile")
-              .update({ subscription_plan: "premium" })
-              .eq("id", userDetails.id);
-
+          
+              window.location.href = "/dashboard";
+              console.log("redirecy.");
             if (updateError) {
               console.error("Error updating user profile:", updateError);
               setError("Failed to update user profile.");
             } else {
               console.log("User profile updated successfully.");
-              window.location.href = "/dashboard";
+            
             }
           } else {
             setError("Payment failed. Please try again.");
