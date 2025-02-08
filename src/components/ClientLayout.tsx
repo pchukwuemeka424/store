@@ -1,9 +1,8 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import {  Menu, X } from "lucide-react";
-
+import { Menu, X } from "lucide-react";
 import { createClient } from "@/utils/supabase/client";
 import { FaHome, FaCog, FaUserCircle, FaSignOutAlt } from "react-icons/fa";
 import { FaPlus } from "react-icons/fa6";
@@ -13,11 +12,24 @@ import logout from "@/actions/auth/logout";
 
 export default function ClientLayout({ children }: { children: React.ReactNode }) {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-    const [state, action, isPending] = useActionState(logout, undefined, null);
-    const supabase = createClient();
-    const [categorys, setcategorys] = useState([]);
-    
+  const [state, action, isPending] = useActionState(logout, undefined, null);
+  const supabase = createClient();
+  const [messageCount, setMessageCount] = useState(0);
 
+  // Fetch message count
+  useEffect(() => {
+    const fetchMessageCount = async () => {
+      const { count, error } = await supabase
+        .from("messages")
+        .select("*", { count: "exact", head: true });
+
+      if (!error) {
+        setMessageCount(count || 0);
+      }
+    };
+
+    fetchMessageCount();
+  }, []);
 
   return (
     <div className="flex h-screen bg-gradient-to-br">
@@ -34,47 +46,51 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
           </Button>
         </div>
         <nav className="p-6 space-y-4 text-white">
-             <ul>
-          <li className="mb-4 flex items-center">
-            <FaHome className="h-5 w-5 mr-2" />
-            <Link href="/dashboard/" className="hover:bg-gray-700 p-2 rounded">
-              Dashboard
-            </Link>
-          </li>
-          <li className="mb-4 flex items-center">
-            <FaPlus className="h-5 w-5 mr-2" />
-            <Link href="/dashboard/addproduct" className="hover:bg-gray-700 p-2 rounded">
-              Add Products
-            </Link>
-          </li>
-          <li className="mb-4 flex items-center">
-            <FaCog className="h-5 w-5 mr-2" />
-            <Link href="/dashboard/productlist" className="hover:bg-gray-700 p-2 rounded">
-              Manage Products
-            </Link>
-          </li>
-          
-       
-          <li className="mb-4 flex items-center">
-            <FaUserCircle className="h-5 w-5 mr-2" />
-            <Link href="/dashboard/profile" className="hover:bg-gray-700 p-2 rounded">
-              Profile
-            </Link>
-          </li>
-          <li className="mb-4 flex items-center">
-            <FaSignOutAlt className="h-5 w-5 mr-2" />
-            <form action={action}>
-              <Button
-                type="submit"
-                className="p-2 rounded"
-                disabled={isPending} // Disable button while logout is running
-              >
-                {isPending ? "Logging out..." : " Logout"}
-              </Button>
-             
-            </form>
-          </li>
-        </ul>
+          <ul>
+            <li className="mb-4 flex items-center">
+              <FaHome className="h-5 w-5 mr-2" />
+              <Link href="/dashboard/" className="hover:bg-gray-700 p-2 rounded">
+                Dashboard
+              </Link>
+            </li>
+            <li className="mb-4 flex items-center relative">
+              <FaHome className="h-5 w-5 mr-2" />
+              <Link href="/dashboard/message" className="hover:bg-gray-700 p-2 rounded flex items-center">
+                Message
+                {messageCount > 0 && (
+                  <span className="ml-2 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-full">
+                    {messageCount}
+                  </span>
+                )}
+              </Link>
+            </li>
+            <li className="mb-4 flex items-center">
+              <FaPlus className="h-5 w-5 mr-2" />
+              <Link href="/dashboard/addproduct" className="hover:bg-gray-700 p-2 rounded">
+                Add Products
+              </Link>
+            </li>
+            <li className="mb-4 flex items-center">
+              <FaCog className="h-5 w-5 mr-2" />
+              <Link href="/dashboard/productlist" className="hover:bg-gray-700 p-2 rounded">
+                Manage Products
+              </Link>
+            </li>
+            <li className="mb-4 flex items-center">
+              <FaUserCircle className="h-5 w-5 mr-2" />
+              <Link href="/dashboard/profile" className="hover:bg-gray-700 p-2 rounded">
+                Profile
+              </Link>
+            </li>
+            <li className="mb-4 flex items-center">
+              <FaSignOutAlt className="h-5 w-5 mr-2" />
+              <form action={action}>
+                <Button type="submit" className="p-2 rounded" disabled={isPending}>
+                  {isPending ? "Logging out..." : " Logout"}
+                </Button>
+              </form>
+            </li>
+          </ul>
         </nav>
       </div>
 

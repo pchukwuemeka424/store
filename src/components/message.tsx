@@ -12,7 +12,7 @@ export default function MessageForm({ product}) {
   const [notifyByText, setNotifyByText] = useState(false);
   const [formStatus, setFormStatus] = useState('idle');
 
-  const sendSmsNotification = async (phone, messageContent) => {
+  const sendSmsNotification = async (phone, messageContent,product) => {
     const url = `https://portal.nigeriabulksms.com/api/?username=adampekolo31@gmail.com&password=holiday100/&message=${encodeURIComponent(messageContent)}&sender=mdtoad&mobiles=234${phone}`;
     try {
       const response = await fetch(url);
@@ -47,7 +47,7 @@ export default function MessageForm({ product}) {
         console.log('Message submitted successfully:', data);
 
         if (notifyByText) {
-          const smsResponse = await sendSmsNotification(phoneNumber, message);
+          const smsResponse = await sendSmsNotification(product.user_profile.phone, message);
           if (smsResponse.status !== 'success') {
             console.error('Error sending SMS:', smsResponse.error);
           }
@@ -73,6 +73,7 @@ export default function MessageForm({ product}) {
         <div className="mb-4">
           <Label htmlFor="name">Name:</Label>
           <Input type="text" id="name" value={name} onChange={(e) => setName(e.target.value)} required />
+          <Input type="hidden" id="userPhone" value={product.user_profile.phone} onChange={(e) => setName(e.target.value)} required />
         </div>
         <div className="mb-4">
           <Label htmlFor="phoneNumber">Phone Number:</Label>
