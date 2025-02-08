@@ -68,6 +68,7 @@ export default function CatBanner({record}: any) {
       <form action={action} onSubmit={BannerhandleSubmit}>
         <div className="mb-4">
           {/* input id hidden */}
+          <input hidden onChange={(e) => setTitle(e.target.value)} type="text" name="user_id" value={record ? record.user_id : ""} />
           <input hidden onChange={(e) => setTitle(e.target.value)} type="text" name="id" value={record ? record.id : ""} />
           <label htmlFor="title" className="block text-gray-700">Title:</label>
           <input

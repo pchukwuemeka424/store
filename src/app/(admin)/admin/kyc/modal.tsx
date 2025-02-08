@@ -95,7 +95,7 @@ export default function ModalEdit({ product }: { product: any }) {
         <form onSubmit={handleSubmit}>
           <div className="grid gap-4 grid-cols-2">
             <div>
-            {product.video} 
+          
               <Label htmlFor="first_name">First Name</Label>
               <Input
                 id="first_name"
