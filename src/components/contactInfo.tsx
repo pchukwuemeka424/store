@@ -1,4 +1,4 @@
-import { CheckCircle, Menu, XCircle } from 'lucide-react';
+import { CheckCircle, XCircle } from 'lucide-react';
 import React from 'react';
 import { 
   FaFacebookF, 
@@ -6,7 +6,9 @@ import {
   FaWhatsapp, 
   FaTwitter,
   FaPhone, 
-  FaMapMarkerAlt
+  FaMapMarkerAlt, 
+  FaEnvelope, 
+  FaLocationArrow 
 } from 'react-icons/fa';
 import { Button } from './ui/button';
 import { Card, CardContent } from './ui/card';
@@ -32,18 +34,14 @@ const ContactInfo = ({ shopDetails }) => {
 
   const whatsapp = `https://wa.me/${phone}`;
 
-  const mapSrc = location?.lat && location?.lng
-    ? `https://maps.google.com/maps?q=${location.lat},${location.lng}&z=15&output=embed`
-    : null;
-
   return (
     <div className="flex flex-col min-h-screen p-8 mx-auto max-w-7xl">
       <div className="sm:flex gap-8">
         {/* About Us Section */}
-        <Card className="p-8 shadow-xl rounded-lg bg-white text-gray-900 w-full sm:w-1/3">
+        <Card className="p-8 shadow-xl rounded-lg bg-orange-400 text-white mb-4 w-full sm:w-1/3">
           <CardContent>
             <h2 className="text-2xl font-semibold mb-6">About Us</h2>
-            <p className="text-gray-700">{aboutUs || "No description available."}</p>
+            <p className="text-white">{aboutUs || "No description available."}</p>
           </CardContent>
         </Card>
         
@@ -52,34 +50,33 @@ const ContactInfo = ({ shopDetails }) => {
           <CardContent>
             <h2 className="text-2xl font-semibold mb-6">Get in Touch</h2>
             <div className="grid gap-4">
-              <p className="text-gray-700"><strong>Email:</strong> {email}</p>
-              <p className="text-gray-700"><strong>Phone:</strong> {phone}</p>
-              <p className="text-gray-700"><strong>Address:</strong> {address}</p>
-              <p className="text-gray-700"><strong>City:</strong> {city}, <strong>State:</strong> {state}, Nigeria</p>
+              <p className="text-gray-700 flex items-center"><FaEnvelope className="mr-2" /> <strong>Email:</strong> {email}</p>
+              <p className="text-gray-700 flex items-center"><FaPhone className="mr-2" /> <strong>Phone:</strong> {phone}</p>
+              <p className="text-gray-700 flex items-center"><FaMapMarkerAlt className="mr-2" /> <strong>Address:</strong> {address}</p>
+              <p className="text-gray-700 flex items-center"><FaLocationArrow className="mr-2" /> <strong>City:</strong> {city}, <strong>State:</strong> {state}, Nigeria</p>
               <p className="text-gray-700"><strong>Registered:</strong>  
-            
-              {new Date(created_at).toLocaleDateString('en-US', {
-                year: 'numeric',
-                month: 'long',
-                day: 'numeric',
-              })}
+                {new Date(created_at).toLocaleDateString('en-US', {
+                  year: 'numeric',
+                  month: 'long',
+                  day: 'numeric',
+                })}
               </p>
               <div className="mt-4 flex items-center">
-  {kyc_status === "Approved" ? (
-    <CheckCircle className="text-green-500 w-6 h-6 mr-2" />
-  ) : kyc_status === "Pending" || kyc_status === "Rejected" ? (
-    <XCircle className="text-yellow-500 w-6 h-6 mr-2" />
-  ) : (
-    <XCircle className="text-red-500 w-6 h-6 mr-2" />
-  )}
-  <p className="text-lg font-semibold">
-    {kyc_status === "Approved"
-      ? "Verified Business"
-      : kyc_status === "Pending" || kyc_status === "Rejected"
-      ? "Business Not Verified"
-      : "Verification Status Unknown"}
-  </p>
-</div>
+                {kyc_status === "Approved" ? (
+                  <CheckCircle className="text-green-500 w-6 h-6 mr-2" />
+                ) : kyc_status === "Pending" || kyc_status === "Rejected" ? (
+                  <XCircle className="text-yellow-500 w-6 h-6 mr-2" />
+                ) : (
+                  <XCircle className="text-red-500 w-6 h-6 mr-2" />
+                )}
+                <p className="text-lg font-semibold">
+                  {kyc_status === "Approved"
+                    ? "Verified Business"
+                    : kyc_status === "Pending" || kyc_status === "Rejected"
+                    ? "Business Not Verified"
+                    : "Verification Status Unknown"}
+                </p>
+              </div>
               
               {/* Social Icons */}
               <div className="block sm:flex gap-4 mt-6 space-y-2-2 sm:space-y-0">

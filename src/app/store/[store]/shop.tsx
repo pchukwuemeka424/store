@@ -80,14 +80,14 @@ export default function ProductFetch() {
   return (
     <div>
       <HeaderMenu shopDetails={shopDetails} />
-      <div className="grid grid-cols-12 gap-4 p-4">
+      <div className="grid grid-cols-12 gap-4 p-4 mx-auto max-w-7xl">
         <CategoryList />
         <div className="col-span-12 sm:col-span-9 grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-4">
           <div className="col-span-2 sm:col-span-4 grid grid-cols-1">
            <Image
               src={shopDetails.banner}
               alt={shopDetails.username || 'Store Image'}
-              className="w-full h-auto sm:h-64 md:h-96 object-fill rounded mb-4"
+              className="w-full h-40 sm:h-64 md:h-64 object-fill rounded mb-4"
               width={500}
               height={500}
             />
