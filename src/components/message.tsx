@@ -58,7 +58,7 @@ export default function MessageForm({ product, userId, closeModal }: { product: 
     }
   };
   const sendSmsNotification = async (phone: string, message: string) => {
-    const url = `https://portal.nigeriabulksms.com/api/?username=adampekolo31@gmail.com&password=holiday100/&message=${encodeURIComponent(message)}&sender=mdtoad&mobiles=${phone}`;
+    const url = `https://portal.nigeriabulksms.com/api/?username=adampekolo31@gmail.com&password=holiday100/&message=${encodeURIComponent(message)}&sender=mdtoad&mobiles=234${phone}`;
   
     try {
       const response = await fetch(url, {
