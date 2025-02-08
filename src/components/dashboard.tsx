@@ -30,10 +30,7 @@ const Dashboard = async () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-r from-gray-100 to-gray-300 p-8">
-      <header className="bg-white shadow-lg p-6 rounded-xl flex justify-between items-center">
-        <h1 className="text-2xl font-bold text-gray-800">Dashboard</h1>
-        <LogoutButton />
-      </header>
+    
       
       <ShopUrlDisplay siteData={siteData} profile={profile} />
       

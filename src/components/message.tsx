@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import Image from 'next/image';
 import { createClient } from '@/utils/supabase/client';
 
-export default function MessageForm({ product, userId, closeModal }) {
+export default function MessageForm({ product}) {
   const [name, setName] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
   const [message, setMessage] = useState(`I am interested in the ${product.title} product. Kindly respond back with more details regarding its features, pricing, and availability.`);
@@ -34,7 +34,7 @@ export default function MessageForm({ product, userId, closeModal }) {
         {
           name,
           phone: phoneNumber,
-          user_id: userId,
+          user_id: product.user_id,
           image: `${process.env.NEXT_PUBLIC_IMAGE_URL}${product.image}`,
           message,
         }

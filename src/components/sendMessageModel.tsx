@@ -15,13 +15,13 @@ import { FaEye, FaFileAlt } from "react-icons/fa";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { createClient } from "@/utils/supabase/client";
-import BanM from "./banM";
+
 import { FaF } from "react-icons/fa6";
 import Message from "./message";
 
 
 
-export default function BannwerModalLogo({product}:any) {
+export default function SendMessageModel({product}:any) {
 
 
   return (
