@@ -8,7 +8,8 @@ import {
   FaPhone, 
   FaMapMarkerAlt, 
   FaEnvelope, 
-  FaLocationArrow 
+  FaLocationArrow, 
+  FaExclamationTriangle
 } from 'react-icons/fa';
 import { Button } from './ui/button';
 import { Card, CardContent } from './ui/card';
@@ -62,21 +63,30 @@ const ContactInfo = ({ shopDetails }) => {
                 })}
               </p>
               <div className="mt-4 flex items-center">
-                {kyc_status === "Approved" ? (
-                  <CheckCircle className="text-green-500 w-6 h-6 mr-2" />
-                ) : kyc_status === "Pending" || kyc_status === "Rejected" ? (
-                  <XCircle className="text-yellow-500 w-6 h-6 mr-2" />
-                ) : (
-                  <XCircle className="text-red-500 w-6 h-6 mr-2" />
-                )}
-                <p className="text-lg font-semibold">
-                  {kyc_status === "Approved"
-                    ? "Verified Business"
-                    : kyc_status === "Pending" || kyc_status === "Rejected"
-                    ? "Business Not Verified"
-                    : "Verification Status Unknown"}
-                </p>
-              </div>
+  {kyc_status === "Approved" ? (
+    <CheckCircle className="text-green-500 w-6 h-6 mr-2" />
+  ) : kyc_status === "Pending" || kyc_status === "Rejected" ? (
+    <XCircle className="text-yellow-500 w-6 h-6 mr-2" />
+  ) : (
+    <XCircle className="text-red-500 w-6 h-6 mr-2" />
+  )}
+  <p className="text-lg font-semibold">
+    {kyc_status === "Approved"
+      ? "Verified Business"
+      : kyc_status === "Pending" || kyc_status === "Rejected"
+      ? "Business Not Verified"
+      : "Verification Status Unknown"}
+  </p>
+</div>
+
+{/* Add warning for not verified businesses with an icon */}
+{kyc_status !== "Approved" && (
+  <p className="text-red-500 text-sm mt-2 flex items-center">
+    <FaExclamationTriangle className="mr-2 w-5 h-5" /> 
+    Warning: This business is not verified. Please exercise caution when dealing with unverified businesses to avoid potential scams or fraud.
+  </p>
+)}
+
               
               {/* Social Icons */}
               <div className="block sm:flex gap-4 mt-6 space-y-2-2 sm:space-y-0">
