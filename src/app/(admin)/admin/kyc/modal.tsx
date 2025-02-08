@@ -15,16 +15,18 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import Image from "next/image";
 import { updateKYC } from "@/actions/auth/kycAdmin";
+import { PhotoProvider, PhotoView } from "react-photo-view";
+import "react-photo-view/dist/react-photo-view.css";
 
 export default function ModalEdit({ product }: { product: any }) {
   const [formData, setFormData] = useState({
-    first_name: product.first_name || "N/A",
-    last_name: product.last_name || "N/A",
-    verification_type: product.verification_type || "N/A",
-    id_number: product.id_number || "N/A",
-    kyc_status: product.kyc_status || "Pending",
-    id: product.id,
-    user_id: product.user_id,
+    first_name: product?.first_name || "",
+    last_name: product?.last_name || "",
+    verification_type: product?.verification_type || "",
+    id_number: product?.id_number || "",
+    kyc_status: product?.kyc_status || "Pending",
+    id: product?.id,
+    user_id: product?.user_id,
   });
 
   const [loading, setLoading] = useState(false);
@@ -40,7 +42,7 @@ export default function ModalEdit({ product }: { product: any }) {
     setLoading(true);
     setSuccessMessage("");
 
-    const result = await updateKYC(formData); // Call the server action manually
+    const result = await updateKYC(formData);
 
     if (result?.error) {
       console.error("Error updating KYC:", result.error);
@@ -54,53 +56,90 @@ export default function ModalEdit({ product }: { product: any }) {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <span>
-          <Button>
-            <FaEye className="mr-1" />
-            View
-          </Button>
-        </span>
+        <Button>
+          <FaEye className="mr-1" />
+          View
+        </Button>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
           <DialogTitle>Edit KYC Data</DialogTitle>
-          <DialogDescription>
-            Update KYC details and save the changes.
-          </DialogDescription>
+          <DialogDescription>Update KYC details and save the changes.</DialogDescription>
         </DialogHeader>
 
-        <div>
-          <Image
-            src={`${process.env.NEXT_PUBLIC_IMAGE_URL_KYC}${product.document}`}
-            alt="Product"
-            width={100}
-            height={100}
-            className="rounded"
-          />
-        </div>
+     <div className="space-y-4 flex">
+         {/* Photo View Integration */}
+         {product?.document && (
+          <PhotoProvider>
+            <PhotoView src={`${process.env.NEXT_PUBLIC_IMAGE_URL_KYC}${product.document}`}>
+              <Image
+                src={`${process.env.NEXT_PUBLIC_IMAGE_URL_KYC}${product.document}`}
+                alt="KYC Document"
+                width={100}
+                height={100}
+                className="rounded cursor-pointer"
+              />
+            </PhotoView>
+          </PhotoProvider>
+        )}
 
+        {/* Video Frame */}
+        {product?.video && (
+          <video width="320" height="240" controls className="mt-4">
+            <source src={`${process.env.NEXT_PUBLIC_VIDEO_URL_KYC}${product.video}`} type="video/mp4" />
+            Your browser does not support the video tag.
+          </video>
+        )}
+
+     </div>
         <form onSubmit={handleSubmit}>
           <div className="grid gap-4 grid-cols-2">
             <div>
-            <Input id="user_id" name="user_id" value={formData.user_id} onChange={handleInputChange} />
+            {product.video} 
               <Label htmlFor="first_name">First Name</Label>
-              <Input id="first_name" name="first_name" value={formData.first_name} onChange={handleInputChange} />
+              <Input
+                id="first_name"
+                name="first_name"
+                value={formData.first_name}
+                onChange={handleInputChange}
+              />
             </div>
             <div>
               <Label htmlFor="last_name">Last Name</Label>
-              <Input id="last_name" name="last_name" value={formData.last_name} onChange={handleInputChange} />
+              <Input
+                id="last_name"
+                name="last_name"
+                value={formData.last_name}
+                onChange={handleInputChange}
+              />
             </div>
             <div>
               <Label htmlFor="verification_type">Verification Type</Label>
-              <Input id="verification_type" name="verification_type" value={formData.verification_type} onChange={handleInputChange} />
+              <Input
+                id="verification_type"
+                name="verification_type"
+                value={formData.verification_type}
+                onChange={handleInputChange}
+              />
             </div>
             <div>
               <Label htmlFor="id_number">ID Number</Label>
-              <Input id="id_number" name="id_number" value={formData.id_number} onChange={handleInputChange} />
+              <Input
+                id="id_number"
+                name="id_number"
+                value={formData.id_number}
+                onChange={handleInputChange}
+              />
             </div>
             <div>
               <Label htmlFor="kyc_status">KYC Status</Label>
-              <select id="kyc_status" name="kyc_status" value={formData.kyc_status} onChange={handleInputChange} className="border w-full border-gray-300 rounded p-2">
+              <select
+                id="kyc_status"
+                name="kyc_status"
+                value={formData.kyc_status}
+                onChange={handleInputChange}
+                className="border w-full border-gray-300 rounded p-2"
+              >
                 <option value="Pending">Pending</option>
                 <option value="Approved">Approved</option>
                 <option value="Rejected">Rejected</option>
@@ -109,7 +148,9 @@ export default function ModalEdit({ product }: { product: any }) {
           </div>
 
           <div className="mt-4 flex justify-end">
-            <Button type="submit" disabled={loading}>{loading ? "Saving..." : "Save Changes"}</Button>
+            <Button type="submit" disabled={loading}>
+              {loading ? "Saving..." : "Save Changes"}
+            </Button>
           </div>
 
           {successMessage && <p className="mt-2 text-green-600">{successMessage}</p>}

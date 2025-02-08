@@ -134,7 +134,7 @@ const VideoVerification: React.FC = () => {
 
     const { publicUrl } = supabase.storage.from("videos").getPublicUrl(filename);
 
-    const { error: dbError } = await supabase.from("kyc").update({ video: publicUrl }).eq("user_id", userId);
+    const { error: dbError } = await supabase.from("kyc").update({ video: filename }).eq("user_id", userId);
 
     if (dbError) {
       console.error("Database update error:", dbError.message);

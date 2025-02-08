@@ -9,7 +9,6 @@
     "lint": "next lint"
   },
   "dependencies": {
-
     "@ffmpeg/core": "^0.12.10",
     "@ffmpeg/ffmpeg": "^0.12.15",
     "@paystack/inline-js": "^2.22.2",
@@ -34,6 +33,7 @@
     "react-dom": "^19.0.0",
     "react-icons": "^5.4.0",
     "react-image-file-resizer": "^0.4.8",
+    "react-photo-view": "^1.2.7",
     "react-slick": "^0.30.3",
     "react-toastify": "^11.0.2",
     "react-webcam": "^7.2.0",
