@@ -41,7 +41,14 @@ const Dashboard = async () => {
         <DashboardCard icon={<FaProductHunt size={40} />} title="Total Uploads" value={totalUploads || 0} color="bg-blue-500" />
         <DashboardCard icon={<FaUserShield size={40} />} title="Account Status" value={accountStatus} color={accountStatus === "Active" ? "bg-green-500" : "bg-red-500"} />
         <DashboardCard icon={<FaCrown size={40} className="text-yellow-300" />} title="Subscription Plan" value={subscriptionPlan} color={subscriptionPlan === "Premium" ? "bg-purple-500" : "bg-gray-500"} link="/dashboard/upgrade" linkText="Upgrade Plan" />
-        <DashboardCard icon={<FaFileAlt size={40} />} title="KYC Status" value={kycStatus} color={kycStatus === "Approved" ? "bg-green-500" : "bg-yellow-500"} link={kycStatus === "Pending" ? "/dashboard/kyc" : null} linkText="Update KYC" />
+        <DashboardCard 
+  icon={<FaFileAlt size={40} />} 
+  title="KYC Status" 
+  value={kycStatus} 
+  color={kycStatus === "Approved" ? "bg-green-500" : kycStatus === "Rejected" ? "bg-red-500" : "bg-yellow-500"} 
+  link={kycStatus === "Pending" || kycStatus === "Rejected" ? "/dashboard/kyc" : null} 
+  linkText={kycStatus === "Rejected" ? "Resubmit KYC" : "Update KYC"} 
+/>
       </div>
 
       <div className="mt-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">

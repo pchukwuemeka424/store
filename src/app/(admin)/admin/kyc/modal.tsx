@@ -78,7 +78,7 @@ export default function ModalEdit({ product }: { product: any }) {
                 alt="KYC Document"
                 width={100}
                 height={100}
-                className="rounded cursor-pointer"
+                className="rounded cursor-pointer w-40 h-40 sm:w-40 sm:h-40"
               />
             </PhotoView>
           </PhotoProvider>
@@ -86,7 +86,7 @@ export default function ModalEdit({ product }: { product: any }) {
 
         {/* Video Frame */}
         {product?.video && (
-          <video width="320" height="240" controls className="mt-4">
+          <video width="320" height="240" controls className="mt-4 h-40 sm:h-40">
             <source src={`${process.env.NEXT_PUBLIC_VIDEO_URL_KYC}${product.video}`} type="video/mp4" />
             Your browser does not support the video tag.
           </video>
