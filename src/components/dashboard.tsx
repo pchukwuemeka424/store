@@ -24,80 +24,66 @@ const Dashboard = async () => {
   const { count: totalUploads } = await supabase.from("products").select("*", { count: "exact" }).eq("id", user.id);
   const { data: siteData } = await supabase.from("site_info").select("*").single();
 
-  const accountStatus = profile?.account_status;
+  const accountStatus = profile?.account_status || "Inactive";
   const subscriptionPlan = profile?.subscription_plan || "Free";
   const kycStatus = kyc?.kyc_status || "Pending";
 
   return (
-    <div className="min-h-screen bg-gray-100 p-6">
-      <header className="bg-white shadow-md p-4 rounded-md flex justify-between items-center">
-        <h1 className="text-xl font-bold text-gray-800">Dashboard</h1>
+    <div className="min-h-screen bg-gradient-to-r from-gray-100 to-gray-300 p-8">
+      <header className="bg-white shadow-lg p-6 rounded-xl flex justify-between items-center">
+        <h1 className="text-2xl font-bold text-gray-800">Dashboard</h1>
         <LogoutButton />
       </header>
       
       <ShopUrlDisplay siteData={siteData} profile={profile} />
       
-      <div className="mt-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        <div className="bg-blue-500 text-white p-6 rounded-md shadow-md flex items-center space-x-4">
-          <FaProductHunt size={40} />
-          <div>
-            <h2 className="text-lg font-semibold">Total Uploads</h2>
-            <p className="text-3xl font-bold mt-2">{totalUploads || 0}</p>
-          </div>
-        </div>
-
-        <div className={`p-6 rounded-md shadow-md flex items-center space-x-4 ${accountStatus === "Active" ? "bg-green-500" : "bg-red-500"} text-white`}>
-          <FaUserShield size={40} />
-          <div>
-            <h2 className="text-lg font-semibold">Account Status</h2>
-            <p className="text-3xl font-bold mt-2">{accountStatus}</p>
-          </div>
-        </div>
-
-        <div className={`p-6 rounded-md shadow-md flex flex-col space-y-4 ${subscriptionPlan === "Premium" ? "bg-purple-500" : "bg-gray-500"} text-white`}>
-          <div className="flex items-center space-x-4">
-            <FaCrown size={40} className="text-yellow-300" />
-            <h2 className="text-lg font-semibold">Subscription Plan</h2>
-          </div>
-          <p className="text-3xl font-bold">{subscriptionPlan}</p>
-          <Link href="/dashboard/upgrade">
-            <Button className="bg-yellow-400 text-gray-900">Upgrade Plan</Button>
-          </Link>
-        </div>
-
-        <div className={`p-6 rounded-md shadow-md flex flex-col space-y-4 ${kycStatus === "Approved" ? "bg-green-500" : "bg-yellow-500"} text-white`}>
-          <FaFileAlt size={40} />
-          <h2 className="text-lg font-semibold">KYC Status</h2>
-          <p className="text-3xl font-bold">{kycStatus}</p>
-          {kycStatus === "Pending" && (
-            <Link href="/dashboard/kyc">
-              <Button className="bg-yellow-400 text-gray-900">Update KYC</Button>
-            </Link>
-          )}
-        </div>
+      <div className="mt-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+        <DashboardCard icon={<FaProductHunt size={40} />} title="Total Uploads" value={totalUploads || 0} color="bg-blue-500" />
+        <DashboardCard icon={<FaUserShield size={40} />} title="Account Status" value={accountStatus} color={accountStatus === "Active" ? "bg-green-500" : "bg-red-500"} />
+        <DashboardCard icon={<FaCrown size={40} className="text-yellow-300" />} title="Subscription Plan" value={subscriptionPlan} color={subscriptionPlan === "Premium" ? "bg-purple-500" : "bg-gray-500"} link="/dashboard/upgrade" linkText="Upgrade Plan" />
+        <DashboardCard icon={<FaFileAlt size={40} />} title="KYC Status" value={kycStatus} color={kycStatus === "Approved" ? "bg-green-500" : "bg-yellow-500"} link={kycStatus === "Pending" ? "/dashboard/kyc" : null} linkText="Update KYC" />
       </div>
 
-      <div className="mt-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        <div className="bg-gray-800 text-white p-6 rounded-md shadow-md flex flex-col space-y-4">
-          <Image src={profile.avater} alt="Logo" width={40} height={40} />
-          <h2 className="text-lg font-semibold">Change Logo</h2>
-          <LogoModel />
-        </div>
-        <div className="bg-gray-800 text-white p-6 rounded-md shadow-md flex flex-col space-y-4">
-          <Image src={profile.banner} alt="Banner" width={100} height={60} />
-          <h2 className="text-lg font-semibold">Change Banner</h2>
-          <BannerModel />
-        </div>
-        <div className="bg-blue-600 text-white p-6 rounded-md shadow-md flex flex-col items-center space-y-4">
-          <FaPlusCircle size={40} />
-          <h2 className="text-lg font-semibold">Add New Product</h2>
-          <Link href="/dashboard/addproduct">
-            <Button className="bg-white text-blue-600">Add Product</Button>
-          </Link>
-        </div>
+      <div className="mt-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <DashboardImageCard image={profile?.avater} title="Change Logo" component={<LogoModel />} />
+        <DashboardImageCard image={profile?.banner} title="Change Banner" component={<BannerModel />} />
+        <DashboardActionCard icon={<FaPlusCircle size={40} />} title="Add New Product" link="/dashboard/addproduct" linkText="Add Product" />
       </div>
     </div>
   );
 };
+
+const DashboardCard = ({ icon, title, value, color, link, linkText }) => (
+  <div className={`${color} text-white p-6 rounded-xl shadow-lg flex flex-col space-y-4 animate-fade-in`}> 
+    <div className="flex items-center space-x-4">
+      {icon}
+      <h2 className="text-lg font-semibold">{title}</h2>
+    </div>
+    <p className="text-3xl font-bold">{value}</p>
+    {link && (
+      <Link href={link}>
+        <Button className="bg-yellow-400 text-gray-900 mt-2">{linkText}</Button>
+      </Link>
+    )}
+  </div>
+);
+
+const DashboardImageCard = ({ image, title, component }) => (
+  <div className="bg-gray-800 text-white p-6 rounded-xl shadow-lg flex flex-col space-y-4 items-center animate-fade-in">
+    <Image src={image} alt={title} width={100} height={60} className="rounded-md" />
+    <h2 className="text-lg font-semibold">{title}</h2>
+    {component}
+  </div>
+);
+
+const DashboardActionCard = ({ icon, title, link, linkText }) => (
+  <div className="bg-blue-600 text-white p-6 rounded-xl shadow-lg flex flex-col items-center space-y-4 animate-fade-in">
+    {icon}
+    <h2 className="text-lg font-semibold">{title}</h2>
+    <Link href={link}>
+      <Button className="bg-white text-blue-600">{linkText}</Button>
+    </Link>
+  </div>
+);
 
 export default Dashboard;
