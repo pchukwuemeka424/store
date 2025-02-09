@@ -78,6 +78,9 @@ export default function TopNav() {
       {/* Mobile Search Bar */}
       <div className="md:hidden px-4 py-2">
         <form action={search} className="relative">
+
+
+          <input type="text" name="state" hidden />
           <input
             name="search"
             type="search"
@@ -114,6 +117,7 @@ export default function TopNav() {
         <div className="w-full md:w-[70%] border">
           <form action={search}>
             <div className="relative">
+            <input type="text" name="state" hidden />
               <input
                 name="search"
                 type="search"

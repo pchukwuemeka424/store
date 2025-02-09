@@ -8,7 +8,7 @@ export async function search(formData: FormData) {
   const state = formData.get('state');
 
   // Perform search logic here
-  redirect(`/search/?q=${search}&state=${state}`);
+  redirect(`/filter/?q=${search}&state=${state}`);
 }
 
  
