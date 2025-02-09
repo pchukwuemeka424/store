@@ -37,7 +37,7 @@ export default function SearchProduct() {
       if (search) {
         query = query.ilike('title', `%${search}%`);
       }
-      if (state) {
+      else if (state) {
         query = query.ilike('state',`%${state}%`); // Ensure 'stat' matches your actual DB column
       }
 
