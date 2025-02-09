@@ -13,23 +13,23 @@ export default function MessageForm({ product}) {
   const [formStatus, setFormStatus] = useState('idle');
 
   const sendSmsNotification = async (phone, messageContent, product) => {
-    const username = "adampekolo31@gmail.com";
+    const username = "pchukwuemeka424@gmail.com";
     const password = "holiday100/";
     const sender = "mdtoad";
-    const baseUrl = "https://portal.nigeriabulksms.com/api/";
   
-    const url = `${baseUrl}?username=${encodeURIComponent(username)}&password=${encodeURIComponent(password)}&message=${encodeURIComponent(messageContent)}&sender=${encodeURIComponent(sender)}&mobiles=234${phone}`;
+    const url = `https://api.bulksmslive.com/v2/app/sms?email=${encodeURIComponent(username)}&password=${encodeURIComponent(password)}&message=${encodeURIComponent(messageContent)}&sender_name=${encodeURIComponent(sender)}&recipients=${encodeURIComponent(phone)}&forcednd=1`;
   
     try {
       const response = await fetch(url);
       const result = await response.text();
       console.log("SMS Response:", result);
-      return { status: "success" };
+      return { status: "success", response: result };
     } catch (error) {
       console.error("Error sending SMS:", error);
       return { status: "error", error };
     }
-  };
+};
+
   
 
   const handleSubmit = async (e) => {
