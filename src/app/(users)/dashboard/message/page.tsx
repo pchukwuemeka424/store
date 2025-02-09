@@ -9,22 +9,28 @@ export default function MessageInbox() {
   const [messages, setMessages] = useState([]);
   const [selectedMessage, setSelectedMessage] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const messagesPerPage = 5;
 
   const supabase = createClient();
 
   useEffect(() => {
     fetchMessages();
-  }, []);
+  }, [currentPage]);
 
   const fetchMessages = async () => {
-    const { data, error } = await supabase
+    const { data, error, count } = await supabase
       .from("messages")
-      .select("id, name, phone, subject, image, message, created_at");
+      .select("id, name, phone, subject, image, message, created_at", { count: "exact" })
+      .order("created_at", { ascending: false })
+      .range((currentPage - 1) * messagesPerPage, currentPage * messagesPerPage - 1);
 
     if (error) {
       console.error("Error fetching messages:", error);
     } else {
       setMessages(data);
+      setTotalPages(Math.ceil(count / messagesPerPage));
     }
   };
 
@@ -44,6 +50,14 @@ export default function MessageInbox() {
     } else {
       setMessages(messages.filter((msg) => msg.id !== id));
     }
+  };
+
+  const handlePrevPage = () => {
+    if (currentPage > 1) setCurrentPage(currentPage - 1);
+  };
+
+  const handleNextPage = () => {
+    if (currentPage < totalPages) setCurrentPage(currentPage + 1);
   };
 
   return (
@@ -84,6 +98,24 @@ export default function MessageInbox() {
             </li>
           ))}
         </ul>
+        {/* Pagination Controls */}
+        <div className="flex justify-between items-center mt-4">
+          <button
+            onClick={handlePrevPage}
+            disabled={currentPage === 1}
+            className="px-4 py-2 bg-gray-300 rounded disabled:opacity-50"
+          >
+            Previous
+          </button>
+          <span>Page {currentPage} of {totalPages}</span>
+          <button
+            onClick={handleNextPage}
+            disabled={currentPage === totalPages}
+            className="px-4 py-2 bg-gray-300 rounded disabled:opacity-50"
+          >
+            Next
+          </button>
+        </div>
       </div>
 
       {isModalOpen && selectedMessage && (
@@ -98,7 +130,6 @@ export default function MessageInbox() {
             <p className="text-xs text-gray-500 mb-2">
               {new Date(selectedMessage.created_at).toLocaleString()}
             </p>
-            {/* add name */}
             <p className="text-sm text-gray-600 mb-2">Name: {selectedMessage.name}</p>
             <p className="text-sm text-gray-600 mb-2">Phone: <Link className="text-blue-600 hover:underline" href={`tel:${selectedMessage.phone}`}>{selectedMessage.phone}</Link></p>
             <p className="text-gray-700 text-sm mb-4">{selectedMessage.message}</p>
