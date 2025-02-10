@@ -4,22 +4,20 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { Card, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { useSearchParams } from 'next/navigation';
-import Spinner from '@/components/spinner';
 import { MdErrorOutline } from 'react-icons/md';
 
 export default function SearchProduct() {
   const [products, setProducts] = useState([]);
-  const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(1);
+  const [hasMore, setHasMore] = useState(true);
 
-  // Get search params
   const searchParams = useSearchParams();
   const search = searchParams.get('q');
   const state = searchParams.get('state');
 
-  // Fetch products function
   const fetchProducts = useCallback(async (page, search, state) => {
-    setLoading(true);
+    if (!hasMore) return;
+
     try {
       let query = supabaseDb
         .from('products')
@@ -38,54 +36,51 @@ export default function SearchProduct() {
         query = query.ilike('title', `%${search}%`);
       }
       if (state) {
-        query = query.ilike('state',`%${state}%`); // Ensure 'stat' matches your actual DB column
+        query = query.ilike('state', `%${state}%`);
       }
 
       const { data, error } = await query;
       if (error) throw error;
 
+      if (data.length < 10) {
+        setHasMore(false);
+      }
+
       setProducts((prevProducts) => {
-        if (page === 1) return data; // Reset on new search
+        if (page === 1) return data;
         return [...prevProducts, ...data.filter((p) => !prevProducts.some((prev) => prev.id === p.id))];
       });
     } catch (error) {
       console.error('Error fetching products:', error.message);
-    } finally {
-      setLoading(false);
     }
-  }, []);
+  }, [hasMore]);
 
-  // Effect to fetch products when search or state changes
   useEffect(() => {
     setProducts([]);
     setPage(1);
+    setHasMore(true);
     fetchProducts(1, search, state);
   }, [search, state, fetchProducts]);
 
-  // Effect to fetch more products when page changes
   useEffect(() => {
     if (page > 1) {
       fetchProducts(page, search, state);
     }
   }, [page, search, state, fetchProducts]);
 
-  // Infinite scrolling
   const handleScroll = useCallback(() => {
+    if (!hasMore) return;
     if (window.innerHeight + document.documentElement.scrollTop >= document.documentElement.offsetHeight - 10) {
       setPage((prevPage) => prevPage + 1);
     }
-  }, []);
+  }, [hasMore]);
 
   useEffect(() => {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, [handleScroll]);
 
-  if (loading && page === 1) {
-    return <Spinner />;
-  }
-
-  if (products.length === 0 && !loading) {
+  if (products.length === 0) {
     return (
       <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 flex flex-col items-center justify-center py-10">
         <MdErrorOutline className="text-red-500 text-6xl mb-4" />
@@ -126,7 +121,7 @@ export default function SearchProduct() {
           </Card>
         </Link>
       ))}
-      {loading && <p>Loading more products...</p>}
+      {!hasMore && <p className="text-center text-gray-500 mt-4">No more products to load</p>}
     </div>
   );
 }
