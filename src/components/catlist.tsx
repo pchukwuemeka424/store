@@ -37,7 +37,7 @@ export default function Catlist({ product }) {
         >
             <option value="">Select Category</option>
             {kycRecords?.map((record) => (
-                <option key={record.id} value={record.title}>
+                <option key={record.id} value={record.id}>
                     {record.title}
                 </option>
             ))}

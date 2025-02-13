@@ -90,7 +90,7 @@ export default function MessageInbox() {
               </div>
               <button
                 onClick={() => handleDelete(msg.id)}
-                className="text-red-500 hover:text-red-700 transition"
+                className="text-red-500 mx-4 hover:text-red-700 transition"
                 aria-label="Delete message"
               >
                 <FaTrash />
@@ -140,7 +140,7 @@ export default function MessageInbox() {
                   width={150}
                   height={150}
                   alt="Message Image"
-                  className="rounded-lg shadow-sm"
+                  className="rounded-lg shadow-sm h-40 w-48"
                 />
               </div>
             )}
