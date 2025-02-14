@@ -33,7 +33,7 @@ export default function Register() {
             </Link>
 
             <div className="flex flex-1 justify-center items-center p-8 ">
-                <form className="w-full max-w-md bg-white rounded-lg shadow-lg p-8 space-y-6">
+                <form action={action} className="w-full max-w-md bg-white rounded-lg shadow-lg p-8 space-y-6">
                     <h2 className="text-3xl font-semibold text-center text-gray-700">Login</h2>
 
                     {/* Email Field */}
