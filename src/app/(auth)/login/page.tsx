@@ -23,69 +23,71 @@ export default function Register() {
     }, null);
 
     return (
-        <div className="h-screen flex">
+        <div className="h-screen flex flex-col md:flex-row md:bg-none  bg-[url('/images/Xa.jpg')] bg-cover bg-center bg-no-repeat">
+
             {/* Button with Arrow to Return Home */}
             <Link href="/">
-                <Button className="absolute top-4 left-4 flex items-center text-white bg-blue-500 hover:bg-blue-600 hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-800">
-                    <AiOutlineArrowLeft className="mr-2" /> Return to Home
+                <Button className="absolute top-6 left-6 flex items-center bg-blue-600 text-white hover:bg-blue-700 transition-all focus:ring-4 focus:ring-blue-300 rounded-lg shadow-lg px-6 py-3">
+                    <AiOutlineArrowLeft className="mr-2 text-lg" /> Return to Home
                 </Button>
             </Link>
 
-            <div className="w-full md:w-1/2 bg-white flex justify-center items-center p-8">
-                <form className="w-full max-w-sm" action={action}>
-                    <h2 className="text-3xl font-bold text-center mb-6">Login</h2>
+            <div className="flex flex-1 justify-center items-center p-8 ">
+                <form className="w-full max-w-md bg-white rounded-lg shadow-lg p-8 space-y-6">
+                    <h2 className="text-3xl font-semibold text-center text-gray-700">Login</h2>
 
                     {/* Email Field */}
-                    <div className="mb-4 relative">
+                    <div className="relative mb-6">
                         <input
                             type="email"
                             name="email"
                             placeholder="Email"
                             defaultValue={prev?.email}
-                            className="w-full px-4 py-3 pl-10 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
+                            className="w-full px-4 py-3 pl-12 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
                         />
-                        <AiOutlineMail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+                        <AiOutlineMail className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-500 text-xl" />
                         {prev?.errors.email && (
-                            <p className="text-red-500 text-sm mt-1">
-                                {prev.errors.email}
-                            </p>
+                            <p className="text-red-500 text-sm mt-2">{prev.errors.email}</p>
                         )}
                     </div>
 
                     {/* Password Field */}
-                    <div className="mb-1 relative">
+                    <div className="relative mb-6">
                         <input
                             type="password"
                             name="password"
                             placeholder="Password"
                             defaultValue={prev?.password}
-                            className="w-full px-4 py-3 pl-10 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
+                            className="w-full px-4 py-3 pl-12 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
                         />
-                        <AiOutlineLock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+                        <AiOutlineLock className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-500 text-xl" />
                         {prev?.errors.password && (
-                            <p className="text-red-500 text-sm mt-1">
-                                {prev.errors.password}
-                            </p>
+                            <p className="text-red-500 text-sm mt-2">{prev.errors.password}</p>
                         )}
                     </div>
+
                     <div className="text-right">
-                        <Link className="text-blue-800 text-primary no-underline" href="/forgot">Forgot Password</Link>
+                        <Link href="/forgot" className="text-blue-600 hover:underline text-sm">
+                            Forgot Password?
+                        </Link>
                     </div>
 
                     {/* Submit Button */}
                     <Button
                         type="submit"
                         disabled={isPending}
-                        className="w-full transition"
+                        className="w-full py-3 text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 rounded-lg transition-all"
                     >
                         {isPending ? 'Processing...' : 'Login'}
                     </Button>
 
                     {/* Additional Links */}
-                    <div className="mt-4 text-center">
+                    <div className="text-center mt-6">
                         <p className="text-gray-600">
-                            Don&apos;t have an account?
-                            <Link className="text-blue-800 text-primary underline-offset-4 hover:underline" href="/register">Register</Link>
+                            Don&apos;t have an account?{' '}
+                            <Link href="/register" className="text-blue-600 hover:underline">
+                                Register
+                            </Link>
                         </p>
                     </div>
 
