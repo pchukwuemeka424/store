@@ -39,7 +39,7 @@ export default async function handleLogoSubmission(_: any, formData: FormData) {
     const buffer = await documentFile.arrayBuffer();
     const compressedDocument = await sharp(Buffer.from(buffer))
       // .resize({ width: 300, height: 300, fit: "cover" })
-      .jpeg({ quality: 70 })
+      .png({ quality: 70 })
       .toBuffer();
 
     // Generate file path
