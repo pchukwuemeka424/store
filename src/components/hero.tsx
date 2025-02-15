@@ -15,7 +15,7 @@ export default function Navbar() {
         bg-[url('https://scholarmedia.africa/wp-content/uploads/2023/03/A-woman-trader-e1680190679909.jpg')]"
       >
         {/* Background Overlay */}
-        <div className="absolute inset-0 bg-black bg-opacity-40"></div>
+        <div className="absolute inset-0 bg-black bg-opacity-70"></div>
 
         {/* Content Container */}
         <div className="relative container mx-auto text-center px-4">
