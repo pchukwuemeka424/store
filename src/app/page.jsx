@@ -4,6 +4,10 @@ import Hero from "../components/hero";
 import CatSlider from "../components/catSlider";
 import ProductFetch from "./product/productFetch";
 import Midtab from "../components/midTab";
+
+
+
+
 export default function Home() {
   return (
     <div>
