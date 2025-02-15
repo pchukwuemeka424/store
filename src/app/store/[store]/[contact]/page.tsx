@@ -39,10 +39,10 @@ export default function Page() {
   return (
     <div>
       {shopDetails && (
-        <>
+        <div className="flex flex-col min-h-screen p-8 mx-auto max-w-7xl">
           <Header shopDetails={shopDetails} />
           <ContactInfo shopDetails={shopDetails} />
-        </>
+        </div>
       )}
     </div>
   );

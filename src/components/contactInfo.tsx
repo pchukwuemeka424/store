@@ -22,6 +22,7 @@ const ContactInfo = ({ shopDetails }) => {
     kyc_status,
     phone,
     email,
+    about,
     address,
     created_at,
     dateRegistered,
@@ -36,18 +37,18 @@ const ContactInfo = ({ shopDetails }) => {
   const whatsapp = `https://wa.me/${phone}`;
 
   return (
-    <div className="flex flex-col min-h-screen p-8 mx-auto max-w-7xl">
+    <div className="flex flex-col ">
       <div className="sm:flex gap-8">
         {/* About Us Section */}
-        <Card className="p-8 shadow-xl rounded-lg bg-orange-400 text-white mb-4 w-full sm:w-1/3">
+        <Card className="mt-2 shadow-xl rounded-lg bg-orange-400 text-white mb-4 w-full sm:w-1/3">
           <CardContent>
             <h2 className="text-2xl font-semibold mb-6">About Us</h2>
-            <p className="text-white">{aboutUs || "No description available."}</p>
+            <p className="text-white">{about || "No description available."}</p>
           </CardContent>
         </Card>
         
         {/* Contact Information */}
-        <Card className="p-8 shadow-xl rounded-lg bg-white text-gray-900 w-full sm:w-2/3">
+        <Card className="p-2 rounded-lg ">
           <CardContent>
             <h2 className="text-2xl font-semibold mb-6">Get in Touch</h2>
             <div className="grid gap-4">

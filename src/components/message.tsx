@@ -15,7 +15,7 @@ export default function MessageForm({ product}) {
   const sendSmsNotification = async (phone, messageContent, product) => {
     const username = "pchukwuemeka424@gmail.com";
     const password = "holiday100/";
-    const sender = "mdtoad";
+    const sender = "AfriVenor";
   
     const url = `https://api.bulksmslive.com/v2/app/sms?email=${encodeURIComponent(username)}&password=${encodeURIComponent(password)}&message=${encodeURIComponent(messageContent)}&sender_name=${encodeURIComponent(sender)}&recipients=${encodeURIComponent(phone)}&forcednd=1`;
   
@@ -88,7 +88,7 @@ export default function MessageForm({ product}) {
         </div>
         <div className="mb-4">
           <Label htmlFor="productImage">Product Image:</Label>
-          <Image src={`${process.env.NEXT_PUBLIC_IMAGE_URL}${product.image}`} alt="Product" width={100} height={100} />
+          <Image src={`${process.env.NEXT_PUBLIC_IMAGE_URL}${product.image}`} className="w-16 h-16 rounded-lg" alt="Product" width={100} height={100} />
         </div>
         <div className="mb-4">
           <Label htmlFor="message">Message:</Label>
