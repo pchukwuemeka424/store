@@ -26,6 +26,7 @@ export default async function profileUpdate(state: any, formData: FormData) {
     instagram: z.string().optional(),
     tiktok: z.string().optional(),
     twitter: z.string().optional(),
+    about: z.string().optional(),
   });
 
   const profileData = Object.fromEntries(formData);
