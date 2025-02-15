@@ -10,7 +10,7 @@ export default function KYCForm({ handler, kycData }) {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const router = useRouter();
 
-  const MAX_FILE_SIZE = 3 * 1024 * 1024; // 3 MB
+  const MAX_FILE_SIZE = 1 * 1024 * 1024; // 3 MB
 
   useEffect(() => {
     if (state?.success) {
