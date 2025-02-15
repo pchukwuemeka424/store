@@ -82,7 +82,7 @@ export default function Register() {
 
       <div className="w-full md:w-1/2 bg-white flex justify-center items-center p-8">
         <form className="w-full max-w-sm" action={action}>
-          <h2 className="text-3xl font-bold text-center mb-6">Register</h2>
+          <h2 className="text-3xl font-bold text-center mb-6">Create  Online Store</h2>
 
           {/* Success Message */}
           {message && (
