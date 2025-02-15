@@ -1,6 +1,5 @@
 "use server";
 import { createClient } from "@/utils/supabase/server";
-import sharp from "sharp";
 
 interface KYCFormInput {
   firstName: string;
@@ -54,19 +53,12 @@ export default async function handleKYCSubmission(state: any, formData: FormData
   }
 
   try {
-    // Efficiently process and compress the document
-    const buffer = await documentFile.arrayBuffer();
-    const compressedDocument = await sharp(Buffer.from(buffer))
-      // .resize({ width: 100, height: 100, fit: "inside" }) // Resize to fit within 1000x1000 if larger
-      .jpeg({ quality: 40 }) // Adjust quality as needed
-      .toBuffer();
-  
     const fileName = `kyc_${Date.now()}_${documentFile.name}`;
     const filePath = `kyc_documents/${fileName}`;
   
     const { data: uploadData, error: uploadError } = await supabase.storage
       .from("kyc_documents")
-      .upload(filePath, compressedDocument, { contentType: "image/jpeg" });
+      .upload(filePath, documentFile, { contentType: documentFile.type });
   
     if (uploadError) {
       console.error("Error uploading document:", uploadError);
@@ -83,7 +75,7 @@ export default async function handleKYCSubmission(state: any, formData: FormData
         id_number: formInput.idNumber,
         verification_type: formInput.verificationType,
         document: filePath,
-        })
+      })
       .eq("user_id", user_id);
   
     if (insertError) {
