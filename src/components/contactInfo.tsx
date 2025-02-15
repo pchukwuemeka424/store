@@ -41,8 +41,8 @@ const ContactInfo = ({ shopDetails }) => {
       <div className="sm:flex gap-8">
         {/* About Us Section */}
         <Card className="mt-2 shadow-xl rounded-lg bg-orange-400 text-white mb-4 w-full sm:w-1/3">
-          <CardContent>
-            <h2 className="text-2xl font-semibold mb-6">About Us</h2>
+          <CardContent className="py-4">
+            <h2 className="text-2xl font-semibold mb-2">About Us</h2>
             <p className="text-white">{about || "No description available."}</p>
           </CardContent>
         </Card>
@@ -52,10 +52,11 @@ const ContactInfo = ({ shopDetails }) => {
           <CardContent>
             <h2 className="text-2xl font-semibold mb-6">Get in Touch</h2>
             <div className="grid gap-4">
-              <p className="text-gray-700 flex items-center"><FaEnvelope className="mr-2" /> <strong>Email:</strong> {email}</p>
+    
               <p className="text-gray-700 flex items-center"><FaPhone className="mr-2" /> <strong>Phone:</strong> {phone}</p>
-              <p className="text-gray-700 flex items-center"><FaMapMarkerAlt className="mr-2" /> <strong>Address:</strong> {address}</p>
-              <p className="text-gray-700 flex items-center"><FaLocationArrow className="mr-2" /> <strong>City:</strong> {city}, <strong>State:</strong> {state}, Nigeria</p>
+
+              <p className="text-gray-700 flex items-center"><FaLocationArrow className="mr-2" /> <strong>City:</strong> {city}, </p>
+             <p> <strong>State:</strong> {state}, Nigeria</p>
               <p className="text-gray-700"><strong>Registered:</strong>  
                 {new Date(created_at).toLocaleDateString('en-US', {
                   year: 'numeric',
