@@ -121,7 +121,7 @@ export default function ProfileForm({ handler, defaultValues }) {
       onChange={handleStateChange}
       className="w-full px-4 py-2 border rounded-lg"
     >
-            <option value={state?.stat || defaultValues?.stat}>{state?.stat || defaultValues?.stat}</option>
+            <option value="" disabled>{state?.stat || defaultValues?.stat}</option>
       {states.map((stateOption) => (
         <option key={stateOption.name} value={stateOption.name}>
           {stateOption.name}
@@ -139,9 +139,9 @@ export default function ProfileForm({ handler, defaultValues }) {
       value={lga || ''}
       onChange={handleLgaChange}
       className="w-full px-4 py-2 border rounded-lg"
-   
+      disabled={!selectedState}
     >
-      <option value={state?.city || defaultValues?.city} >{state?.city || defaultValues?.city}</option>
+      <option value="" disabled>{state?.city || defaultValues?.city}</option>
       {stateLgas?.map((lgaOption) => (
         <option key={lgaOption} value={lgaOption}>
           {lgaOption}
@@ -172,7 +172,49 @@ export default function ProfileForm({ handler, defaultValues }) {
           )}
         </div>
 
-
+        {/* Social Media URLs */}
+        <div className="flex items-start">
+          <FaFacebook className="mr-2 text-gray-500 mt-2" />
+          <input 
+            type="text"
+            name="facebook"
+            placeholder="Enter Facebook URL"
+            aria-label="Facebook URL"
+            className="w-full px-4 py-2 border rounded-lg"
+            defaultValue={state?.facebook || defaultValues?.facebook}
+          />
+          {state?.errors?.facebook && (
+            <p className="text-red-500 text-sm mt-1 ml-8">{state.errors.facebook}</p>
+          )}
+        </div>
+        <div className="flex items-start">
+          <FaInstagram className="mr-2 text-gray-500 mt-2" />
+          <input 
+            type="text"
+            name="instagram"
+            placeholder="Enter Instagram URL"
+            aria-label="Instagram URL"
+            className="w-full px-4 py-2 border rounded-lg"
+            defaultValue={state?.instagram || defaultValues?.instagram}
+          />
+          {state?.errors?.instagram && (
+            <p className="text-red-500 text-sm mt-1 ml-8">{state.errors.instagram}</p>
+          )}
+        </div>
+        <div className="flex items-start">
+          <FaTwitter className="mr-2 text-gray-500 mt-2" />
+          <input  
+            type="text"
+            name="twitter"
+            placeholder="Enter Twitter URL" 
+            aria-label="Twitter URL"
+            className="w-full px-4 py-2 border rounded-lg"
+            defaultValue={state?.twitter || defaultValues?.twitter}
+          />
+          {state?.errors?.twitter && (
+            <p className="text-red-500 text-sm mt-1 ml-8">{state.errors.twitter}</p>
+          )}
+        </div>
 
         {/* About Us */}
         <div className="flex items-start">
