@@ -24,7 +24,7 @@ export default function AgentPage() {
         {/* Register Vendor Section */}
         <div className="bg-white p-8 rounded-3xl shadow-lg text-center transform transition duration-300 hover:scale-105">
           <h2 className="text-3xl font-bold text-gray-800">
-            <FaStore className="inline-block mr-2 text-purple-600" /> Register as a Vendor
+            <FaStore className="inline-block mr-2 text-purple-600" /> Register a Vendor
           </h2>
           <p className="text-gray-600 mt-4">Start selling your products on our platform today.</p>
           <Link href="/agent/addVendor">
