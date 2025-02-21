@@ -4,7 +4,7 @@ import React, { useState, useEffect } from "react";
 import { useActionState } from "react"; 
 import { FaStore, FaUser, FaAddressCard, FaPhone, FaMapMarkerAlt } from "react-icons/fa";
 import RegisterVendor from "@/actions/auth/registerVendor";
-import { useUser } from "../useContext";
+import { useUser } from "../dashboard/useContext";
 import MarketAutocomplete from "@/components/MarketAutocomplete";
 import AgentUser from "@/components/agentUser";
 import { states } from "@/components/stateLga";
