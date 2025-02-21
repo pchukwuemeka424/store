@@ -1,26 +1,28 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import TawkToScript from "@/components/TawkToScript"; // Import the Tawk.to script component
 
 export const metadata: Metadata = {
   title: `${process.env.APP_NAME}`,
   description: `${process.env.APP_DESCRIPTION}`,
-  keywords: "Afrivendor, Nigeria vendor, afrivendor.ng, online marketplace, Nigeria businesses,wigs hair online vendors , Nigeria e-commerce, vendor platform, buy from Africa, shop Nigeria products, Nigeria goods, local Nigeria businesses, online vendors", // Additional keywords added
-  author: "Acehub Technologies", // Author of the site
-  viewport: "width=device-width, initial-scale=1.0", // Ensuring responsiveness
-  robots: "index, follow", // Directs search engines on how to index the site
+  keywords: "Afrivendor, Nigeria vendor, afrivendor.ng, online marketplace, Nigeria businesses,wigs hair online vendors, Nigeria e-commerce, vendor platform, buy from Africa, shop Nigeria products, Nigeria goods, local Nigeria businesses, online vendors",
+  author: "Acehub Technologies",
+  viewport: "width=device-width, initial-scale=1.0",
+  robots: "index, follow",
   openGraph: {
     title: `${process.env.APP_NAME}`,
     description: `${process.env.APP_DESCRIPTION}`,
-    url: process.env.APP_URL || "default-url.com", // URL of the app
-    images: [{ url: "https://sxkmrpzbtqpraucnmnjm.supabase.co/storage/v1/object/public/logos//White-and-Blue-Shopping-Cart-Logo-DesignEvo-Logo-Maker-02-14-2025_08_47_PM.png" }], // Optional: Add an image for Open Graph preview
+    url: process.env.APP_URL || "default-url.com",
+    images: [{ url: "https://sxkmrpzbtqpraucnmnjm.supabase.co/storage/v1/object/public/logos/White-and-Blue-Shopping-Cart-Logo-DesignEvo-Logo-Maker-02-14-2025_08_47_PM.png" }],
   },
   twitter: {
-    card: "Afrivendor", // Defines the Twitter card type
+    card: "Afrivendor",
     title: `${process.env.APP_NAME}`,
     description: `${process.env.APP_DESCRIPTION}`,
-    images: ["https://sxkmrpzbtqpraucnmnjm.supabase.co/storage/v1/object/public/logos//White-and-Blue-Shopping-Cart-Logo-DesignEvo-Logo-Maker-02-14-2025_08_47_PM.png"], // Optional: Add an image for Twitter preview
+    images: ["https://sxkmrpzbtqpraucnmnjm.supabase.co/storage/v1/object/public/logos/White-and-Blue-Shopping-Cart-Logo-DesignEvo-Logo-Maker-02-14-2025_08_47_PM.png"],
   },
 };
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -29,9 +31,12 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-        {/* You can also dynamically add additional <meta> tags here */}
+        {/* Other meta tags can go here */}
       </head>
-      <body>{children}</body>
+      <body>
+        {children}
+        <TawkToScript /> {/* Load the Tawk.to script dynamically */}
+      </body>
     </html>
   );
 }
