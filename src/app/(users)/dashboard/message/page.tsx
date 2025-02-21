@@ -34,7 +34,7 @@ export default function MessageInbox() {
       .select("id, name, phone, subject, image, message, created_at", { count: "exact" })
       .order("created_at", { ascending: false })
       .range((currentPage - 1) * messagesPerPage, currentPage * messagesPerPage - 1)
-      .eq("id", userId)
+      .eq("user_id", userId)
 
     if (error) {
       console.error("Error fetching messages:", error);

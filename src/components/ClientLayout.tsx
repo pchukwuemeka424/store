@@ -15,13 +15,17 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
   const [state, action, isPending] = useActionState(logout, undefined, null);
   const supabase = createClient();
   const [messageCount, setMessageCount] = useState(0);
+  // user id supabase
+
+  const user_id = supabase.auth.getUser();
 
   // Fetch message count
   useEffect(() => {
     const fetchMessageCount = async () => {
       const { count, error } = await supabase
         .from("messages")
-        .select("*", { count: "exact", head: true });
+        .select("*", { count: "exact"})
+        .eq("user_id", user_id);
 
       if (!error) {
         setMessageCount(count || 0);
