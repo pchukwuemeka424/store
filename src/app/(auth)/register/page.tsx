@@ -74,11 +74,7 @@ export default function Register() {
 
   return (
     <div className="h-screen flex">
-      <Link href="/">
-        <Button className="absolute top-4 left-4 flex items-center text-white bg-blue-500 hover:bg-blue-600 hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-800">
-          <AiOutlineArrowLeft className="mr-2" /> Return to Home
-        </Button>
-      </Link>
+     
 
       <div className="w-full md:w-1/2 bg-white flex justify-center items-center p-8">
         <form className="w-full max-w-sm" action={action}>
@@ -174,6 +170,11 @@ export default function Register() {
               </Link>
             </p>
           </div>
+          <Link href="/">
+        <Button>
+          <AiOutlineArrowLeft className="my-2" />Home
+        </Button>
+      </Link>
 
           {/* General Error Message */}
           {prev?.errors?.general && (
