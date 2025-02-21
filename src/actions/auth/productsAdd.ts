@@ -11,12 +11,14 @@ interface FormInput {
   stateLocal: string;
   image: string | null;
   user_id: string | null;
+  agentId: string | null;
 }
 
 export default async function addProduct(state: any, formData: FormData) {
   const supabase = await createClient();
   const userDetails = await supabase.auth.getUser();
   const user_id = userDetails.data?.user?.id || null;
+  
 
   const formInput: FormInput = {
     name: formData.get("name")?.toString() || "",
@@ -27,6 +29,7 @@ export default async function addProduct(state: any, formData: FormData) {
     stateLocal: formData.get("state")?.toString() || "",
     image: null,
     user_id: user_id,
+    agentId: formData.get("agentId")?.toString() || null,
   };
 
   const imageFile = formData.get("image") as File | null;
@@ -92,6 +95,7 @@ export default async function addProduct(state: any, formData: FormData) {
       image: formInput.image,
       state: formInput.stateLocal,
       id: user_id,
+      agentId: formInput.agentId,
     });
 
   if (insertError) {

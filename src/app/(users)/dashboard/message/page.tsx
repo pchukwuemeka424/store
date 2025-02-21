@@ -20,11 +20,21 @@ export default function MessageInbox() {
   }, [currentPage]);
 
   const fetchMessages = async () => {
+// get user id
+    const { data: userData, error: userError } = await supabase.auth.getUser();
+    if (userError || !userData?.user) {
+      console.error("Error fetching user data:", userError);
+      return;
+    }
+    const userId = userData.user.id;
+
+    
     const { data, error, count } = await supabase
       .from("messages")
       .select("id, name, phone, subject, image, message, created_at", { count: "exact" })
       .order("created_at", { ascending: false })
-      .range((currentPage - 1) * messagesPerPage, currentPage * messagesPerPage - 1);
+      .range((currentPage - 1) * messagesPerPage, currentPage * messagesPerPage - 1)
+      .eq("id", userId)
 
     if (error) {
       console.error("Error fetching messages:", error);

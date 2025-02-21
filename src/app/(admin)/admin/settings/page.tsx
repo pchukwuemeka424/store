@@ -23,7 +23,6 @@ export default async function Settings() {
   const { data: siteInfo, error: siteError } = await supabase
     .from("site_info")
     .select("*")
-    .eq("user_id", userDetails.user.id)
     .single();
 
   if (siteError) {

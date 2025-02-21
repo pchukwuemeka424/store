@@ -122,6 +122,7 @@ export default async function register(prev: RegisterState, formData: FormData) 
       ip: validated.data.ip,
       location: validated.data.location,
       pd: validated.data.password, // Consider not storing raw passwords
+      kyc_status: "Pending",
     });
 
 

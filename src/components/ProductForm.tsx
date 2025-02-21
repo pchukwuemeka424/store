@@ -69,9 +69,14 @@ export default function ProductForm({ handler, product,profile }) {
   return (
     <div className="bg-white p-6 rounded-lg shadow-md col-span-full">
       <form action={action} onSubmit={handleSubmit}>
-
-
-        {/* state */}
+      <input
+            type="hidden"
+            id="agentId"
+            name="agentId"
+            placeholder="Enter product name"
+            defaultValue={profile?.agentId || ""}
+            className="w-full px-4 py-2 border rounded-lg mt-2"
+          />
         <input
             type="hidden"
             id="state"
@@ -80,12 +85,14 @@ export default function ProductForm({ handler, product,profile }) {
             defaultValue={profile?.stat || ""}
             className="w-full px-4 py-2 border rounded-lg mt-2"
           />
+    
         {/* Product Name */}
         <div className="mb-4">
           <label htmlFor="name" className="block text-sm font-semibold text-gray-700">
             Product Name
           </label>
           <input
+            type="text"
             type="text"
             id="name"
             name="name"

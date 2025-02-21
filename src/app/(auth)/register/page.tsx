@@ -82,7 +82,10 @@ export default function Register() {
 
       <div className="w-full md:w-1/2 bg-white flex justify-center items-center p-8">
         <form className="w-full max-w-sm" action={action}>
-          <h2 className="text-3xl font-bold text-center mb-6">Create  Online Store</h2>
+          <div className="text-2xl font-bold text-center mb-2"> Launch Your Online Store with Afrivendor.ng – Free & Easy</div>
+          <div className="text-center mb-2">
+          Join thousands of entrepreneurs who have started their journey on Afrivendor.ng with just a few clicks!
+          </div>
 
           {/* Success Message */}
           {message && (

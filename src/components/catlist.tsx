@@ -34,6 +34,7 @@ export default function Catlist({ product }) {
             name="category"
             defaultValue={product?.category || ""}
             className="w-full px-4 py-2 border rounded-lg mt-2"
+            required
         >
             <option value="">Select Category</option>
             {kycRecords?.map((record) => (

@@ -29,7 +29,7 @@ export default async function Product() {
   // Fetch user profile
   const { data: profile, error: profileError } = await supabase
     .from("user_profile")
-    .select("plan,stat")
+    .select("*")
     .eq("id", user.id)
     .single();
 
