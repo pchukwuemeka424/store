@@ -187,7 +187,7 @@ export default function Register() {
 
       <div
         className="hidden md:block w-1/2 bg-cover bg-center bg-no-repeat"
-        style={{ backgroundImage: 'url('https://sxkmrpzbtqpraucnmnjm.supabase.co/storage/v1/object/public/web_images//log.png')' }}
+        style={{ backgroundImage: "url('https://sxkmrpzbtqpraucnmnjm.supabase.co/storage/v1/object/public/web_images//log.png')" }}
       ></div>
     </div>
   );
