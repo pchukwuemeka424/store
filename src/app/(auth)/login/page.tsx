@@ -1,4 +1,4 @@
-"use client"; // This tells Next.js to treat this component as a client-side component
+"use client"; 
 import { useActionState } from 'react';
 import { AiOutlineLock, AiOutlineMail, AiOutlineArrowLeft } from 'react-icons/ai';
 import login from '@/actions/auth/login';
@@ -23,7 +23,7 @@ export default function Register() {
     }, null);
 
     return (
-        <div className="h-screen flex flex-col md:flex-row md:bg-none  bg-[url('https://sxkmrpzbtqpraucnmnjm.supabase.co/storage/v1/object/public/web_images//log.png')] bg-cover bg-center bg-no-repeat">
+        <div className="h-screen flex flex-col md:flex-row bg-cover bg-center bg-no-repeat md:bg-none bg-[url('https://sxkmrpzbtqpraucnmnjm.supabase.co/storage/v1/object/public/web_images/log.png')]">
 
             {/* Button with Arrow to Return Home */}
             <Link href="/">
@@ -32,7 +32,7 @@ export default function Register() {
                 </Button>
             </Link>
 
-            <div className="flex flex-1 justify-center items-center p-8 ">
+            <div className="flex flex-1 justify-center items-center p-8">
                 <form action={action} className="w-full max-w-md bg-white rounded-lg shadow-lg p-8 space-y-6">
                     <h2 className="text-3xl font-semibold text-center text-gray-700">Login</h2>
 
@@ -72,7 +72,6 @@ export default function Register() {
                         </Link>
                     </div>
 
-                    {/* Submit Button */}
                     <Button
                         type="submit"
                         disabled={isPending}
@@ -81,7 +80,6 @@ export default function Register() {
                         {isPending ? 'Processing...' : 'Login'}
                     </Button>
 
-                    {/* Additional Links */}
                     <div className="text-center mt-6">
                         <p className="text-gray-600">
                             Don&apos;t have an account?{' '}
@@ -91,7 +89,6 @@ export default function Register() {
                         </p>
                     </div>
 
-                    {/* General Error Message */}
                     {prev?.errors.general && (
                         <p className="text-red-500 text-sm mt-2 text-center">
                             {prev.errors.general}
@@ -102,7 +99,9 @@ export default function Register() {
 
             <div
                 className="hidden md:block w-1/2 bg-cover bg-center bg-no-repeat"
-                style={{ backgroundImage: 'url('https://sxkmrpzbtqpraucnmnjm.supabase.co/storage/v1/object/public/web_images//log.png')' }}
+                style={{
+                    backgroundImage: "url('https://sxkmrpzbtqpraucnmnjm.supabase.co/storage/v1/object/public/web_images/log.png')",
+                }}
             ></div>
         </div>
     );
