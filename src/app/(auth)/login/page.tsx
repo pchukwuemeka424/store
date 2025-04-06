@@ -23,7 +23,7 @@ export default function Register() {
     }, null);
 
     return (
-        <div className="h-screen flex flex-col md:flex-row md:bg-none  bg-[url('/images/Xa.jpg')] bg-cover bg-center bg-no-repeat">
+        <div className="h-screen flex flex-col md:flex-row md:bg-none  bg-[url('https://sxkmrpzbtqpraucnmnjm.supabase.co/storage/v1/object/public/web_images//log.png')] bg-cover bg-center bg-no-repeat">
 
             {/* Button with Arrow to Return Home */}
             <Link href="/">
@@ -102,7 +102,7 @@ export default function Register() {
 
             <div
                 className="hidden md:block w-1/2 bg-cover bg-center bg-no-repeat"
-                style={{ backgroundImage: 'url(/images/Xa.jpg)' }}
+                style={{ backgroundImage: 'url('https://sxkmrpzbtqpraucnmnjm.supabase.co/storage/v1/object/public/web_images//log.png')' }}
             ></div>
         </div>
     );
