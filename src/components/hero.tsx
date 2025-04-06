@@ -12,7 +12,7 @@ export default function Navbar() {
     <>
       <section
         className="h-96 relative flex flex-col justify-center items-center bg-cover bg-center 
-        bg-[url('https://scholarmedia.africa/wp-content/uploads/2023/03/A-woman-trader-e1680190679909.jpg')]"
+        bg-[url('https://sxkmrpzbtqpraucnmnjm.supabase.co/storage/v1/object/public/banners//mbil.png')]"
       >
         {/* Background Overlay */}
         <div className="absolute inset-0 bg-black bg-opacity-70"></div>
